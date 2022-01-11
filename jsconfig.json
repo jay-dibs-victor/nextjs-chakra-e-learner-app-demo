@@ -2,10 +2,10 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "components/*": ["enterprise-samples/views/components/*"],
-      "context/*": ["enterprise-samples/core/context/*"],
-      "hooks/*": ["enterprise-samples/core/helpers/hooks/*"],
-      "utils/*": ["enterprise-samples/core/helpers/utils/*"]
+      "components/*": ["core/views/components/*"],
+      "context/*": ["core/libs/context/*"],
+      "hooks/*": ["core/libs/helpers/hooks/*"],
+      "utils/*": ["core/libs/helpers/utils/*"]
     }
   }
 }

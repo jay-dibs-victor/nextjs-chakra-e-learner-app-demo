@@ -1,10 +1,10 @@
 import axios from "axios";
 import AppError from "./AppError";
 
+import { del, get, set } from "utils/localStorageAPI";
 // Intercept all Errors
 axios.interceptors.response.use(null, (err) => {
   const error = new AppError(err);
-
   return Promise.reject(error);
 });
 
@@ -41,9 +41,15 @@ const http = {
 };
 
 // Helpers
-export const getNews = async (options) => {
-  const { data } = await http.get("/posts", options);
 
+export const currentUser = async () => {
+  let me = get("userCredentials")? get("userCredentials"): await http.get("/user-token")
+  const { data } = me.data
+  return data;
+};
+
+export const logOut = async (options) => {
+  const { data } = await http.get("/logout", options);
   return data;
 };
 
