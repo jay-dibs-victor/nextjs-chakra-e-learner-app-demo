@@ -1,7 +1,6 @@
 import {
     HStack,
     Box
-    
   } from "@chakra-ui/react";  
 import { Container } from "./Layout";
 import { Link } from "./Link";
@@ -15,7 +14,6 @@ const TopBar = () => (
           <Link>email: juwavictor@gmail.com</Link>
           <Link>+2348130870416</Link>
         </HStack>
-  
         <Link>Sign in / Join</Link>
       </Container>
     </Box>
