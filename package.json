@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 4000",
     "build": "next build",
     "start": "next start"
   },
@@ -16,9 +16,7 @@
     "axios": "^0.21.1",
     "dateformat": "^4.5.1",
     "framer-motion": "^4.1.17",
-  
-   
-    
+
     "react-icons": "^4.2.0",
     "react-intersection-observer": "^8.32.0"
   },

@@ -1,4 +1,4 @@
 module.exports = {
   reactStrictMode: true,
-  pagesPaths: ["enterprise-samples/views/pages"],
+  pages: ["./pages","./enterprise-samples/views/pages/*"]
 }
