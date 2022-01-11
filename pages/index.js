@@ -18,11 +18,13 @@ import dateFormat from "dateformat";
 import { TiMediaPlay, TiSocialFacebook, TiSocialTwitter } from "react-icons/ti";
 import { GoThreeBars } from "react-icons/go";
 
+// import HeroSliders from "components/common/slider"
+
 const HomePage = () => {
   return (
     <Layout>
 
-
+         
     </Layout>
 
      

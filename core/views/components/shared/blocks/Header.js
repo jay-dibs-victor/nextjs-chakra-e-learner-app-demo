@@ -37,7 +37,8 @@ import { MdClose } from "react-icons/md";
 
 import TopBar  from "./Topbar";
 import MainHeader  from  "./CenteredLogo";
-import MobileNavigation from "./MobileNavigation"
+import MobileNavigation from "./MobileNavigation";
+import NavLinks from "./BottomNav"
 
 const Header = forwardRef(
   ({ setMobileDrawerIsOpen, breadcrumbPaths, ...rest }, ref) => {
@@ -46,6 +47,7 @@ const Header = forwardRef(
         <Box d={{ base: "none", md: "block" }}>
           <TopBar />
           <MainHeader/>
+          <NavLinks/>
         </Box>
 
         <MobileNavigation setMobileDrawerIsOpen={setMobileDrawerIsOpen} />

@@ -34,6 +34,7 @@ import {
   import { Loader } from "./Feedback";
   import { MdClose } from "react-icons/md";
 
+  import BottomLinks from "./BottomNav"
 const MobileNavigation = ({ setMobileDrawerIsOpen, ...rest }) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const btnRef = useRef();
@@ -87,7 +88,7 @@ const MobileNavigation = ({ setMobileDrawerIsOpen, ...rest }) => {
                 >
                   <MdClose />
                 </Icon>
-  
+                <BottomLinks onClose={onClose} />
               </DrawerBody>
             </DrawerContent>
           </Drawer>
