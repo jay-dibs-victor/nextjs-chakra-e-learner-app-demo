@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-
 /**
  * Get rid of Hydration Errors. e.g: `Warning: Text content did not match. Server: "HI" Client: "Hello" ...`
  *
