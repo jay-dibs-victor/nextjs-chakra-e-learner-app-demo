@@ -93,7 +93,7 @@ const Footer = () => {
               <Stack spacing={1}>
                 <Link
                   mute
-                  fontSize={{ base: "sm", md: "xs", lg: "xx-small" }}
+                  fontSize={{ base:"1xl", md: "xs", lg: "xx-small" }}
                   textTransform="uppercase"
                   letterSpacing={1}
                   _hover={{ color: "black.500" }}
@@ -102,7 +102,7 @@ const Footer = () => {
                 </Link>
                 <Link
                   mute
-                  fontSize={{ base: "sm", md: "xs", lg: "xx-small" }}
+                  fontSize={{ base:"1xl", md: "xs", lg: "xx-small" }}
                   textTransform="uppercase"
                   letterSpacing={1}
                   _hover={{ color: "black.500" }}
@@ -111,7 +111,7 @@ const Footer = () => {
                 </Link>
                 <Link
                   mute
-                  fontSize={{ base: "sm", md: "xs", lg: "xx-small" }}
+                  fontSize={{ base:"1xl", md: "xs", lg: "xx-small" }}
                   textTransform="uppercase"
                   letterSpacing={1}
                   _hover={{ color: "black.500" }}
@@ -120,7 +120,7 @@ const Footer = () => {
                 </Link>
                 <Link
                   mute
-                  fontSize={{ base: "sm", md: "xs", lg: "xx-small" }}
+                  fontSize={{ base:"1xl", md: "xs", lg: "xx-small" }}
                   textTransform="uppercase"
                   letterSpacing={1}
                   _hover={{ color: "black.500" }}
@@ -129,7 +129,7 @@ const Footer = () => {
                 </Link>
                 <Link
                   mute
-                  fontSize={{ base: "sm", md: "xs", lg: "xx-small" }}
+                  fontSize={{ base:"1xl", md: "xs", lg: "xx-small" }}
                   textTransform="uppercase"
                   letterSpacing={1}
                   _hover={{ color: "black.500" }}
@@ -138,7 +138,7 @@ const Footer = () => {
                 </Link>
                 <Link
                   mute
-                  fontSize={{ base: "sm", md: "xs", lg: "xx-small" }}
+                  fontSize={{ base:"1xl", md: "xs", lg: "xx-small" }}
                   textTransform="uppercase"
                   letterSpacing={1}
                   _hover={{ color: "black.500" }}
@@ -155,13 +155,13 @@ const Footer = () => {
                 color="black500"
                 mb={5}
               >
-                Popular Category
+                Sitemaps
               </Heading>
 
               <Stack spacing={1}>
                 <Link
                   mute
-                  fontSize={{ base: "sm", md: "xs", lg: "xx-small" }}
+                  fontSize={{ base:"1xl", md: "xs", lg: "xx-small" }}
                   textTransform="uppercase"
                   letterSpacing={1}
                   _hover={{ color: "black500" }}
@@ -170,7 +170,7 @@ const Footer = () => {
                 </Link>
                 <Link
                   mute
-                  fontSize={{ base: "sm", md: "xs", lg: "xx-small" }}
+                  fontSize={{ base:"1xl", md: "xs", lg: "xx-small" }}
                   textTransform="uppercase"
                   letterSpacing={1}
                   _hover={{ color: "black500" }}
@@ -179,7 +179,7 @@ const Footer = () => {
                 </Link>
                 <Link
                   mute
-                  fontSize={{ base: "sm", md: "xs", lg: "xx-small" }}
+                  fontSize={{ base:"1xl", md: "xs", lg: "xx-small" }}
                   textTransform="uppercase"
                   letterSpacing={1}
                   _hover={{ color: "black500" }}
@@ -188,7 +188,7 @@ const Footer = () => {
                 </Link>
                 <Link
                   mute
-                  fontSize={{ base: "sm", md: "xs", lg: "xx-small" }}
+                  fontSize={{ base:"1xl", md: "xs", lg: "xx-small" }}
                   textTransform="uppercase"
                   letterSpacing={1}
                   _hover={{ color: "black500" }}
@@ -197,7 +197,7 @@ const Footer = () => {
                 </Link>
                 <Link
                   mute
-                  fontSize={{ base: "sm", md: "xs", lg: "xx-small" }}
+                  fontSize={{ base:"1xl", md: "xs", lg: "xx-small" }}
                   textTransform="uppercase"
                   letterSpacing={1}
                   _hover={{ color: "black500" }}
@@ -206,7 +206,7 @@ const Footer = () => {
                 </Link>
                 <Link
                   mute
-                  fontSize={{ base: "sm", md: "xs", lg: "xx-small" }}
+                  fontSize={{ base:"1xl", md: "xs", lg: "xx-small" }}
                   textTransform="uppercase"
                   letterSpacing={1}
                   _hover={{ color: "black500" }}
@@ -280,7 +280,7 @@ const CardImage = ({ wrapperProps, w, h, src, ...rest }) => (
   </Box>
 );
 
-const TitleText = ({ text, size = "2xl", ...rest }) => (
+const TitleText = ({ text, size ="1xl", ...rest }) => (
   <Heading
     fontSize={size}
     fontFamily="Cambria, Cochin, Georgia, Times, 'Times New Roman', serif"
@@ -293,7 +293,7 @@ const TitleText = ({ text, size = "2xl", ...rest }) => (
 const DateText = ({
   date = Date.now(),
   text,
-  size = { base: "sm", md: "xs" },
+  size = { base:"1xl", md: "xs" },
   ...rest
 }) => (
   <Text fontStyle="italic" fontSize={size} {...rest}>
