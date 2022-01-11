@@ -1,20 +1,32 @@
-import Head from 'next/head'
-import Layout, { siteTitle } from '../core/views/components/layout'
+import {
+  Box,
+  Button,
+  Flex,
+  Grid,
+  GridItem,
+  Heading,
+  HStack,
+  Icon,
+  Input,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
+import { Image } from "components/shared/blocks/Image";
+import Layout, { Container } from "components/shared/blocks/Layout";
+import { Link } from "components/shared/blocks/Link";
+import dateFormat from "dateformat";
+import { TiMediaPlay, TiSocialFacebook, TiSocialTwitter } from "react-icons/ti";
+import { GoThreeBars } from "react-icons/go";
 
-
-export default function Home() {
+const HomePage = () => {
   return (
-    <Layout home>
-      <Head>
-        <title>{siteTitle}</title>
-      </Head>
-      <section className="">
-        <p>[Your Self Introduction]</p>
-        <p>
-          (This is a sample website - you’ll be building a site like this on{' '}
-          <a href="https://nextjs.org/learn">our Next.js tutorial</a>.)
-        </p>
-      </section>
+    <Layout>
+
+
     </Layout>
-  )
-}
+
+     
+  );
+};
+
+export default HomePage;
