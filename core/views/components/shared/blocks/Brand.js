@@ -6,11 +6,11 @@ const Brand = ({ size = "2xl", ...rest }) => {
     <Link mute>
       <Text
         fontWeight={{ base: 300, md: 200 }}
-        fontFamily="Cambria, Cochin, Georgia, Times, 'Times New Roman', serif"
+        fontFamily=" Times, 'Times New Roman', serif"
         fontSize={size}
         {...rest}
       >
-        Company
+        ACE-TRACE
       </Text>
     </Link>
   );
