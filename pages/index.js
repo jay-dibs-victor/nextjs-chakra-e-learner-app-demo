@@ -1,3 +1,4 @@
+import React , { useState} from "react"
 import {
   Box,
   Button,
@@ -10,8 +11,18 @@ import {
   Input,
   Stack,
   Text,
-  Center
+  Center,
+
 } from "@chakra-ui/react";
+
+// import {
+//   ThemeProvider,
+//   CSSReset,
+//   Box,
+//   Heading,
+//   PseudoBox
+// } from "@chakra-ui/core";
+
 import { Image } from "components/shared/blocks/Image";
 import Layout, { Container } from "components/shared/blocks/Layout";
 import { Link } from "components/shared/blocks/Link";
@@ -38,7 +49,21 @@ export const Section = ({ children, ...rest }) => {
   );
 };
 
-const CustomerReview = () => (
+const CustomerReview = ({contentText}) => {
+  const [isVisible, setIsVisible] = useState(false);
+
+  function over(e) {
+    setIsVisible(true);
+  }
+  function out(e) {
+    setIsVisible(false);
+  }
+  
+  return (
+
+ 
+
+
   <Box
     flexShrink="0"
     shadow="md"
@@ -48,13 +73,23 @@ const CustomerReview = () => (
     bg="brand.white"
     mx={4}
     w={{ base: "300px", md: "350px" }}
+    boxShadow="-50px 50px 25px rgba(0, 0, 0, .03)"
+
+    
+  color="blue.700"
+  fontWeight="semibold"
+  py={2}
+  px={4}
+  borderWidth="1px"
+  borderColor="blue.500"
+  rounded="md"
+  _hover={{ bg: "blue.500", color: " white" }}
+  _focus={{ boxShadow: "outline" }}
+  onMouseOver={over}
+  onMouseOut={out}
   >
-    <Text lineHeight="25px">
-      I got my kitchen appliances from sweat Dreams and i love it. The size
-      and length of the electronics are perfectly to what i have been longing
-      for sometime. this is the third time i’m using it, i’ve never experience
-      any form of electrical hazard. If you need a customer review, let me
-      know. I’ll be happy to provide it. Thank you for this good product.
+    <Text lineHeight="25px" >
+      {contentText}
     </Text>
 
     <Flex
@@ -81,7 +116,10 @@ const CustomerReview = () => (
       />
     </Flex>
   </Box>
-);
+
+
+)
+  }
 
 // A function that renders the content for `Kitchen` tab
 const renderTabKitchenAppliancesContent = (
@@ -576,10 +614,10 @@ training programmes.
             mr={{ md: 10, lg: 16 }}
           >
             <Image
-              src="/images/lg/customer-satisfaction.jpeg"
+              src="/img/proworker.jpg"
               w={{ base: "280px", md: "325px", lg: "425px", xl: "525px" }}
-              h={{ base: "335px", md: "400px", lg: "500px", xl: "600px" }}
-              // boxShadow="50px 50px 25px rgba(0, 0, 0, .03)"
+              h={{ base: "305px", md: "350px", lg: "350px", xl: "300px" }}
+              boxShadow="-50px 50px 25px rgba(0, 0, 0, .03)"
             />
           </Flex>
 
@@ -590,15 +628,15 @@ training programmes.
 
             <Box color="brand.black1" type="lg-regular">
               <Text mb={6} type="lg-regular">
-                With over 3 years trading experience, we provide{" "}
+                With over bla bla bla
                 <Text as="span" type="lg-bold">
                   100%
                 </Text>{" "}
-                quality working products, certified by over{" "}
+                With over bla bla bla
                 <Text as="span" type="lg-bold">
                   1k+
                 </Text>{" "}
-                customers. Our word is indeed our bond come experience yourself.
+                With over bla bla bla
               </Text>
             </Box>
           </Box>
@@ -606,75 +644,133 @@ training programmes.
       </Section>
 
       {/* Customer stories */}
-      <Section  px={6} py={20} maxW={breakpoints.xxl}>
-        <Box as="header" maxW={breakpoints.xl} mx="auto">
+      <Section  bg="blue.900" px={6} py={20} maxW={breakpoints.xxl}>
+        <Box as="header" maxW={breakpoints.xl} mx="auto" color='white'>
           <Heading type="h3" textAlign="center" color="brand.secondary">
-            What our customers <br />are saying
+          ABOUT ACE-TRACE<br />
           </Heading>
 
           <Text
             my={16}
             type="md-bold"
-            d={{ base: "block", md: "none" }}
+            d={{ base: "block"}}
             type="md-regular"
           >
-            ACE-TRACE is not But I must explain to you how all this mistaken
-            idea of denouncing pleasure and praising.
+            ACE-TRACE is a technology company that develops AI-powered SaaS (Software-as-a-service) 
+            solutions for learning and workforce development. Governments, social impact organizations,
+             businesses, and individuals leverage our 
+            cutting-edge digital platforms to run their learning and workforce management programs.
           </Text>
         </Box>
+       <hr/><br/>
 
-        <Box as="main">
-          <Flex overflowX="scroll" justifyContent="center" alignItems="center" px={{ md: 2 }} pb={5}>
-            <CustomerReview />
-            <CustomerReview />
-            <CustomerReview />
+        <Heading color='white' type="h3" textAlign="center" >
+        PEOPLE, TECHNOLOGY, INNOVATION.<br />
+          </Heading>
+
+        <Box as="main" >
+          <Flex justifyContent="center" alignItems="center" px={{ md: 2 }} pb={5} color='white'>
+            <CustomerReview 
+             contentText={"Leverage our cutting-edge technology solutions to develop and optimize your learning and workforce managemenet processes quickly."}
+            contentTitle={"DIGITAL REVOLUTION"}
+            />
+            <CustomerReview 
+                contentText={"Leverage our cutting-edge technology solutions to develop and optimize your learning and workforce managemenet processes quickly."}
+                contentTitle={"DIGITAL REVOLUTION"}
+            
+            />
+            <CustomerReview
+                 contentText={"Leverage our cutting-edge technology solutions to develop and optimize your learning and workforce managemenet processes quickly."}
+                 contentTitle={"DIGITAL REVOLUTION"}
+            />
           </Flex>
         </Box>
       </Section>
 
       {/* This Month's pick */}
-      <Section py={20} maxW={breakpoints.xxl} textAlign="center" bg="#f6f6f6">
+      <Section py={10} maxW={breakpoints.xxl} textAlign="center" h="300px" p="20px">
         <Box maxW={breakpoints.xl} mx="auto" px={6}>
           <Heading type="h3" color="brand.secondary">
-            COURSES AND PROGRAMS
+          WANT TECHNOLOGY TO WORK FOR YOU? WE CAN HELP 
           </Heading>
+          <Text>Some of the fastest and most scalable ways to solve the world's biggest problems are digital. We have built and continue to build platforms that allow forward-thinking 
+            organizations to improve efficiency, increase knowledge and do good.</Text>
 
-          <Flex flexDir="column" alignItems="center" justifyContent="center">
-            <Image
-              w={{ base: "315px", md: "650px", lg: "750px", xl: "1024px" }}
-              h={{ base: "180px", md: "300px", lg: "380px", xl: "500px" }}
-              src="/images/lg/This Month's pick.png"
-            />
-
-            <Box mt={4}>
-              <Link mute href="/store">
-                <Button variant="primary">Explore our Products</Button>
-              </Link>
-            </Box>
-          </Flex>
+          <Box></Box>
+          <Box></Box>
+          <Box></Box>
+          <Box></Box>
         </Box>
       </Section>
 
-      {/* Special products */}
-      {/* <Section
-        bg="brand.secondaryLight"
-        py={20}
-        maxW={breakpoints.xxl}
-        textAlign="center"
-      >
-        <Box maxW={breakpoints.xl} mx="auto" px={6}>
-          <Heading type="h3" color="brand.secondary">
-            Special Products
-          </Heading>
 
-          <Tab
-            activeHeader="Kitchen Appliances"
-            secondaryActiveBg
-            data={specialProductsTabData}
-            bg="brand.secondaryLight"
-          />
-        </Box>
-      </Section> */}
+
+      <Section
+        maxW={breakpoints.xxl}
+        bg="brand.primaryLight"
+     
+      
+      >
+        <Flex justifyContent="center">
+          <Flex alignItems=""  bg="#f4f4f4">
+            <Box p="40px"  pb={{ lg: "45px" }} color="purple">
+              <Box >
+                <Heading type="h1" as="h1" color="purple">
+                Growth Programmes.
+                  
+                </Heading>
+
+                <Text type="lg-regular" mb={{ base: 10, md: "30px" }}>
+                For entities looking to design effective programs and activities 
+                (which can be delivered on-site or remotely) to empower entrepreneurs 
+                with relevant business skills,
+                 networking opportunities and tailored support on their entrepreneurial journey.
+                </Text>
+              </Box>
+              <Link mute href="/signup">
+                <Button variant="primary">Learn more</Button>
+              </Link>
+
+              {/* <Box mt="30px">
+                <Heading type="h5" mb={3}>
+                  popular brands
+                </Heading>
+
+                <Box bg="rgba(0, 0, 0, 0.1)" minH="70px"></Box>
+              </Box> */}
+            </Box>
+          </Flex>
+
+          <Flex
+            bg="#171923"
+            color="#fff"
+            h="500px"
+          >
+            
+           
+
+            <Box p="40px">
+                <Heading type="h1" as="h1" color="brand.secondary">
+                Speak with a representative .
+                  
+                </Heading>
+         
+
+            <Text>
+           
+            If you'd like to talk about your needs and explore how best we 
+            can be of help to you, please click the link below to schedule a meeting with us.
+             We have solutions for government agencies, businesses, non-profits, students, and job seekers -
+             and we will be more than happy to chat with you.
+            </Text>
+
+         
+          </Box>
+          </Flex>
+        </Flex>
+      </Section>
+
+      
     
               {/* Last Section */}
       <Section>
