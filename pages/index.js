@@ -475,10 +475,10 @@ and have them subsequently integrated into decent and dignified jobs.
             //
           >
             <Image
-              src="/images/lg/landing-banner-image-2.jpeg"
+              src="/img/talentsource.jpg"
               w={{ base: "280px", md: "325px", lg: "425px", xl: "525px" }}
-              h={{ base: "335px", md: "400px", lg: "500px", xl: "600px" }}
-              // boxShadow="50px 50px 25px rgba(0, 0, 0, .03)"
+              h={{ base: "305px", md: "350px", lg: "350px", xl: "300px" }}
+              boxShadow="50px 50px 25px rgba(0, 0, 0, .03)"
             />
           </Flex>
 
@@ -499,7 +499,7 @@ Talent Sourcing & work opportunities.
         </Flex>
       </Section>
 
-      {/* Online and offline store */}
+
       <Section  py={20} maxW={breakpoints.xxl}>
         <Flex
           flexDir={{ base: "column", md: "row" }}
@@ -514,24 +514,24 @@ Talent Sourcing & work opportunities.
             ml={{ md: 10, lg: 16 }}
           >
             <Image
-              src="/images/lg/silver-dream-buy-online-offline.jpg"
+              src="/img/skillacquisition.jpg"
               w={{ base: "280px", md: "325px", lg: "425px", xl: "525px" }}
-              h={{ base: "335px", md: "400px", lg: "500px", xl: "600px" }}
-              // boxShadow="-50px 50px 25px rgba(0, 0, 0, .03)"
+              h={{ base: "305px", md: "350px", lg: "350px", xl: "300px" }}
+              boxShadow="-50px 50px 25px rgba(0, 0, 0, .03)"
             />
           </Flex>
 
           <Box textAlign="left" maxW="600px">
             <Heading type="h3" color="brand.secondary" mb={10} maxW="450px">
             Adapt or create new
-training programs.
+training programmes.
             </Heading>
 
             <Box color="brand.black1">
               <Text type="lg-regular" mb={6}>
-              Leverage our pre-built project-based online programs that
+              Leverage our pre-built project-based online programmes that
                cover top skills in technology, business, digital marketing as 
-               well as life skills and soft skills, or upload your own training programs.
+               well as life skills and soft skills, or upload your own training programmes.
 
 
               </Text>
@@ -540,7 +540,7 @@ training programs.
             <Box pt={8}>
               <Link mute href="/store">
                 <Button variant="primary" mb={8}>
-                  Explore our Products
+                  Explore our Programmes
                 </Button>
               </Link>
 
@@ -552,7 +552,7 @@ training programs.
                 color="brand.primary"
               >
                 <Text mb={0} mr={2}>
-                  Locate a store near you
+                  Find a course
                 </Text>
 
              
@@ -585,7 +585,7 @@ training programs.
 
           <Box textAlign={{ base: "left", md: "right" }} maxW="600px">
             <Heading type="h3" color="brand.secondary" mb={10}>
-              Customer Satisfaction and Guarantee.
+            Guarantee Customer Satisfaction .
             </Heading>
 
             <Box color="brand.black1" type="lg-regular">
