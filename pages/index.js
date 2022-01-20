@@ -10,6 +10,7 @@ import {
   Input,
   Stack,
   Text,
+  Center
 } from "@chakra-ui/react";
 import { Image } from "components/shared/blocks/Image";
 import Layout, { Container } from "components/shared/blocks/Layout";
@@ -202,42 +203,14 @@ const specialProductsTabData = [
 const HomePage = () => {
   return (
     <Layout>
-          <Container>
+        
 
 
      
 
      
 
-        {/* long text one col  
-      <Section mb={20} px={6}>
-        <Box>
-          <Heading type="h6" mb={3}>
-            Example Heading
-          </Heading>
-
-          <Box bg="brand.white" minH="100px">
-          <Text>
-            Example text free flowing lorem ipsum gypsum mia duis samplus sasa dus san kios dorumuis 
-            vizz asap duikous aboamand dseakead fiankasd   Example text free flowing lorem ipsum gypsum mia duis samplus sasa dus san kios dorumuis 
-            vizz asap duikous aboamand dseakead fiankasd  free flowing lorem ipsum gypsum mia duis
-            </Text>
-
-            <Text>
-            Example text free flowing lorem ipsum gypsum mia duis samplus sasa dus san kios dorumuis 
-            vizz asap duikous aboamand dseakead fiankasd   Example text free flowing lorem ipsum gypsum mia duis samplus sasa dus san kios dorumuis 
-            vizz asap duikous aboamand dseakead fiankasd  free flowing lorem ipsum gypsum mia duis
-            </Text>
-
-            <Text>
-            Example text free flowing lorem ipsum gypsum mia duis samplus sasa dus san kios dorumuis 
-            vizz asap duikous aboamand dseakead fiankasd   Example text free flowing lorem ipsum gypsum mia duis samplus sasa dus san kios dorumuis 
-            vizz asap duikous aboamand dseakead fiankasd  free flowing lorem ipsum gypsum mia duis
-            </Text>
-
-          </Box>
-        </Box>
-      </Section>*/}
+       
 
 
       
@@ -283,13 +256,13 @@ const HomePage = () => {
             alignSelf="center"
             d={{ base: "none", lg: "flex" }}
             w={{ lg: "550px", xl: "600px" }}
-            h={{ lg: "550px", xl: "600px" }}
+            h={{ lg: "350px", xl: "400px" }}
             pos="relative"
           >
             <Image
               pos="absolute"
               w="100%"
-              h="100%"
+              h="300px"
               src="/img/herolanding.jpg"
              boxShadow="-50px 50px 25px rgba(0, 0, 0, .08)"
             />
@@ -297,68 +270,198 @@ const HomePage = () => {
         </Flex>
       </Section>
 
-      {/* Why Patronize us? */}
-      <Section px={6} pt={20} pb={{ base: 0, lg: 20 }}>
-        <Flex maxW={{ lg: "1150px", xl: "1200px" }} mx="auto">
-          <Heading type="h2" color="brand.secondary" maxW="400px">
-            Why Patronize us? Learn More
-          </Heading>
-        </Flex>
-      </Section>
 
-      {/* Buy Now, Pay Later from any Mobile */}
-      <Section py={20} maxW={breakpoints.xxl}>
-        <Flex
-          flexDir={{ base: "column", md: "row" }}
-          justifyContent="center"
-          px={6}
-        >
-          <Flex
-            justifyContent={{ base: "center", md: "flex-start" }}
-            flexShrink="0"
-            mb={{ base: 5, md: 0 }}
-            order={{ base: 0, md: 1 }}
-            ml={{ md: 10, lg: 16 }}
-            rounded="md"
-          >
-            <Image
-              src="/images/lg/silver-dream-easy-payment-1.jpg"
-              w={{ base: "280px", md: "325px", lg: "425px", xl: "525px" }}
-              h={{ base: "335px", md: "400px", lg: "500px", xl: "600px" }}
-              // boxShadow="-50px 50px 25px rgba(0, 0, 0, .03)"
-            />
+
+
+
+
+
+
+      <Section
+        maxW={breakpoints.xxl}
+        bg="brand.primaryLight"
+     
+      
+      >
+        <Flex justifyContent="center">
+          <Flex alignItems=""  bg="#691b37">
+            <Box p="40px"  pb={{ lg: "45px" }} color="#fff">
+              <Box >
+                <Heading type="h1" as="h1" color="#fff">
+                Growth Programmes.
+                  
+                </Heading>
+
+                <Text type="lg-regular" mb={{ base: 10, md: "30px" }}>
+                For entities looking to design effective programs and activities 
+                (which can be delivered on-site or remotely) to empower entrepreneurs 
+                with relevant business skills,
+                 networking opportunities and tailored support on their entrepreneurial journey.
+                </Text>
+              </Box>
+              <Link mute href="/signup">
+                <Button variant="primary">Learn more</Button>
+              </Link>
+
+              {/* <Box mt="30px">
+                <Heading type="h5" mb={3}>
+                  popular brands
+                </Heading>
+
+                <Box bg="rgba(0, 0, 0, 0.1)" minH="70px"></Box>
+              </Box> */}
+            </Box>
           </Flex>
 
-          <Box textAlign="left" maxW="600px">
-            <Heading type="h3" color="brand.secondary" mb={10} maxW="450px">
-              Order Now, Pay Later from any Mobile.
-            </Heading>
+          <Flex
+            bg="#000"
+            color="#fff"
+          >
+            
+           
 
-            <Box color="brand.black1">
-              <Text type="lg-regular" mb={6}>
-                Indemnify products you love against inflation. Pay as low as{" "}
-                <Text type="lg-bold" as="span">
-                 500
-                </Text>{" "}
-                instamentally upon initial deposit settlement using our ussd
-                code{" "}
-                <Text type="lg-bold" as="span">
-                  *000#
-                </Text>
-                , on any mobile phone. Pay initial amount with ease even when
-                product price increase.
-              </Text>
+            <Box p="40px">
+                <Heading type="h1" as="h1" color="brand.secondary">
+               Job Seekers and man power finders ( Employment Support)
+                  
+                </Heading>
+         
 
-              <Link href="/terms" color="brand.primary">
-                Terms and conditions apply
-              </Link>
-            </Box>
+            <Text>
+           
+For organizations who are invested in human capital development, and are
+ looking to establish highly effective career development programs designed to 
+ empower people with in-demand skills 
+and have them subsequently integrated into decent and dignified jobs.
+            </Text>
+
+         
           </Box>
+          </Flex>
         </Flex>
       </Section>
 
+
+       {/* long text one col  */}
+      <Section mb={20} px={6} bg="#58181f" color="#fff">
+        
+            
+       
+
+         
+      </Section>
+
+      {/* Why Patronize us? */}
+      <Section px={6} pt={20} pb={{ base: 0, lg: 20 }}>
+        <Flex justifyContent="center" maxW={{ lg: "1150px", xl: "1200px" }} mx="auto">
+          <Heading type="h2" color="brand.secondary" maxW="900px">
+          ONE CLICK AWAY TO FINDING YOUR DREAM  JOB OR CREATE ONE THROUGH ENTREPRENEURSHIP AND SKILLS ACQUISITION.
+      
+          </Heading>
+
+          
+        </Flex>
+        <Center>
+              <Link mute href="/signup">
+                <Button variant="primary">GET STARTED</Button>
+              </Link>
+        </Center>
+        
+      </Section>
+
+
+      <Section bg="#f1f1f1" px={6} pt={20} pb={{ base: 0, lg: 20 }}>
+        <Flex justifyContent="center" maxW={{ lg: "1150px", xl: "1200px" }} mx="auto">
+          <Heading type="h2" color="brand.secondary" maxW="900px">
+          Learn at your own pace, hire a reputable vetted  responsive employer and lots more...
+
+          </Heading>
+
+          
+        </Flex><br/>
+
+        <Center>
+        <Text>Looking to build entrepreneurship programs that ensure a conscious approach 
+            is applied towards developing ideas into startups and startups into profitable businesses? 
+            Leverage ImpactXplorer to build intelligent processes that assess,
+             train and support entrepreneurs on their path towards building scalable businesses.</Text>
+        </Center>
+      </Section>
+
+
+
+
+
+
+
+
+
+
+
+
+      <Section
+        maxW={breakpoints.xxl}
+        bg="brand.primaryLight"
+        px={6}
+        py={{ base: 10, lg: 20 }}
+      >
+        <Flex justifyContent="center">
+          <Flex alignItems="" mr={{ lg: 16 }}>
+            <Box pt={6} pb={{ lg: "45px" }}>
+              <Box maxW="500px">
+                <Heading type="h1" as="h1" color="brand.secondary">
+                Hiring the best candidate for the job just got easier.
+                  
+                </Heading>
+
+                <Text type="lg-regular" mb={{ base: 10, md: "30px" }}>
+                Powered by AI and expert knowledge from industrial psychologists,
+                 our assessments tools evaluate for personality traits you care about to 
+                ensure that your candidates or beneficiaries are well suited for your program.
+
+
+                </Text>
+              </Box>
+              <Link mute href="/signup">
+                <Button variant="primary">Create an Account</Button>
+              </Link>
+
+              {/* <Box mt="30px">
+                <Heading type="h5" mb={3}>
+                  popular brands
+                </Heading>
+
+                <Box bg="rgba(0, 0, 0, 0.1)" minH="70px"></Box>
+              </Box> */}
+            </Box>
+          </Flex>
+
+          <Flex
+            flexShrink={0}
+            alignSelf="center"
+            d={{ base: "none", lg: "flex" }}
+            w={{ lg: "550px", xl: "600px" }}
+            h={{ lg: "350px", xl: "400px" }}
+            pos="relative"
+          >
+            <Image
+              pos="absolute"
+              w="100%"
+              h="300px"
+              src="/img/matchingemployees.jpg"
+             boxShadow="-50px 50px 25px rgba(0, 0, 0, .08)"
+            />
+          </Flex>
+        </Flex>
+      </Section>
+
+
+
+     
+    
+
       {/* Earn as a marketer, Earn as a customer */}
-      <Section py={20} maxW={breakpoints.xxl}>
+      <Section py={20} maxW={breakpoints.xxl} bg="#FFB973">
         <Flex
           flexDir={{ base: "column", md: "row" }}
           justifyContent="center"
@@ -381,30 +484,23 @@ const HomePage = () => {
 
           <Box textAlign={{ base: "left", md: "right" }} maxW="600px">
             <Heading type="h3" color="brand.secondary" mb={10}>
-              Earn as a marketer, Earn as a customer.
+              
+Talent Sourcing & work opportunities.
             </Heading>
 
             <Box color="brand.black1">
               <Text mb={6} type="lg-regular">
-                Register as a company marketer and earn a{" "}
-                <Text type="lg-bold" as="span">
-                  5%
-                </Text>{" "}
-                commission when the people you refer buy our products, using your referral code.
-                As a customer, you can also earn a{" "}
-                <Text type="lg-bold" as="span">
-                  3%
-                </Text>{" "}
-                commission when the people you refer to us make a purchase. Commission from referrals are payable into your
-                virtual wallet.
-              </Text>
+              Quickly find skilled talent for businesses in your entrepreneurship programs. 
+              Allow recruiters (who already use Slatecube for recruting)
+               to automatically recruit talents who meet their requirements, from your program.
+               </Text>
             </Box>
           </Box>
         </Flex>
       </Section>
 
       {/* Online and offline store */}
-      <Section py={20} maxW={breakpoints.xxl}>
+      <Section  py={20} maxW={breakpoints.xxl}>
         <Flex
           flexDir={{ base: "column", md: "row" }}
           justifyContent="center"
@@ -427,14 +523,17 @@ const HomePage = () => {
 
           <Box textAlign="left" maxW="600px">
             <Heading type="h3" color="brand.secondary" mb={10} maxW="450px">
-              Online and Offline Stores for your Convenience.
+            Adapt or create new
+training programs.
             </Heading>
 
             <Box color="brand.black1">
               <Text type="lg-regular" mb={6}>
-                With an average daily offline purchase power of 5640, we remain
-                your trusted companion for quality and affordable products. We
-                bring quality and affordability closer to your home(s).
+              Leverage our pre-built project-based online programs that
+               cover top skills in technology, business, digital marketing as 
+               well as life skills and soft skills, or upload your own training programs.
+
+
               </Text>
             </Box>
 
@@ -464,7 +563,7 @@ const HomePage = () => {
       </Section>
 
       {/* Customer Satisfaction and Guarantee */}
-      <Section py={20} maxW={breakpoints.xxl}>
+      <Section bg="#f1f1f1" py={20} maxW={breakpoints.xxl}>
         <Flex
           flexDir={{ base: "column", md: "row" }}
           justifyContent="center"
@@ -507,7 +606,7 @@ const HomePage = () => {
       </Section>
 
       {/* Customer stories */}
-      <Section px={6} py={20} maxW={breakpoints.xxl}>
+      <Section  px={6} py={20} maxW={breakpoints.xxl}>
         <Box as="header" maxW={breakpoints.xl} mx="auto">
           <Heading type="h3" textAlign="center" color="brand.secondary">
             What our customers <br />are saying
@@ -519,7 +618,7 @@ const HomePage = () => {
             d={{ base: "block", md: "none" }}
             type="md-regular"
           >
-            Sliver Dreams is not But I must explain to you how all this mistaken
+            ACE-TRACE is not But I must explain to you how all this mistaken
             idea of denouncing pleasure and praising.
           </Text>
         </Box>
@@ -534,10 +633,10 @@ const HomePage = () => {
       </Section>
 
       {/* This Month's pick */}
-      <Section py={20} maxW={breakpoints.xxl} textAlign="center">
+      <Section py={20} maxW={breakpoints.xxl} textAlign="center" bg="#f6f6f6">
         <Box maxW={breakpoints.xl} mx="auto" px={6}>
           <Heading type="h3" color="brand.secondary">
-            This Month's Pick
+            COURSES AND PROGRAMS
           </Heading>
 
           <Flex flexDir="column" alignItems="center" justifyContent="center">
@@ -618,7 +717,7 @@ const HomePage = () => {
         </Flex>
       </Section>
 
-      </Container>
+     
          
     </Layout>
 
