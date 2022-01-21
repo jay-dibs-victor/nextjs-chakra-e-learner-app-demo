@@ -8,8 +8,14 @@ import theme from "../theme";
 import CategoriesContext from "./CategoriesContext";
 import useCategories from "hooks/useCategories";
 
+
+import AsideContext from "../../context/AsideContext";
+import useAside from "hooks/useAside";
+
 function Providers({ children, store: storeProps }) {
   const categories = useCategories();
+
+  const aside = useAside();
 
   return (
     <ChakraProvider theme={theme}>
@@ -28,6 +34,18 @@ function Providers({ children, store: storeProps }) {
           {children}
         </CategoriesContext.Provider>
       </Provider>
+
+
+
+
+      
+      {/* admin layout <Provider store={storeProps || store}> */}
+      <AsideContext.Provider value={aside.store}>
+        {children}
+      </AsideContext.Provider>
+      {/* </Provider> */}
+
+
     </ChakraProvider>
   );
 }

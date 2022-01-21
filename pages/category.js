@@ -30,14 +30,14 @@ import {
   ProductBoxedCard,
   Modal,
   Pagination,
-} from "components/lib";
+} from "components/shared/lib";
 import {
   headerHeight,
   Layout,
   Loader,
   Section,
   SomethingWentWrong,
-} from "components/pages";
+} from "components/components/pages";
 import useCart from "hooks/useCart";
 import useCategories from "hooks/useCategories";
 import usePagination from "hooks/usePagination";

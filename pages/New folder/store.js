@@ -1,6 +1,8 @@
+
+
 import { Box, Flex } from "@chakra-ui/layout";
-import { Layout, Section } from "components/pages";
-import { Text, Heading, ProductCards } from "components/lib";
+import { Layout, Section } from "components/components/pages";
+import { Text, Heading, ProductCards } from "components/shared/lib";
 import breakpoints from "theme/breakpoints";
 import { Swiper, SwiperSlide } from "swiper/react";
 // import Swiper core and required modules

@@ -1,4 +1,4 @@
-import { Layout } from "components/pages";
+import { Layout } from "components/components/pages";
 import buildSEO from "utils/buildSEO";
 
 const pageSEO = buildSEO(
