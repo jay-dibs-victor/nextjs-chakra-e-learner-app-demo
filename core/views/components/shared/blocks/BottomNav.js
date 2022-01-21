@@ -37,50 +37,27 @@ import {
 
   const BottomNavLinks = ({ brand, onClose, ...rest }) => {
     const data = [
-        { text: "Landing", href: "#" },
+        { text: "Home", href: "/" },
         {
           text: "About Us",
-          href: "#",
-          content: {
-            list: [
-              {
-                text: "Who we are",
-                handleFetchResource: getNews,
-              },
-              {
-                text: "What we do",
-                handleFetchResource: getNews,
-              },
-              {
-                text: "Our Vision",
-                handleFetchResource: getNews,
-              },
-              {
-                text: "Our Mission",
-                handleFetchResource: getNews,
-              },
-              {
-                text: "Goals",
-                handleFetchResource: getNews,
-              },
-            ],
-          },
+          href: "/about",
+          
         },
         {
-          text: "Business",
-          href: "#",
-          content: {
-            handleFetchResource: getNews,
-          },
+          text: "Work Force",
+          href: "/workforce",
+        
         },
-        { text: "Projects", href: "#" },
-        { text: "Career Oportunities", href: "#" },
-        { text: "Login", href: "#" },
-        { text: "Register", href: "#" },
+        { text: "Elearning", href: "/elearning-accelerator" },
+        
+       
         { text: "Profile", href: "#" },
         { text: "Dashboard", href: "#" },
         { text: "Tables", href: "#" },
         { text: "More Pages", href: "#" },
+        { text: "Career Oportunities", href: "#" },
+        { text: "Login", href: "#" },
+        { text: "Register", href: "#" },
       ];
     
       const [currentContent, setCurrentContent] = useState(null);

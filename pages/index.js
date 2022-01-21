@@ -279,13 +279,7 @@ const HomePage = () => {
                 <Button variant="primary">Create an Account</Button>
               </Link>
 
-              {/* <Box mt="30px">
-                <Heading type="h5" mb={3}>
-                  popular brands
-                </Heading>
-
-                <Box bg="rgba(0, 0, 0, 0.1)" minH="70px"></Box>
-              </Box> */}
+           
             </Box>
           </Flex>
 
@@ -341,13 +335,6 @@ const HomePage = () => {
                 <Button variant="primary">Learn more</Button>
               </Link>
 
-              {/* <Box mt="30px">
-                <Heading type="h5" mb={3}>
-                  popular brands
-                </Heading>
-
-                <Box bg="rgba(0, 0, 0, 0.1)" minH="70px"></Box>
-              </Box> */}
             </Box>
           </Flex>
 
@@ -464,13 +451,7 @@ and have them subsequently integrated into decent and dignified jobs.
                 <Button variant="primary">Create an Account</Button>
               </Link>
 
-              {/* <Box mt="30px">
-                <Heading type="h5" mb={3}>
-                  popular brands
-                </Heading>
-
-                <Box bg="rgba(0, 0, 0, 0.1)" minH="70px"></Box>
-              </Box> */}
+             
             </Box>
           </Flex>
 
@@ -731,13 +712,7 @@ training programmes.
                 <Button variant="primary">Learn more</Button>
               </Link>
 
-              {/* <Box mt="30px">
-                <Heading type="h5" mb={3}>
-                  popular brands
-                </Heading>
-
-                <Box bg="rgba(0, 0, 0, 0.1)" minH="70px"></Box>
-              </Box> */}
+       
             </Box>
           </Flex>
 

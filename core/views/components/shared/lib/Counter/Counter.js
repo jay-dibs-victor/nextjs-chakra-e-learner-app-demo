@@ -1,6 +1,8 @@
 import { Flex } from "@chakra-ui/layout";
-import { CartIcon } from "components/pages";
-import { Button, IconButton, Link, Text } from "components/lib";
+
+
+import { CartIcon } from "components/components/pages";
+import { Button, IconButton, Link, Text } from "components/shared/lib";
 import useAuth from "hooks/useAuth";
 import { BsPlus, BsDash } from "react-icons/bs";
 

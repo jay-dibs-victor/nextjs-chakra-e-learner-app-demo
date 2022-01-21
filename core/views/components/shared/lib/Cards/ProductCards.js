@@ -4,8 +4,8 @@ import { Skeleton } from "@chakra-ui/skeleton";
 // import { Slider } from "react-rapid-carousel";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { AiOutlineRight } from "react-icons/ai";
-import { Heading, Button, ProductBoxedCard, Link } from "components/lib";
-import { Section, SomethingWentWrong } from "components/pages";
+import { Heading, Button, ProductBoxedCard, Link } from "components/shared/lib/";
+import { Section, SomethingWentWrong } from "components/components/pages";
 import http from "utils/http";
 import useCart from "hooks/useCart";
 

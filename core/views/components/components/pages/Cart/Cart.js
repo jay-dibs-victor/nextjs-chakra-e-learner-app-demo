@@ -1,4 +1,8 @@
-import { Button, Heading, Icon, Link } from "components/lib";
+
+
+
+
+import { Button, Heading, Icon, Link } from "components/components/pages/";
 import { Section } from "../Section/Section";
 import { GiShoppingCart } from "react-icons/gi";
 import { AiOutlineLeft } from "react-icons/ai";

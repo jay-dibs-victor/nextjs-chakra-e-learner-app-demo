@@ -1,6 +1,6 @@
 import { Box, Flex } from "@chakra-ui/layout";
 // import { Slider } from "react-rapid-carousel";
-import { Heading, Ratings, Text, Image, BuyItem, Link } from "components/lib";
+import { Heading, Ratings, Text, Image, BuyItem, Link } from "components/shared/lib/";
 import formatPrice from "utils/formatPrice";
 import truncate from "utils/truncate";
 

@@ -5,7 +5,7 @@ import {
   Flex,
   IconButton as IconButtonUI,
 } from "@chakra-ui/react";
-import { Icon, Text, Tooltip } from "components/lib";
+import { Icon, Text, Tooltip } from "components/shared/lib/";
 
 const getVariantStyles = (variant) => {
   let variantStyles;

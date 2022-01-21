@@ -1,6 +1,6 @@
 import { Flex } from "@chakra-ui/layout";
 import { Spinner } from "@chakra-ui/spinner";
-import { Button, Icon, Text } from "components/lib";
+import { Button, Icon, Text } from "components/components/pages/";
 import { MdError } from "react-icons/md";
 
 const Wrapper = ({ icon, text, children, ...rest }) => (

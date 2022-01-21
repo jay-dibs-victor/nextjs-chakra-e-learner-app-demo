@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { Box, Flex } from "@chakra-ui/layout";
 import slugify from "slugify";
 import { useState } from "react";
-import { headerHeight } from "components/pages";
+import { headerHeight } from "components/components/pages";
 import { Accordion } from "../Accordion/Accordion";
 
 export const Tab = ({

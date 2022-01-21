@@ -1,5 +1,8 @@
 import { Flex } from "@chakra-ui/layout";
-import { Button, Link } from "components/lib";
+
+
+
+import { Button, Link } from "components/components/pages/";
 import breakpoints from "theme/breakpoints";
 import { Section } from "../Section/Section";
 

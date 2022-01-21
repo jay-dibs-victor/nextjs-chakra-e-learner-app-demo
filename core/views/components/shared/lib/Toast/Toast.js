@@ -1,5 +1,5 @@
 import { Box, Flex } from "@chakra-ui/layout";
-import { Icon, Text } from "components/lib";
+import { Icon, Text } from "components/shared/lib";
 import { AiFillCheckCircle } from "react-icons/ai";
 import { BiErrorAlt, BiErrorCircle } from "react-icons/bi";
 

@@ -5,8 +5,8 @@ import {
   SomethingWentWrong,
   SearchBar,
   headerHeight,
-} from "components/pages";
-import { Button } from "components/lib";
+} from "components/components/pages";
+import { Button } from "components/shared/lib";
 import TableBody from "./TableBody";
 import TableHead from "./TableHead";
 import { useCallback, useEffect, useState } from "react";

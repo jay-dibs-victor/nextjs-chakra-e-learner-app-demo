@@ -6,7 +6,7 @@ import {
   VscEyeClosed as HidePasswordIcon,
 } from "react-icons/vsc";
 import { RiFileCopyLine } from "react-icons/ri";
-import { Text, IconButton } from "components/lib";
+import { Text, IconButton } from "components/shared/lib/";
 import truncate from "utils/truncate";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 

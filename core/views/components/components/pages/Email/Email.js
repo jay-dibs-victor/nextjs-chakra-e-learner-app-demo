@@ -1,5 +1,8 @@
 import { Box } from "@chakra-ui/layout";
-import { Text } from "components/lib";
+
+
+
+import { Text } from "components/components/pages/";
 import { Loader, SomethingWentWrong } from "../Feedback/Feedback";
 
 export const EmailLoader = ({ h = "200px", ...rest }) => {

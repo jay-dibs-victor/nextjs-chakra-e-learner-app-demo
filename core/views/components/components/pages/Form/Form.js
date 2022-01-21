@@ -2,8 +2,8 @@ import PropTypes from "prop-types";
 import { useEffect } from "react";
 import { Box } from "@chakra-ui/layout";
 import { useToast } from "@chakra-ui/toast";
-import { Heading, TextField } from "components/lib";
-import { Section } from "components/pages";
+import { Heading, TextField } from "components/shared/lib";
+import { Section } from "components/components/pages";
 import useAuth from "hooks/useAuth";
 
 export const Form = ({
@@ -70,12 +70,13 @@ export const Form = ({
           </Heading>
         </Box>
 
-        <Box as="form" mt={8} {...formData.formProps}>
+        <Box as="form" mt={8} {...formData?.formProps}>
           {children ? (
-            children
+            <>{    children}</>
+        
           ) : (
             <>
-              {formData.fieldsProps.map((field) => (
+              {formData?.fieldsProps?.map((field) => (
                 <TextField
                   key={field.id}
                   onChange={formData.handleType}

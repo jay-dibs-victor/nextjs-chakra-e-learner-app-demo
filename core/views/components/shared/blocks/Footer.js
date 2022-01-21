@@ -25,7 +25,7 @@ import { Container } from "./Layout";
 
 const Footer = () => {
   return (
-    <Box pos="relative" bg="#fff" color="#000">
+    <Box pos="relative" bg="#fafafa" color="#000" h='400px'>
       <Image
         filter="brightness(20%)"
         pos="absolute"
