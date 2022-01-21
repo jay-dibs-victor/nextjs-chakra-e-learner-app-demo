@@ -1,4 +1,4 @@
-import React , { useState} from "react"
+import React , { useState, useEffect } from "react"
 import { useRouter } from "next/router";
 import { Flex } from "@chakra-ui/react";
 import { Link, Text } from "components/shared/lib";
@@ -52,7 +52,10 @@ const initialFieldsProps = [
 
 
 const SignInPage = () => {
-
+  useEffect(()=>{
+    //  let navLinks = document.getElementById("preference-links")
+    //  navLinks.style.display("none")
+  }, [])
 
   const doSubmit = async (fieldsObj) => {
     // request a login
@@ -70,7 +73,7 @@ const SignInPage = () => {
   };
 
   const styling = {
-    backgroundImage: `url('./img/loginbg.jpg')`,
+    backgroundImage: `url('./public/img/loginbg.jpg')`,
     width:"100%",
     height:"100%"
 }
