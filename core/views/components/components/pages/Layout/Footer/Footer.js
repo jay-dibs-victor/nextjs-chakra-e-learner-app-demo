@@ -27,8 +27,8 @@ import {
   Link,
   Text,
   TextField,
-} from "components/lib";
-import { Section } from "components/pages";
+} from "components/shared/lib";
+import { Section } from "components/components/pages";
 import breakpoints from "theme/breakpoints";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -383,11 +383,11 @@ const Footer = ({ emailSection, ...rest }) => {
           <Icon>
             <AiOutlineCopyrightCircle />
           </Icon>
-          2021 SilverDreams. All rights reserved.
+          2021 Pacemaker. All rights reserved.
         </Text>
 
         <Text my={{ base: 1, md: 0 }} type="sm-regular" mr={{ base: 7, md: 5 }}>
-          <Link href="#">silverdreams@gmail.com</Link>
+          <Link href="#">info@pacemaker.com</Link>
         </Text>
 
         <Text my={{ base: 1, md: 0 }} type="sm-regular" mr={{ base: 7, md: 5 }}>
@@ -395,7 +395,7 @@ const Footer = ({ emailSection, ...rest }) => {
         </Text>
 
         <Text my={{ base: 1, md: 0 }} type="sm-regular" mr={{ base: 7, md: 5 }}>
-          456 Hagenes Gardens Suite 808
+          456 Silicon Valley
         </Text>
 
         <Flex

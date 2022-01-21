@@ -6,6 +6,8 @@ import {
     Form, //Layout
  } from "../core/views/components/components/pages/Form/Form";
 
+
+ /*guest pages layout*/
 import Layout, { Container } from "components/shared/blocks/Layout";
 
 import http from "utils/http";
@@ -50,6 +52,8 @@ const initialFieldsProps = [
 
 
 const SignInPage = () => {
+
+
   const doSubmit = async (fieldsObj) => {
     // request a login
     const {
@@ -65,15 +69,26 @@ const SignInPage = () => {
     return "/signin/auth-check";
   };
 
+  const styling = {
+    backgroundImage: `url('./img/loginbg.jpg')`,
+    width:"100%",
+    height:"100%"
+}
+
   const form = useForm({ doSubmit, initialFieldsProps });
 
   return (
-    <Layout>
+    <Layout >
+      <div style={styling}
+      >
+      
+      </div>
      
      <Form
         formData={form}
         toast={{ description: "You've successfully Signed in." }}
         headerText="Sign in your personal account"
+        
         footerContent={
           <>
             <Flex
@@ -121,5 +136,7 @@ const SignInPage = () => {
     </Layout>
   );
 };
+
+
 
 export default SignInPage;

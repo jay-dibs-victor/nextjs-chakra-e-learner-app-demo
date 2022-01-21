@@ -45,27 +45,9 @@ export const Layout = ({
   // Display the online-status in a Toast, every time the `network.isOnline`(online-status) changes
   useEffect(() => {
     network.displayToast();
-  }, [network.isOnline]);
+  }, [network?.isOnline]);
 
-  // Fetch the cart from Server? when there no error and no data
-  useEffect(() => {
-    cart.fetchFreshCart();
-  }, [auth.isAuthenticated, cart.data, cart.error]);
-
-  // Fetch the cart from Server? on-page-load when there's an error
-  useEffect(() => {
-    cart.fetchCartOnPageLoad();
-  }, [auth.isAuthenticated, cart.error]);
-
-  // Fetch the cart from Server? when the local cart is not fresh
-  useEffect(() => {
-    cart.fetchCartOnStaleData();
-  }, [auth.isAuthenticated, cart.data]);
-
-  useEffect(() => {
-    cart.displayErrorToast();
-  }, [cart.error]);
-
+ 
   return (
     <>
       <Head>

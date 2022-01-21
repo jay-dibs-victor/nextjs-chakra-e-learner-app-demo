@@ -51,13 +51,13 @@ import {
         { text: "Elearning", href: "/elearning-accelerator" },
         
        
-        { text: "Profile", href: "#" },
-        { text: "Dashboard", href: "#" },
-        { text: "Tables", href: "#" },
+        { text: "Profile", href: "/users/profile" },
+        { text: "Dashboard", href: "/users" },
+        { text: "Courses/Programs", href: "/courses" },
         { text: "More Pages", href: "#" },
-        { text: "Career Oportunities", href: "#" },
-        { text: "Login", href: "#" },
-        { text: "Register", href: "#" },
+        { text: "Career Oportunities", href: "/careers" },
+        { text: "Login", href: "/signin" },
+        { text: "Register", href: "signup" },
       ];
     
       const [currentContent, setCurrentContent] = useState(null);

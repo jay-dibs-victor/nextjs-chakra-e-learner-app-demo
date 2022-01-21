@@ -1,7 +1,9 @@
 import { Box, Flex, Grid, GridItem } from "@chakra-ui/layout";
-import { Button, Heading, Icon, Link, Text } from "components/lib";
-import { Loader, SomethingWentWrong } from "components/pages/Feedback/Feedback";
-import { Section } from "components/pages/Section/Section";
+
+
+import { Button, Heading, Icon, Link, Text }  from "components/shared/lib";
+import { Loader, SomethingWentWrong } from "components/components/pages/Feedback/Feedback";
+import { Section } from "components/components/pages/Section/Section";
 import useCategories from "hooks/useCategories";
 import useHeaderModal from "hooks/useHeaderModal";
 import { BiCaretDown, BiChevronRight } from "react-icons/bi";
@@ -61,7 +63,7 @@ const CategoriesButton = ({ ...rest }) => {
               >
                 {
                   // TODO: Filter out the category? when we're in `.../<category>`. by the category.d
-                  categories.data.map((category) => (
+                  categories?.data?.map((category) => (
                     <Box
                       flex={{
                         base: "0 0 300px",

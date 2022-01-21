@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { BiSearchAlt } from "react-icons/bi";
-import { Icon, IconButton, TextField } from "components/lib";
-import { HeaderModal } from "components/pages";
+import { Icon, IconButton, TextField } from "components/shared/lib";
+import { HeaderModal } from "components/components/pages";
 import { useState } from "react";
 import useHeaderModal from "hooks/useHeaderModal";
 

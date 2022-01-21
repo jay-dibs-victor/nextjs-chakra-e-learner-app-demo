@@ -1,4 +1,8 @@
-import { Heading, Link, Text } from "components/lib";
+
+
+
+
+import { Heading, Link, Text } from "components/shared/lib";
 import useAuth from "hooks/useAuth";
 
 const Brand = ({ ...rest }) => {
@@ -10,7 +14,7 @@ const Brand = ({ ...rest }) => {
     <Heading type="h1" m={0} {...rest}>
       <Link href={href} mute>
         <Text type="md-bold" m={0}>
-          Silver Dream
+        PACE MAKER
         </Text>
       </Link>
     </Heading>

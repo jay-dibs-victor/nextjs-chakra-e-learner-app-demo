@@ -1,5 +1,5 @@
 import { Box, Flex } from "@chakra-ui/layout";
-import { Link, Text } from "components/lib";
+import { Link, Text } from "components/shared/lib";
 import PropTypes from "prop-types";
 import breakpoints from "theme/breakpoints";
 

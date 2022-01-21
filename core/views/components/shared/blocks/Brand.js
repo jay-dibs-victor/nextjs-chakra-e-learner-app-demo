@@ -10,7 +10,7 @@ const Brand = ({ size = "2xl", ...rest }) => {
         fontSize={size}
         {...rest}
       >
-        ACE-TRACE
+        PACE MAKER
       </Text>
     </Link>
   );

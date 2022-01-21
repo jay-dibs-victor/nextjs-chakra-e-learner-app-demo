@@ -6,8 +6,8 @@ import {
   DropdownContent,
   IconButton,
   Link,
-} from "components/lib";
-import { CartIcon } from "components/pages";
+} from "components/shared/lib";
+import { CartIcon } from "components/components/pages";
 import { RiMenuFill } from "react-icons/ri";
 import useCart from "hooks/useCart";
 import useAuth from "hooks/useAuth";
@@ -60,7 +60,7 @@ const NavBar = ({ ...rest }) => {
           top={0}
           right={0}
         >
-          {cart.count}
+          {cart?.count}
         </Badge>
       </IconButton>
     </Link>
