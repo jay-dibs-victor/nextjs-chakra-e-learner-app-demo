@@ -1,7 +1,15 @@
 import { Flex } from "@chakra-ui/layout";
 import { Spinner } from "@chakra-ui/spinner";
-import { Button, Icon, Text } from "components/components/pages/";
+// import { Button, Icon, Text } from "components/components/pages/";
 import { MdError } from "react-icons/md";
+
+import {
+
+  Button,
+ 
+  Icon,
+  Text,
+} from "@chakra-ui/react";
 
 const Wrapper = ({ icon, text, children, ...rest }) => (
   <Flex
@@ -32,7 +40,7 @@ export const SomethingWentWrong = ({
 }) => (
   <Wrapper
     icon={
-      <Icon fontSize="2rem">
+      <Icon fontSize="1.5rem">
         <MdError />
       </Icon>
     }

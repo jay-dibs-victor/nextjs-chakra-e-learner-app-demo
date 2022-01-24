@@ -7,3 +7,7 @@ export * from "./Layout/Layout";
 export * from "./Feedback/Feedback";
 export * from "./Cart/Cart";
 export * from "./Account/Account";
+export * from "./TableSection/index";
+export * from "./LayoutAdmin/Layout";
+
+

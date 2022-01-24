@@ -113,14 +113,14 @@ const TotalSection = ({ cart, cost, ...rest }) => {
       <Grid templateColumns="1.4fr .6fr">
         <GridItem mb={2}>
           <Text type="sm-regular" color="brand.gray2" w="150px" m={0}>
-            {cart.count} Piece{cart.count > 1 && "s"} of item
-            {cart.count > 1 && "s"} in the amount of:
+            {cart?.count} Piece{cart?.count > 1 && "s"} of item
+            {cart?.count > 1 && "s"} in the amount of:
           </Text>
         </GridItem>
         <GridItem textAlign="right">
           {cart && (
             <Text type="nm-bold">
-              {formatPrice("en-NG", cost.cartTotalPrice || "0.00", "NGN")}
+              {formatPrice("en-NG", cost?.cartTotalPrice || "0.00", "NGN")}
             </Text>
           )}
         </GridItem>
@@ -132,7 +132,7 @@ const TotalSection = ({ cart, cost, ...rest }) => {
         </GridItem>
         <GridItem textAlign="right">
           <Text type="nm-bold">
-            {formatPrice("en-NG", cost.deliveryFee || "0.00", "NGN")}
+            {formatPrice("en-NG", cost?.deliveryFee || "0.00", "NGN")}
           </Text>
         </GridItem>
 
@@ -143,7 +143,7 @@ const TotalSection = ({ cart, cost, ...rest }) => {
         </GridItem>
         <GridItem textAlign="right">
           <Text type="md-bold" m={0}>
-            {formatPrice("en-NG", cost.totalPrice || "0.00", "NGN")}
+            {formatPrice("en-NG", cost?.totalPrice || "0.00", "NGN")}
           </Text>
         </GridItem>
       </Grid>
@@ -391,16 +391,16 @@ const Checkout = () => {
   // }, [auth.currentUser.refCode]);
 
   useEffect(() => {
-    if (cart.isReady) {
+    if (cart?.isReady) {
       const deliveryFee = 0;
 
       setCost({
         deliveryFee,
-        cartTotalPrice: cart.total,
-        totalPrice: cart.total + deliveryFee,
+        cartTotalPrice: cart?.total,
+        totalPrice: cart?.total + deliveryFee,
       });
     }
-  }, [cart.isReady, cart.total]);
+  }, [cart?.isReady, cart?.total]);
 
   const forms = {
     contactInfo: [
@@ -417,9 +417,9 @@ const Checkout = () => {
 
   return (
     <Layout SEO={pageSEO} bg="brand.gray6">
-      <PageHeader>My Checkout</PageHeader>
+      {/* <PageHeader>My Checkout</PageHeader> */}
 
-      {cart.isEmpty ? (
+      {cart?.isEmpty ? (
         <Empty />
       ) : (
         <Section pb={20}>
@@ -427,12 +427,12 @@ const Checkout = () => {
             {/* Main Content */}
             <Box flex={1.5}>
               <MiniSection header="Products in Cart">
-                {cart.loading ? (
+                {cart?.loading ? (
                   <Box pos="relative" h="200px">
                     <Loader pos="absolute" top={0} left={0} w="100%" h="100%" />
                   </Box>
                 ) : (
-                  cart.data?.map((item, index) => (
+                  cart?.data?.map((item, index) => (
                     <CartItem key={index} index={index} data={item} />
                   ))
                 )}
@@ -454,7 +454,7 @@ const Checkout = () => {
                 cost={cost}
               />
 
-              {cart.isReady && (
+              {cart?.isReady && (
                 <>
                   <MiniSection header="Payment type">
                     <PaymentTypeTab cost={cost} setOrderData={setOrderData} />

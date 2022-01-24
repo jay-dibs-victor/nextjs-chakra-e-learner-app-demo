@@ -1,14 +1,9 @@
-
-
-
-
-
-import { Layout, Section, OrdersTableSection } from "components/components/pages";
+import { LayoutAdmin, Section, OrdersTableSection } from "components/components/pages";
 import { Heading, Icon, Text } from "components/shared/lib";
 import { Box, Grid, GridItem } from "@chakra-ui/layout";
 import { RiRadioButtonLine } from "react-icons/ri";
 import { Line } from "react-chartjs-2";
-import useAside from "hooks/useAside";
+import useAside from "hooks/useAdminAside";
 import colors from "theme/colors";
 import useDimensions from "hooks/useDimensions";
 
@@ -94,7 +89,7 @@ const DashboardPage = () => {
   );
 
   return (
-    <Layout>
+    <LayoutAdmin>
       <Section mute mb={10}>
         <Grid templateColumns={{ base: "1fr", lg: "300px 1fr" }}>
           <Box
@@ -165,7 +160,7 @@ const DashboardPage = () => {
       </Section>
 
       <OrdersTableSection heading="recent orders" />
-    </Layout>
+    </LayoutAdmin>
   );
 };
 

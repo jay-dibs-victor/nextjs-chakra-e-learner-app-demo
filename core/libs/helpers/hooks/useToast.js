@@ -19,7 +19,7 @@ const useToast = () => {
     });
   };
 
-  return { display: displayToast };
+  return { display: displayToast, displayToast };
 };
 
 export default useToast;

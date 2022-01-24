@@ -1,4 +1,4 @@
-import { Box, Flex, Grid, GridItem } from "@chakra-ui/layout";
+import { Box, Flex, Grid, GridItem , Heading, Center} from "@chakra-ui/layout";
 import { Button, Counter, IconButton, Text, Link, Image } from "components/shared/lib";
 import { Layout, PageHeader, Section, Loader, Empty } from "components/components/pages";
 import useCart from "hooks/useCart";
@@ -134,7 +134,10 @@ const cart = () => {
 
   return (
     <Layout SEO={pageSEO} bg="brand.gray6">
-      <PageHeader>Shopping Cart</PageHeader>
+      <Center>
+      <Heading>Shopping Cart</Heading> 
+      </Center>
+
       {cart?.isEmpty ? (
         <Empty />
       ) : (

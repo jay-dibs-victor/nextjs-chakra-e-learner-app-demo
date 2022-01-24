@@ -218,7 +218,7 @@ const EditPreferencePage = () => {
 
   return (
     <Layout SEO={pageSEO}>
-      <PageHeader>Edit Preference</PageHeader>
+      {/* <PageHeader>Edit Preference</PageHeader> */}
 
       <Section mb={16} maxW={breakpoints.md}>
         <Header

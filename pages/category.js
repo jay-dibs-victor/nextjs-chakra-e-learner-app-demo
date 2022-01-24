@@ -98,7 +98,7 @@ const Aside = ({
           px={2}
           px={{ base: 2, md: 5 }}
         >
-          {category.name}
+          {category.name || "Sample"}
         </Text>
 
         <Flex flexDir="column">
@@ -115,7 +115,7 @@ const Aside = ({
               py={1}
             >
               <Text mute textTransform="capitalize">
-                {subCategory.name}
+                {subCategory.name || "Sample"}
               </Text>
             </Box>
           ))}
