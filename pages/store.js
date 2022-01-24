@@ -33,13 +33,13 @@ const StorePage = () => {
           className="mySwiper"
         >
           <SwiperSlide>
-            <Box h={{ base: "300px", md: "500px" }} bg="brand.error"></Box>
+            <Box h={{ base: "300px", md: "500px" }} bg="green"></Box>
           </SwiperSlide>
           <SwiperSlide>
-            <Box h={{ base: "300px", md: "500px" }} bg="brand.info"></Box>
+            <Box h={{ base: "300px", md: "500px" }} bg="blue"></Box>
           </SwiperSlide>
           <SwiperSlide>
-            <Box h={{ base: "300px", md: "500px" }} bg="brand.success"></Box>
+            <Box h={{ base: "300px", md: "500px" }} bg="yellow"></Box>
           </SwiperSlide>
         </Swiper>
 
