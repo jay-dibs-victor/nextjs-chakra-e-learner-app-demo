@@ -150,11 +150,11 @@ const DashboardPage = () => {
 
               d={{ base: "block", md: "none" }}
             >
-              {renderLineChart({ d: { base: "block", md: "none" } })}
+              {/* {renderLineChart({ d: { base: "block", md: "none" } })} */}
             </Box>
 
             {/* From Tab devices */}
-            {renderLineChart({ d: { base: "none", md: "block" } })}
+            {/* {renderLineChart({ d: { base: "none", md: "block" } })} */}
           </Box>
         </Grid>
       </Section>

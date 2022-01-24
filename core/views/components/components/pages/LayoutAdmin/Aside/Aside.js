@@ -55,11 +55,11 @@ const Aside = ({ activePage = "dashboard", activePageHeader, ...rest }) => {
   }, []);
 
   const items = [
-    { text: "dashboard", icon: <DashboardRoundedIcon />, href: "/" },
-    { text: "products", icon: <TvRoundedIcon />, href: "/products" },
-    { text: "categories", icon: <CategoryRoundedIcon />, href: "/categories" },
-    { text: "orders", icon: <CardGiftcardRoundedIcon />, href: "/orders" },
-    { text: "users", icon: <PeopleRoundedIcon />, href: "/users" },
+    { text: "dashboard", icon: <DashboardRoundedIcon />, href: "/admin/" },
+    { text: "products", icon: <TvRoundedIcon />, href: "/admin/products" },
+    { text: "categories", icon: <CategoryRoundedIcon />, href: "/admin/categories" },
+    { text: "orders", icon: <CardGiftcardRoundedIcon />, href: "/admin/orders" },
+    { text: "users", icon: <PeopleRoundedIcon />, href: "/admin/users" },
     // {
     //   text: "comments",
     //   icon: <QuestionAnswerRoundedIcon />,

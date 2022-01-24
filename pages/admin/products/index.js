@@ -1,4 +1,6 @@
-import { LayoutAdmin, ProductsTableSection } from "components/pages";
+
+
+import { LayoutAdmin, ProductsTableSection } from "components/components/pages";
 import buildSEO from "utils/buildSEO";
 
 const pageSEO = buildSEO("Products", "Description");

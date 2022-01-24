@@ -78,9 +78,9 @@ export const LayoutAdmin = ({
               <Flex flexDir="column" flex={1} h="100%">
                 <Header bg={headerBg} activePage={pageDisplayText || page} />
 
-               {/* <MainArea bg={bg} flex={1} bg="brand.gray6" overflow="auto">
+              <MainArea bg={bg} flex={1} bg="brand.gray6" overflow="auto">
                   {children}
-                </MainArea>  */}
+                </MainArea>  
               </Flex>
             </Flex>
           ) : (
