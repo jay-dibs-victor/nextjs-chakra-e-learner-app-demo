@@ -25,7 +25,7 @@ import { Container } from "./Layout";
 
 const Footer = () => {
   return (
-    <Box pos="relative" bg="gray.500">
+    <Box pos="relative" bg="#fafafa" color="#000" h='400px'>
       <Image
         filter="brightness(20%)"
         pos="absolute"
@@ -34,7 +34,7 @@ const Footer = () => {
         src="/img/logo-company.jpg"
       />
 
-      <Box color="white" pos="relative" zIndex={1}>
+      <Box color="black" pos="relative" zIndex={1}>
         <Container pb={10}>
           <Grid
             templateColumns={{
