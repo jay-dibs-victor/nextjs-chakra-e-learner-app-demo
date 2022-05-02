@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   Flex,
   Grid,
   GridItem,
@@ -10,297 +9,121 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import dateFormat from "dateformat";
 import {
   TiSocialFacebook,
   TiSocialTwitter,
   TiSocialInstagram,
   TiSocialYoutube,
 } from "react-icons/ti";
-import { FiChevronsUp } from "react-icons/fi";
 import Brand from "./Brand";
-import { Image } from "./Image";
 import { Link } from "./Link";
 import { Container } from "./Layout";
 
 const Footer = () => {
   return (
-    <Box pos="relative" bg="#fafafa" color="#000" h='400px'>
-      <Image
-        filter="brightness(20%)"
-        pos="absolute"
-        w="100%"
-        h="100%"
-        src="/img/logo-company.jpg"
-      />
+    <Box bg="blue.900" color="gray.200" pt={16} pb={8}>
+      <Container>
+        <Grid
+          templateColumns={{
+            base: "1fr",
+            md: "1fr 1fr",
+            lg: "2fr 1fr 1fr 1.5fr",
+          }}
+          gap={10}
+          mb={12}
+        >
+          {/* Brand & Socials */}
+          <GridItem>
+            <Box maxW="300px">
+              <Brand size="2xl" color="white" mb={4} />
+              <Text fontSize="sm" color="gray.400" mb={6} lineHeight="tall">
+                Empowering the modern workforce with AI-driven learning and recruitment solutions.
+              </Text>
 
-      <Box color="black" pos="relative" zIndex={1}>
-        <Container pb={10}>
-          <Grid
-            templateColumns={{
-              base: "1fr",
-              md: "1fr 1fr",
-              lg: "1.9fr .7fr .7fr 1.2fr",
-            }}
-            rowGap={10}
-            pt={16}
-            px={5}
-            pb={3}
-          >
-            <GridItem>
-              <Box w="200px">
-                <Brand size="3xl" />
+              <HStack spacing={4}>
+                <SocialLink icon={TiSocialFacebook} />
+                <SocialLink icon={TiSocialTwitter} />
+                <SocialLink icon={TiSocialInstagram} />
+                <SocialLink icon={TiSocialYoutube} />
+              </HStack>
+            </Box>
+          </GridItem>
 
-                <Text fontSize={{ base: "md", md: "sm", lg: "xs" }} my={4}>
-                  © Goom LLC, SINCE 1999
-                </Text>
+          {/* Quick Links */}
+          <GridItem>
+            <Heading as="h6" size="sm" color="white" textTransform="uppercase" letterSpacing="wider" mb={6}>
+              Company
+            </Heading>
+            <Stack spacing={3}>
+              <FooterLink>About Us</FooterLink>
+              <FooterLink>Careers</FooterLink>
+              <FooterLink>Our Programs</FooterLink>
+              <FooterLink>Contact</FooterLink>
+            </Stack>
+          </GridItem>
 
-                <HStack spacing="2">
-                  <Link>
-                    <Icon fontSize={{ base: "1.65rem", md: "1.5rem" }}>
-                      <TiSocialFacebook />
-                    </Icon>
-                  </Link>
-                  <Link>
-                    <Icon fontSize={{ base: "1.65rem", md: "1.5rem" }}>
-                      <TiSocialTwitter />
-                    </Icon>
-                  </Link>
-                  <Link>
-                    <Icon fontSize={{ base: "1.65rem", md: "1.5rem" }}>
-                      <TiSocialInstagram />
-                    </Icon>
-                  </Link>
-                  <Link>
-                    <Icon fontSize={{ base: "1.65rem", md: "1.5rem" }}>
-                      <TiSocialYoutube />
-                    </Icon>
-                  </Link>
-                </HStack>
-              </Box>
-            </GridItem>
+          {/* Resources */}
+          <GridItem>
+            <Heading as="h6" size="sm" color="white" textTransform="uppercase" letterSpacing="wider" mb={6}>
+              Resources
+            </Heading>
+            <Stack spacing={3}>
+              <FooterLink>Help Center</FooterLink>
+              <FooterLink>Success Stories</FooterLink>
+              <FooterLink>API Documentation</FooterLink>
+              <FooterLink>Blog</FooterLink>
+            </Stack>
+          </GridItem>
 
-            <GridItem>
-              <Heading
-                as="h6"
-                fontSize={{ base: "xl", md: "lg" }}
-                color="black.500"
-                mb={5}
-              >
-                About Us
-              </Heading>
+          {/* Legal */}
+          <GridItem>
+            <Heading as="h6" size="sm" color="white" textTransform="uppercase" letterSpacing="wider" mb={6}>
+              Legal
+            </Heading>
+            <Stack spacing={3}>
+              <FooterLink>Terms of Service</FooterLink>
+              <FooterLink>Privacy Policy</FooterLink>
+              <FooterLink>Cookie Policy</FooterLink>
+            </Stack>
+          </GridItem>
+        </Grid>
 
-              <Stack spacing={1}>
-                <Link
-                  mute
-                  fontSize={{ base:"1xl", md: "xs", lg: "xx-small" }}
-                  textTransform="uppercase"
-                  letterSpacing={1}
-                  _hover={{ color: "black.500" }}
-                >
-                  Services
-                </Link>
-                <Link
-                  mute
-                  fontSize={{ base:"1xl", md: "xs", lg: "xx-small" }}
-                  textTransform="uppercase"
-                  letterSpacing={1}
-                  _hover={{ color: "black.500" }}
-                >
-                  Join us
-                </Link>
-                <Link
-                  mute
-                  fontSize={{ base:"1xl", md: "xs", lg: "xx-small" }}
-                  textTransform="uppercase"
-                  letterSpacing={1}
-                  _hover={{ color: "black.500" }}
-                >
-                  career opportunities
-                </Link>
-                <Link
-                  mute
-                  fontSize={{ base:"1xl", md: "xs", lg: "xx-small" }}
-                  textTransform="uppercase"
-                  letterSpacing={1}
-                  _hover={{ color: "black.500" }}
-                >
-                  Link here
-                </Link>
-                <Link
-                  mute
-                  fontSize={{ base:"1xl", md: "xs", lg: "xx-small" }}
-                  textTransform="uppercase"
-                  letterSpacing={1}
-                  _hover={{ color: "black.500" }}
-                >
-                  Link here
-                </Link>
-                <Link
-                  mute
-                  fontSize={{ base:"1xl", md: "xs", lg: "xx-small" }}
-                  textTransform="uppercase"
-                  letterSpacing={1}
-                  _hover={{ color: "black.500" }}
-                >
-                  Link here
-                </Link>
-              </Stack>
-            </GridItem>
-
-            <GridItem>
-              <Heading
-                as="h6"
-                fontSize={{ base: "xl", md: "lg" }}
-                color="black500"
-                mb={5}
-              >
-                Sitemaps
-              </Heading>
-
-              <Stack spacing={1}>
-                <Link
-                  mute
-                  fontSize={{ base:"1xl", md: "xs", lg: "xx-small" }}
-                  textTransform="uppercase"
-                  letterSpacing={1}
-                  _hover={{ color: "black500" }}
-                >
-                  Link here
-                </Link>
-                <Link
-                  mute
-                  fontSize={{ base:"1xl", md: "xs", lg: "xx-small" }}
-                  textTransform="uppercase"
-                  letterSpacing={1}
-                  _hover={{ color: "black500" }}
-                >
-                  Link here
-                </Link>
-                <Link
-                  mute
-                  fontSize={{ base:"1xl", md: "xs", lg: "xx-small" }}
-                  textTransform="uppercase"
-                  letterSpacing={1}
-                  _hover={{ color: "black500" }}
-                >
-                  Link here
-                </Link>
-                <Link
-                  mute
-                  fontSize={{ base:"1xl", md: "xs", lg: "xx-small" }}
-                  textTransform="uppercase"
-                  letterSpacing={1}
-                  _hover={{ color: "black500" }}
-                >
-                  Link here
-                </Link>
-                <Link
-                  mute
-                  fontSize={{ base:"1xl", md: "xs", lg: "xx-small" }}
-                  textTransform="uppercase"
-                  letterSpacing={1}
-                  _hover={{ color: "black500" }}
-                >
-                  Link here
-                </Link>
-                <Link
-                  mute
-                  fontSize={{ base:"1xl", md: "xs", lg: "xx-small" }}
-                  textTransform="uppercase"
-                  letterSpacing={1}
-                  _hover={{ color: "black500" }}
-                >
-                  Link here
-                </Link>
-              </Stack>
-            </GridItem>
-
-            <GridItem>
-              <Heading
-                as="h6"
-                fontSize={{ base: "xl", md: "lg" }}
-                color="black500"
-                mb={5}
-              >
-               Link here
-              </Heading>
-
-              <Stack spacing={5}>
-                <SM_ListCard
-                  title="We are globally awesome in react"
-                  imageIsRound={false}
-                />
-
-                <SM_ListCard
-                  title="We are now  working internationally at silicon valleys"
-                  imageIsRound={false}
-                />
-              </Stack>
-            </GridItem>
-          </Grid>
-        </Container>
-
-        <Flex justifyContent="flex-end" pos="fixed" bottom={1} right={1}>
-          <Link href="?top=true">
-            <Button rounded="sm" size="sm" fontSize="xl" colorScheme="purple">
-              <FiChevronsUp />
-            </Button>
-          </Link>
+        {/* Copyright */}
+        <Flex
+          direction={{ base: "column", md: "row" }}
+          justify="space-between"
+          align="center"
+          borderTop="1px solid"
+          borderColor="whiteAlpha.200"
+          pt={8}
+        >
+          <Text fontSize="sm" color="gray.500" mb={{ base: 4, md: 0 }}>
+            © {new Date().getFullYear()} Ace-Trace LLC. All rights reserved.
+          </Text>
         </Flex>
-      </Box>
+      </Container>
     </Box>
   );
 };
 
-const SM_ListCard = ({ title, imageIsRound = "full", noImage, ...rest }) => (
-  <Flex {...rest}>
-    <Box mr={5}>
-      <TitleText size={{ base: "md", md: "sm" }} text={title} mb={1} />
-
-      <DateText />
-    </Box>
-
-    {!noImage && (
-      <CardImage
-        wrapperProps={{
-          flexShrink: 0,
-        }}
-        boxSize={50}
-        src="/img/news.jpg"
-        rounded={imageIsRound}
-      />
-    )}
-  </Flex>
+const SocialLink = ({ icon }) => (
+  <Link href="#" isExternal>
+    <Flex
+      align="center" justify="center"
+      w={10} h={10}
+      rounded="full" bg="whiteAlpha.100" color="white"
+      transition="all 0.3s"
+      _hover={{ bg: "blue.500", color: "white", transform: "translateY(-2px)" }}
+    >
+      <Icon as={icon} boxSize={5} />
+    </Flex>
+  </Link>
 );
 
-const CardImage = ({ wrapperProps, w, h, src, ...rest }) => (
-  <Box w={w} h={h} pos="relative" {...wrapperProps}>
-    <Image w="100%" h="100%" src={src} {...rest} />
-  </Box>
-);
-
-const TitleText = ({ text, size ="1xl", ...rest }) => (
-  <Heading
-    fontSize={size}
-    fontFamily="Cambria, Cochin, Georgia, Times, 'Times New Roman', serif"
-    {...rest}
-  >
-    {text}
-  </Heading>
-);
-
-const DateText = ({
-  date = Date.now(),
-  text,
-  size = { base:"1xl", md: "xs" },
-  ...rest
-}) => (
-  <Text fontStyle="italic" fontSize={size} {...rest}>
-    {text}
-    {text && " - "}
-    {dateFormat(date, "fullDate")}
-  </Text>
+const FooterLink = ({ children }) => (
+  <Link mute fontSize="sm" color="gray.400" _hover={{ color: "white", textDecoration: "none" }} transition="color 0.2s">
+    {children}
+  </Link>
 );
 
 export default Footer;

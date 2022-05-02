@@ -1,798 +1,306 @@
-import React , { useState} from "react"
+import React, { useState } from "react";
 import {
   Box,
   Button,
   Flex,
-  Grid,
-  GridItem,
   Heading,
-  HStack,
-  Icon,
-  Input,
-  Stack,
   Text,
   Center,
-
+  SimpleGrid,
+  VStack,
 } from "@chakra-ui/react";
-
-// import {
-//   ThemeProvider,
-//   CSSReset,
-//   Box,
-//   Heading,
-//   PseudoBox
-// } from "@chakra-ui/core";
-
+import { motion } from "framer-motion";
 import { Image } from "components/shared/blocks/Image";
-import Layout, { Container } from "components/shared/blocks/Layout";
+import Layout from "components/shared/blocks/Layout";
 import { Link } from "components/shared/blocks/Link";
-import dateFormat from "dateformat";
-import { TiMediaPlay, TiSocialFacebook, TiSocialTwitter } from "react-icons/ti";
-import { GoThreeBars } from "react-icons/go";
-
 import { Swiper, SwiperSlide } from "swiper/react";
-// // import Swiper core and required modules
-import SwiperCore, { Autoplay, Pagination, Navigation } from "swiper/core";
-import breakpoints  from "core/theme/breakpoints";
+import SwiperCore, { Autoplay, Pagination, EffectFade } from "swiper/core";
+import "swiper/swiper.min.css";
+import "swiper/components/pagination/pagination.min.css";
+import "swiper/components/effect-fade/effect-fade.min.css";
+import breakpoints from "core/theme/breakpoints";
 
-export const Section = ({ children, ...rest }) => {
-  return (
-    <Box
-      as="section"
-      px={{ base: 2, sm2: 6 }}
-      maxW={breakpoints.xl}
-      mx="auto"
-      {...rest}
-    >
-      {children}
-    </Box>
-  );
+SwiperCore.use([Autoplay, Pagination, EffectFade]);
+
+const MotionBox = motion(Box);
+const MotionFlex = motion(Flex);
+const MotionHeading = motion(Heading);
+const MotionText = motion(Text);
+
+// Animation Variants
+const fadeInUp = {
+  hidden: { opacity: 0, y: 40 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
 };
 
-const CustomerReview = ({contentText}) => {
-  const [isVisible, setIsVisible] = useState(false);
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.2 } }
+};
 
-  function over(e) {
-    setIsVisible(true);
-  }
-  function out(e) {
-    setIsVisible(false);
-  }
-  
-  return (
-
- 
-
-
-  <Box
-    flexShrink="0"
-    shadow="md"
-    rounded="md"
-    p={4}
-    my={4}
-    bg="brand.white"
-    mx={4}
-    w={{ base: "300px", md: "350px" }}
-    boxShadow="-50px 50px 25px rgba(0, 0, 0, .03)"
-
-    
-  color="blue.700"
-  fontWeight="semibold"
-  py={2}
-  px={4}
-  borderWidth="1px"
-  borderColor="blue.500"
-  rounded="md"
-  _hover={{ bg: "blue.500", color: " white" }}
-  _focus={{ boxShadow: "outline" }}
-  onMouseOver={over}
-  onMouseOut={out}
-  >
-    <Text lineHeight="25px" >
-      {contentText}
-    </Text>
-
-    <Flex
-      mt={3}
-      textAlign={{ base: "left", md: "right" }}
-      justifyContent={{ base: "space-between", md: "flex-end" }}
-      alignItems="flex-end"
-    >
-      <Box color="brand.secondary">
-        <Text m={0} type="nm-bold">
-          Jame. S. Samuel
-        </Text>
-
-        <Text m={0}>Lesa Restaurant</Text>
-      </Box>
-
-      <Image
-        src="/images/lg/customer-satisfaction.jpeg"
-        border="1px"
-        rounded="full"
-        ml={2}
-        w="65px"
-        h="65px"
-      />
-    </Flex>
+export const Section = ({ children, bg, ...rest }) => (
+  <Box as="section" bg={bg} py={{ base: 16, lg: 24 }} px={{ base: 6, md: 10 }} overflow="hidden" {...rest}>
+    <Box maxW={breakpoints.xl} mx="auto">
+      {children}
+    </Box>
   </Box>
-
-
-)
-  }
-
-// A function that renders the content for `Kitchen` tab
-const renderTabKitchenAppliancesContent = (
-  <Flex
-    flexDir={{ base: "column", md: "row" }}
-    justifyContent="center"
-    alignItems={{ base: "center", md: "stretch" }}
-  >
-    {/* Big Card */}
-    <Flex
-      flexDir="column"
-      alignItems="center"
-      textAlign="center"
-      p={5}
-      w={{ base: "300px", md: "400px" }}
-      rounded="xl"
-      bg="brand.white"
-      border="1px"
-      borderColor="brand.gray5"
-      mr={{ md: 10 }}
-      mb={{ base: 5, md: 0 }}
-    >
-      <Image
-        mt="auto"
-        w={{ base: "200px", md: "300px" }}
-        h={{ base: "150px", md: "250px" }}
-        mb={{ base: 4, md: 10 }}
-        isProduct
-        src="/images/lg/product 3.png"
-      />
-
-      <Heading w={{ base: "180px", md: "300px" }}>
-        AddWash™, 10kg, Washer Dryer, 4 Ticks
-      </Heading>
-
-      <Text mb="auto" type="sm-regular" lineHeight="20px">
-        Simply add during wash with AddWash door Wash & dry in 59 minute
-      </Text>
-
-      
-    </Flex>
-
-    {/* Small Cards */}
-    <Flex flexDir="column" w="300px" rounded="lg">
-      <Box
-        d="grid"
-        placeItems="center"
-        textAlign="center"
-        p={5}
-        w="300px"
-        h={{ base: "200px", md: "255px" }}
-        flex="1"
-        rounded="lg"
-        bg="brand.white"
-        border="1px"
-        borderColor="brand.gray5"
-        mb={{ base: 5, md: 10 }}
-      >
-        <Image
-          w={{ base: "200px", md: "120px" }}
-          h={{ base: "150px", md: "100px" }}
-          isProduct
-          mb={4}
-          src="/images/lg/product 2.png"
-        />
-
-        <Heading w="180px">AddWash™, 10kg, Washer Dryer, 4 Ticks</Heading>
-
-        {/* <Text type="sm-regular" lineHeight="20px">
-          Simply add during wash with AddWash door Wash & dry in 59 minute
-        </Text> */}
-
-        
-      </Box>
-      <Box
-        d="grid"
-        placeItems="center"
-        textAlign="center"
-        p={5}
-        w="300px"
-        h={{ base: "200px", md: "255px" }}
-        flex="1"
-        rounded="lg"
-        bg="brand.white"
-        border="1px"
-        borderColor="brand.gray5"
-      >
-        <Image
-          w={{ base: "200px", md: "120px" }}
-          h={{ base: "150px", md: "100px" }}
-          isProduct
-          mb={4}
-          src="/images/lg/product 1.png"
-        />
-
-        <Heading w="180px">AddWash™, 10kg, Washer Dryer, 4 Ticks</Heading>
-
-        {/* <Text type="sm-regular" lineHeight="20px">
-          Simply add during wash with AddWash door Wash & dry in 59 minute
-        </Text> */}
-
-       
-      </Box>
-    </Flex>
-  </Flex>
 );
 
-// The `Special Products`'s Tab data
-const specialProductsTabData = [
-  { header: "TV's", content: "TV's content" },
-  {
-    header: "Kitchen Appliances",
-    content: renderTabKitchenAppliancesContent,
-  },
-  { header: "IT", content: "IT content" },
-  { header: "Other Offers", content: "Other Offers content" },
-];
+const HeroSlide = ({ image, title, subtitle }) => (
+  <Box position="relative" h={{ base: "60vh", md: "80vh" }} w="100%" overflow="hidden">
+    <Image src={image} w="100%" h="100%" objectFit="cover" />
+    {/* Removed backdropFilter="blur(2px)" for performance, slightly darkened bg instead */}
+    <Box
+      position="absolute" top="0" left="0" w="100%" h="100%"
+      bg="rgba(0,0,0,0.65)"
+    />
+    <Flex
+      position="absolute" top="0" left="0" w="100%" h="100%"
+      alignItems="center" justifyContent="center" textAlign="center" px={4}
+    >
+      {/* Removed backdropFilter="blur(10px)" for performance on scroll */}
+      <VStack spacing={6} maxW="800px" bg="rgba(0, 0, 0, 0.3)" p={10} rounded="2xl" border="1px solid rgba(255,255,255,0.1)">
+        <MotionHeading 
+          as="h1" size="2xl" color="white" fontWeight="extrabold"
+          initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }}
+        >
+          {title}
+        </MotionHeading>
+        <MotionText 
+          fontSize="xl" color="gray.200"
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8, delay: 0.4 }}
+        >
+          {subtitle}
+        </MotionText>
+        <MotionBox initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: 0.6 }}>
+          <Link mute href="/signup">
+            <Button size="lg" colorScheme="blue" px={10} rounded="full" _hover={{ transform: "translateY(-2px)", boxShadow: "xl" }}>
+              Get Started
+            </Button>
+          </Link>
+        </MotionBox>
+      </VStack>
+    </Flex>
+  </Box>
+);
+
+const CustomerReview = ({ contentText, contentTitle }) => {
+  return (
+    <MotionBox
+      variants={fadeInUp}
+      whileHover={{ y: -10, boxShadow: "0 20px 40px rgba(0,0,0,0.1)" }}
+      bg="white" rounded="2xl" p={8} m={4}
+      w={{ base: "100%", md: "350px" }}
+      boxShadow="0 10px 30px rgba(0,0,0,0.05)"
+      borderTop="4px solid" borderColor="blue.500"
+    >
+      <Text color="gray.600" lineHeight="tall" fontStyle="italic" mb={6}>
+        "{contentText}"
+      </Text>
+      <Flex mt="auto" justifyContent="space-between" alignItems="center">
+        <Box>
+          <Text fontWeight="bold" color="blue.900" mb={0}>Jame. S. Samuel</Text>
+          <Text fontSize="sm" color="gray.500">Lesa Restaurant</Text>
+        </Box>
+        <Image
+          src="/images/lg/customer-satisfaction.jpeg"
+          w="50px" h="50px" rounded="full" objectFit="cover" border="2px solid #E2E8F0"
+        />
+      </Flex>
+    </MotionBox>
+  );
+};
 
 const HomePage = () => {
   return (
     <Layout>
-        
-
-
-     
-
-     
-
-       
-
-
-      
-
-          {/* Hero */}
-      <Section
-        maxW={breakpoints.xxl}
-        bg="brand.primaryLight"
-        px={6}
-        py={{ base: 10, lg: 20 }}
-      >
-        <Flex justifyContent="center">
-          <Flex alignItems="" mr={{ lg: 16 }}>
-            <Box pt={6} pb={{ lg: "45px" }}>
-              <Box maxW="500px">
-                <Heading type="h1" as="h1" color="brand.secondary">
-                Education ,Online learning ever evolving capacity and easy carreer pathfinder.
-                  
-                </Heading>
-
-                <Text type="lg-regular" mb={{ base: 10, md: "30px" }}>
-                 For remote jobs, office jobs and organizations tackling
-                 unemployment by empowering entrepreneurs or supporting job seekers 
-                 and vetting reputable employees, we have got you covered on our platform.
-                </Text>
-              </Box>
-              <Link mute href="/signup">
-                <Button variant="primary">Create an Account</Button>
-              </Link>
-
-           
-            </Box>
-          </Flex>
-
-          <Flex
-            flexShrink={0}
-            alignSelf="center"
-            d={{ base: "none", lg: "flex" }}
-            w={{ lg: "550px", xl: "600px" }}
-            h={{ lg: "350px", xl: "400px" }}
-            pos="relative"
-          >
-            <Image
-              pos="absolute"
-              w="100%"
-              h="300px"
-              src="/img/herolanding.jpg"
-             boxShadow="-50px 50px 25px rgba(0, 0, 0, .08)"
+      {/* Hero Section */}
+      <Box w="100%">
+        <Swiper effect="fade" autoplay={{ delay: 5000, disableOnInteraction: false }} pagination={{ clickable: true }} loop>
+          <SwiperSlide>
+            <HeroSlide 
+              image="/img/herolanding.jpg" 
+              title="Empowering Careers & Entrepreneurship" 
+              subtitle="Online learning and capacity building for remote jobs, office roles, and the modern workforce."
             />
-          </Flex>
-        </Flex>
-      </Section>
-
-
-
-
-
-
-
-
-      <Section
-        maxW={breakpoints.xxl}
-        bg="brand.primaryLight"
-     
-      
-      >
-        <Flex justifyContent="center">
-          <Flex alignItems=""  bg="#691b37">
-            <Box p="40px"  pb={{ lg: "45px" }} color="#fff">
-              <Box >
-                <Heading type="h1" as="h1" color="#fff">
-                Growth Programmes.
-                  
-                </Heading>
-
-                <Text type="lg-regular" mb={{ base: 10, md: "30px" }}>
-                For entities looking to design effective programs and activities 
-                (which can be delivered on-site or remotely) to empower entrepreneurs 
-                with relevant business skills,
-                 networking opportunities and tailored support on their entrepreneurial journey.
-                </Text>
-              </Box>
-              <Link mute href="/signup">
-                <Button variant="primary">Learn more</Button>
-              </Link>
-
-            </Box>
-          </Flex>
-
-          <Flex
-            bg="#000"
-            color="#fff"
-          >
-            
-           
-
-            <Box p="40px">
-                <Heading type="h1" as="h1" color="brand.secondary">
-               Job Seekers and man power finders ( Employment Support)
-                  
-                </Heading>
-         
-
-            <Text>
-           
-For organizations who are invested in human capital development, and are
- looking to establish highly effective career development programs designed to 
- empower people with in-demand skills 
-and have them subsequently integrated into decent and dignified jobs.
-            </Text>
-
-         
-          </Box>
-          </Flex>
-        </Flex>
-      </Section>
-
-
-       {/* long text one col  */}
-      <Section mb={20} px={6} bg="#58181f" color="#fff">
-        
-            
-       
-
-         
-      </Section>
-
-      {/* Why Patronize us? */}
-      <Section px={6} pt={20} pb={{ base: 0, lg: 20 }}>
-        <Flex justifyContent="center" maxW={{ lg: "1150px", xl: "1200px" }} mx="auto">
-          <Heading type="h2" color="brand.secondary" maxW="900px">
-          ONE CLICK AWAY TO FINDING YOUR DREAM  JOB OR CREATE ONE THROUGH ENTREPRENEURSHIP AND SKILLS ACQUISITION.
-      
-          </Heading>
-
-          
-        </Flex>
-        <Center>
-              <Link mute href="/signup">
-                <Button variant="primary">GET STARTED</Button>
-              </Link>
-        </Center>
-        
-      </Section>
-
-
-      <Section bg="#f1f1f1" px={6} pt={20} pb={{ base: 0, lg: 20 }}>
-        <Flex justifyContent="center" maxW={{ lg: "1150px", xl: "1200px" }} mx="auto">
-          <Heading type="h2" color="brand.secondary" maxW="900px">
-          Learn at your own pace, hire a reputable vetted  responsive employer and lots more...
-
-          </Heading>
-
-          
-        </Flex><br/>
-
-        <Center>
-        <Text>Looking to build entrepreneurship programs that ensure a conscious approach 
-            is applied towards developing ideas into startups and startups into profitable businesses? 
-            Leverage ImpactXplorer to build intelligent processes that assess,
-             train and support entrepreneurs on their path towards building scalable businesses.</Text>
-        </Center>
-      </Section>
-
-
-
-
-
-
-
-
-
-
-
-
-      <Section
-        maxW={breakpoints.xxl}
-        bg="brand.primaryLight"
-        px={6}
-        py={{ base: 10, lg: 20 }}
-      >
-        <Flex justifyContent="center">
-          <Flex alignItems="" mr={{ lg: 16 }}>
-            <Box pt={6} pb={{ lg: "45px" }}>
-              <Box maxW="500px">
-                <Heading type="h1" as="h1" color="brand.secondary">
-                Hiring the best candidate for the job just got easier.
-                  
-                </Heading>
-
-                <Text type="lg-regular" mb={{ base: 10, md: "30px" }}>
-                Powered by AI and expert knowledge from industrial psychologists,
-                 our assessments tools evaluate for personality traits you care about to 
-                ensure that your candidates or beneficiaries are well suited for your program.
-
-
-                </Text>
-              </Box>
-              <Link mute href="/signup">
-                <Button variant="primary">Create an Account</Button>
-              </Link>
-
-             
-            </Box>
-          </Flex>
-
-          <Flex
-            flexShrink={0}
-            alignSelf="center"
-            d={{ base: "none", lg: "flex" }}
-            w={{ lg: "550px", xl: "600px" }}
-            h={{ lg: "350px", xl: "400px" }}
-            pos="relative"
-          >
-            <Image
-              pos="absolute"
-              w="100%"
-              h="300px"
-              src="/img/matchingemployees.jpg"
-             boxShadow="-50px 50px 25px rgba(0, 0, 0, .08)"
+          </SwiperSlide>
+          <SwiperSlide>
+            <HeroSlide 
+              image="/img/matchingemployees.jpg" 
+              title="Hiring the Best Candidates" 
+              subtitle="Powered by AI and expert knowledge to evaluate personality traits and ensure the perfect fit."
             />
-          </Flex>
-        </Flex>
-      </Section>
+          </SwiperSlide>
+        </Swiper>
+      </Box>
 
-
-
-     
-    
-
-      {/* Earn as a marketer, Earn as a customer */}
-      <Section py={20} maxW={breakpoints.xxl} bg="#FFB973">
-        <Flex
-          flexDir={{ base: "column", md: "row" }}
-          justifyContent="center"
-          px={6}
+      {/* Intro Section - One Click Away */}
+      <Section bg="gray.50">
+        <MotionFlex 
+          initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={fadeInUp}
+          direction="column" align="center" textAlign="center" maxW="900px" mx="auto"
         >
-          <Flex
-            justifyContent={{ base: "center", md: "flex-start" }}
-            flexShrink="0"
-            mb={{ base: 5, md: 0 }}
-            mr={{ md: 10, lg: 16 }}
-            //
-          >
-            <Image
-              src="/img/talentsource.jpg"
-              w={{ base: "280px", md: "325px", lg: "425px", xl: "525px" }}
-              h={{ base: "305px", md: "350px", lg: "350px", xl: "300px" }}
-              boxShadow="50px 50px 25px rgba(0, 0, 0, .03)"
-            />
-          </Flex>
-
-          <Box textAlign={{ base: "left", md: "right" }} maxW="600px">
-            <Heading type="h3" color="brand.secondary" mb={10}>
-              
-Talent Sourcing & work opportunities.
-            </Heading>
-
-            <Box color="brand.black1">
-              <Text mb={6} type="lg-regular">
-              Quickly find skilled talent for businesses in your entrepreneurship programs. 
-              Allow recruiters (who already use Slatecube for recruting)
-               to automatically recruit talents who meet their requirements, from your program.
-               </Text>
-            </Box>
-          </Box>
-        </Flex>
-      </Section>
-
-
-      <Section  py={20} maxW={breakpoints.xxl}>
-        <Flex
-          flexDir={{ base: "column", md: "row" }}
-          justifyContent="center"
-          px={6}
-        >
-          <Flex
-            justifyContent={{ base: "center", md: "flex-start" }}
-            flexShrink="0"
-            mb={{ base: 5, md: 0 }}
-            order={{ base: 0, md: 1 }}
-            ml={{ md: 10, lg: 16 }}
-          >
-            <Image
-              src="/img/skillacquisition.jpg"
-              w={{ base: "280px", md: "325px", lg: "425px", xl: "525px" }}
-              h={{ base: "305px", md: "350px", lg: "350px", xl: "300px" }}
-              boxShadow="-50px 50px 25px rgba(0, 0, 0, .03)"
-            />
-          </Flex>
-
-          <Box textAlign="left" maxW="600px">
-            <Heading type="h3" color="brand.secondary" mb={10} maxW="450px">
-            Adapt or create new
-training programmes.
-            </Heading>
-
-            <Box color="brand.black1">
-              <Text type="lg-regular" mb={6}>
-              Leverage our pre-built project-based online programmes that
-               cover top skills in technology, business, digital marketing as 
-               well as life skills and soft skills, or upload your own training programmes.
-
-
-              </Text>
-            </Box>
-
-            <Box pt={8}>
-              <Link mute href="/store">
-                <Button variant="primary" mb={8}>
-                  Explore our Programmes
-                </Button>
-              </Link>
-
-              <Link
-                href="/locations"
-                d="flex"
-                w="fit-content"
-                alignItems="center"
-                color="brand.primary"
-              >
-                <Text mb={0} mr={2}>
-                  Find a course
-                </Text>
-
-             
-              </Link>
-            </Box>
-          </Box>
-        </Flex>
-      </Section>
-
-      {/* Customer Satisfaction and Guarantee */}
-      <Section bg="#f1f1f1" py={20} maxW={breakpoints.xxl}>
-        <Flex
-          flexDir={{ base: "column", md: "row" }}
-          justifyContent="center"
-          px={6}
-        >
-          <Flex
-            justifyContent={{ base: "center", md: "flex-start" }}
-            flexShrink="0"
-            mb={{ base: 5, md: 0 }}
-            mr={{ md: 10, lg: 16 }}
-          >
-            <Image
-              src="/img/proworker.jpg"
-              w={{ base: "280px", md: "325px", lg: "425px", xl: "525px" }}
-              h={{ base: "305px", md: "350px", lg: "350px", xl: "300px" }}
-              boxShadow="-50px 50px 25px rgba(0, 0, 0, .03)"
-            />
-          </Flex>
-
-          <Box textAlign={{ base: "left", md: "right" }} maxW="600px">
-            <Heading type="h3" color="brand.secondary" mb={10}>
-            Guarantee Customer Satisfaction .
-            </Heading>
-
-            <Box color="brand.black1" type="lg-regular">
-              <Text mb={6} type="lg-regular">
-                With over bla bla bla
-                <Text as="span" type="lg-bold">
-                  100%
-                </Text>{" "}
-                With over bla bla bla
-                <Text as="span" type="lg-bold">
-                  1k+
-                </Text>{" "}
-                With over bla bla bla
-              </Text>
-            </Box>
-          </Box>
-        </Flex>
-      </Section>
-
-      {/* Customer stories */}
-      <Section  bg="blue.900" px={6} py={20} maxW={breakpoints.xxl}>
-        <Box as="header" maxW={breakpoints.xl} mx="auto" color='white'>
-          <Heading type="h3" textAlign="center" color="brand.secondary">
-          ABOUT ACE-TRACE<br />
-          </Heading>
-
-          <Text
-            my={16}
-            type="md-bold"
-            d={{ base: "block"}}
-            type="md-regular"
-          >
-            ACE-TRACE is a technology company that develops AI-powered SaaS (Software-as-a-service) 
-            solutions for learning and workforce development. Governments, social impact organizations,
-             businesses, and individuals leverage our 
-            cutting-edge digital platforms to run their learning and workforce management programs.
+          <Heading size="xl" color="blue.900" mb={6}>ONE CLICK AWAY TO FINDING YOUR DREAM JOB OR CREATE ONE</Heading>
+          <Text fontSize="lg" color="gray.600" mb={10}>
+            Learn at your own pace, hire a reputable vetted responsive employer and lots more...
+            Looking to build entrepreneurship programs that ensure a conscious approach towards developing ideas into startups? Leverage ImpactXplorer to build intelligent processes that assess, train, and support entrepreneurs on their path towards building scalable businesses.
           </Text>
-        </Box>
-       <hr/><br/>
-
-        <Heading color='white' type="h3" textAlign="center" >
-        PEOPLE, TECHNOLOGY, INNOVATION.<br />
-          </Heading>
-
-        <Box as="main" >
-          <Flex justifyContent="center" alignItems="center" px={{ md: 2 }} pb={5} color='white'>
-            <CustomerReview 
-             contentText={"Leverage our cutting-edge technology solutions to develop and optimize your learning and workforce managemenet processes quickly."}
-            contentTitle={"DIGITAL REVOLUTION"}
-            />
-            <CustomerReview 
-                contentText={"Leverage our cutting-edge technology solutions to develop and optimize your learning and workforce managemenet processes quickly."}
-                contentTitle={"DIGITAL REVOLUTION"}
-            
-            />
-            <CustomerReview
-                 contentText={"Leverage our cutting-edge technology solutions to develop and optimize your learning and workforce managemenet processes quickly."}
-                 contentTitle={"DIGITAL REVOLUTION"}
-            />
-          </Flex>
-        </Box>
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <Link mute href="/signup">
+              <Button size="lg" colorScheme="blue" rounded="full" px={12}>
+                GET STARTED
+              </Button>
+            </Link>
+          </motion.div>
+        </MotionFlex>
       </Section>
 
-      {/* This Month's pick */}
-      <Section py={10} maxW={breakpoints.xxl} textAlign="center" h="300px" p="20px">
-        <Box maxW={breakpoints.xl} mx="auto" px={6}>
-          <Heading type="h3" color="brand.secondary">
-          WANT TECHNOLOGY TO WORK FOR YOU? WE CAN HELP 
-          </Heading>
-          <Text>Some of the fastest and most scalable ways to solve the world's biggest problems are digital. We have built and continue to build platforms that allow forward-thinking 
-            organizations to improve efficiency, increase knowledge and do good.</Text>
-
-          <Box></Box>
-          <Box></Box>
-          <Box></Box>
-          <Box></Box>
-        </Box>
-      </Section>
-
-
-
-      <Section
-        maxW={breakpoints.xxl}
-        bg="brand.primaryLight"
-     
-      
-      >
-        <Flex justifyContent="center">
-          <Flex alignItems=""  bg="#f4f4f4">
-            <Box p="40px"  pb={{ lg: "45px" }} color="purple">
-              <Box >
-                <Heading type="h1" as="h1" color="purple">
-                Growth Programmes.
-                  
-                </Heading>
-
-                <Text type="lg-regular" mb={{ base: 10, md: "30px" }}>
-                For entities looking to design effective programs and activities 
-                (which can be delivered on-site or remotely) to empower entrepreneurs 
-                with relevant business skills,
-                 networking opportunities and tailored support on their entrepreneurial journey.
-                </Text>
-              </Box>
-              <Link mute href="/signup">
-                <Button variant="primary">Learn more</Button>
-              </Link>
-
-       
-            </Box>
-          </Flex>
-
-          <Flex
-            bg="#171923"
-            color="#fff"
-            h="500px"
-          >
-            
-           
-
-            <Box p="40px">
-                <Heading type="h1" as="h1" color="brand.secondary">
-                Speak with a representative .
-                  
-                </Heading>
-         
-
-            <Text>
-           
-            If you'd like to talk about your needs and explore how best we 
-            can be of help to you, please click the link below to schedule a meeting with us.
-             We have solutions for government agencies, businesses, non-profits, students, and job seekers -
-             and we will be more than happy to chat with you.
-            </Text>
-
-         
-          </Box>
-          </Flex>
-        </Flex>
-      </Section>
-
-      
-    
-              {/* Last Section */}
+      {/* Alternating Feature Layouts */}
       <Section>
-        <Flex py={10} bg="brand.white" flexDir={{ base: "column", md: "row" }}>
-          <Box px={10}>
-            <Heading mb={{ base: 0, md: 5 }}>Delivery</Heading>
-
-            <Text>
-              Our courier delivery will safely deliver your order right next to
-              your door
+        {/* Growth Programmes */}
+        <MotionFlex 
+          initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={staggerContainer}
+          direction={{ base: "column", lg: "row" }} align="center" justify="space-between" mb={32}
+        >
+          <MotionBox variants={fadeInUp} flex={1} pr={{ lg: 16 }} mb={{ base: 10, lg: 0 }}>
+            <Heading size="xl" color="blue.900" mb={6}>Growth Programmes.</Heading>
+            <Text fontSize="lg" color="gray.600" mb={8}>
+              For entities looking to design effective programs and activities (which can be delivered on-site or remotely) to empower entrepreneurs with relevant business skills, networking opportunities and tailored support on their entrepreneurial journey.
             </Text>
-          </Box>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Link mute href="/signup"><Button colorScheme="blue" variant="outline" rounded="full">Learn more</Button></Link>
+            </motion.div>
+          </MotionBox>
+          <MotionBox variants={fadeInUp} flex={1}>
+            <Box rounded="3xl" overflow="hidden" boxShadow="2xl">
+              <Image src="/img/skillacquisition.jpg" w="100%" h="400px" objectFit="cover" />
+            </Box>
+          </MotionBox>
+        </MotionFlex>
 
-          <Box px={10} borderLeft={{ base: "0", md: "1px solid #eee" }}>
-            <Heading mb={{ base: 0, md: 5 }}>Warranty</Heading>
-
-            <Text>
-              Certified equipment with on official guarantee from the
-              manufacturer.
+        {/* Employment Support */}
+        <MotionFlex 
+          initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={staggerContainer}
+          direction={{ base: "column-reverse", lg: "row" }} align="center" justify="space-between" mb={32}
+        >
+          <MotionBox variants={fadeInUp} flex={1}>
+            <Box rounded="3xl" overflow="hidden" boxShadow="2xl">
+              <Image src="/img/proworker.jpg" w="100%" h="400px" objectFit="cover" />
+            </Box>
+          </MotionBox>
+          <MotionBox variants={fadeInUp} flex={1} pl={{ lg: 16 }} mb={{ base: 10, lg: 0 }}>
+            <Heading size="xl" color="blue.900" mb={6}>Job Seekers and Manpower Finders</Heading>
+            <Text fontSize="lg" color="gray.600" mb={8}>
+              For organizations who are invested in human capital development, and are looking to establish highly effective career development programs designed to empower people with in-demand skills and have them subsequently integrated into decent and dignified jobs.
             </Text>
-          </Box>
+          </MotionBox>
+        </MotionFlex>
 
-          <Box px={10} borderLeft={{ base: "0", md: "1px solid #eee" }}>
-            <Heading mb={{ base: 0, md: 5 }}>Payment</Heading>
-
-            <Text>
-              You can pay for your purchase in cash, by card, by bank transfer
-              or installmentally.
+        {/* Talent Sourcing */}
+        <MotionFlex 
+          initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={staggerContainer}
+          direction={{ base: "column", lg: "row" }} align="center" justify="space-between" mb={32}
+        >
+          <MotionBox variants={fadeInUp} flex={1} pr={{ lg: 16 }} mb={{ base: 10, lg: 0 }}>
+            <Heading size="xl" color="blue.900" mb={6}>Talent Sourcing & Work Opportunities.</Heading>
+            <Text fontSize="lg" color="gray.600" mb={8}>
+              Quickly find skilled talent for businesses in your entrepreneurship programs. Allow recruiters to automatically recruit talents who meet their requirements, directly from your program.
             </Text>
-          </Box>
+          </MotionBox>
+          <MotionBox variants={fadeInUp} flex={1}>
+            <Box rounded="3xl" overflow="hidden" boxShadow="2xl">
+              <Image src="/img/talentsource.jpg" w="100%" h="400px" objectFit="cover" />
+            </Box>
+          </MotionBox>
+        </MotionFlex>
 
-          <Box px={10} borderLeft={{ base: "0", md: "1px solid #eee" }}>
-            <Heading mb={{ base: 0, md: 5 }}>Return</Heading>
-
-            <Text>
-              Returns are made within 14 days after purchase, in accordance with
-              applicable law.
+        {/* Adapt Training */}
+        <MotionFlex 
+          initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={staggerContainer}
+          direction={{ base: "column-reverse", lg: "row" }} align="center" justify="space-between" mb={32}
+        >
+          <MotionBox variants={fadeInUp} flex={1}>
+            <Box rounded="3xl" overflow="hidden" boxShadow="2xl">
+              <Image src="/img/matchingemployees.jpg" w="100%" h="400px" objectFit="cover" />
+            </Box>
+          </MotionBox>
+          <MotionBox variants={fadeInUp} flex={1} pl={{ lg: 16 }} mb={{ base: 10, lg: 0 }}>
+            <Heading size="xl" color="blue.900" mb={6}>Adapt or Create New Training Programmes.</Heading>
+            <Text fontSize="lg" color="gray.600" mb={8}>
+              Leverage our pre-built project-based online programmes that cover top skills in technology, business, digital marketing as well as life skills and soft skills, or upload your own training programmes.
             </Text>
-          </Box>
-        </Flex>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Link mute href="/store">
+                <Button colorScheme="blue" rounded="full">Explore our Programmes</Button>
+              </Link>
+            </motion.div>
+          </MotionBox>
+        </MotionFlex>
+
+        {/* Guarantee Satisfaction */}
+        <MotionFlex 
+          initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={staggerContainer}
+          direction={{ base: "column", lg: "row" }} align="center" justify="space-between"
+        >
+          <MotionBox variants={fadeInUp} flex={1} pr={{ lg: 16 }} mb={{ base: 10, lg: 0 }}>
+            <Heading size="xl" color="blue.900" mb={6}>Guarantee Customer Satisfaction.</Heading>
+            <Text fontSize="lg" color="gray.600" mb={8}>
+              With over a 100% satisfaction rate and 1k+ successfully placed individuals, we ensure a premium experience for every learner and recruiter on the platform.
+            </Text>
+          </MotionBox>
+          <MotionBox variants={fadeInUp} flex={1}>
+            <Box rounded="3xl" overflow="hidden" boxShadow="2xl">
+              <Image src="/img/herolanding.jpg" w="100%" h="400px" objectFit="cover" />
+            </Box>
+          </MotionBox>
+        </MotionFlex>
       </Section>
 
-     
-         
-    </Layout>
+      {/* About & Customer Stories */}
+      <Section bg="blue.900" textAlign="center">
+        <MotionBox initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={fadeInUp}>
+          <Heading color="blue.300" size="sm" letterSpacing="widest" textTransform="uppercase" mb={4}>About Ace-Trace</Heading>
+          <Text color="gray.200" fontSize="lg" maxW="800px" mx="auto" mb={16}>
+            ACE-TRACE is a technology company that develops AI-powered SaaS solutions for learning and workforce development. Governments, social impact organizations, businesses, and individuals leverage our cutting-edge digital platforms to run their learning and workforce management programs.
+          </Text>
+          
+          <Heading color="white" size="xl" mb={10}>PEOPLE, TECHNOLOGY, INNOVATION.</Heading>
+        </MotionBox>
 
-     
+        <MotionFlex 
+          initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={staggerContainer}
+          direction={{ base: "column", md: "row" }} justify="center" align="stretch" flexWrap="wrap"
+        >
+          <CustomerReview contentText="Leverage our cutting-edge technology solutions to develop and optimize your learning and workforce management processes quickly." />
+          <CustomerReview contentText="The platform has completely transformed how we source talent. The AI matching is remarkably accurate." />
+          <CustomerReview contentText="Building our entrepreneurship programs on this platform saved us months of development time." />
+        </MotionFlex>
+      </Section>
+
+      {/* Want Technology to Work For You */}
+      <Section bg="gray.100" textAlign="center">
+        <MotionFlex initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={fadeInUp} direction="column" align="center">
+          <Heading size="xl" color="blue.900" mb={6}>WANT TECHNOLOGY TO WORK FOR YOU? WE CAN HELP</Heading>
+          <Text fontSize="lg" color="gray.600" maxW="800px" mx="auto" mb={16}>
+            Some of the fastest and most scalable ways to solve the world's biggest problems are digital. We have built and continue to build platforms that allow forward-thinking organizations to improve efficiency, increase knowledge and do good.
+          </Text>
+        </MotionFlex>
+      </Section>
+
+      {/* Final CTA */}
+      <Section bg="white" textAlign="center">
+        <MotionFlex initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp} direction="column" align="center">
+          <Heading size="xl" color="blue.900" mb={6}>Speak with a representative</Heading>
+          <Text fontSize="lg" color="gray.600" maxW="700px" mb={10}>
+            If you'd like to talk about your needs and explore how best we can be of help to you, please schedule a meeting with us. We have solutions for government agencies, businesses, non-profits, students, and job seekers.
+          </Text>
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <Link mute href="/signup"><Button size="lg" colorScheme="blue" px={12} rounded="full" boxShadow="xl">Contact Us</Button></Link>
+          </motion.div>
+        </MotionFlex>
+      </Section>
+
+    </Layout>
   );
 };
 
