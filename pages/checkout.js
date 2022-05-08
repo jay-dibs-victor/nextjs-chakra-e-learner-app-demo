@@ -1,488 +1,257 @@
-import { Box, Flex, Grid, GridItem, Stack } from "@chakra-ui/layout";
-
-
-import { Button, Heading, Icon, Image, Text, TextField } from "components/shared/lib";
-import { Empty, Layout, Loader, PageHeader, Section } from "components/components/pages";
-import { IoHelpCircle } from "react-icons/io5";
-import { GiPayMoney, GiTakeMyMoney } from "react-icons/gi";
-import { FaWallet } from "react-icons/fa";
-import { ImCreditCard } from "react-icons/im";
-import buildSEO from "utils/buildSEO";
-import formatPrice from "utils/formatPrice";
-import useCart from "hooks/useCart";
-import { useEffect, useState } from "react";
-import { Radio, RadioGroup } from "@chakra-ui/radio";
-import http from "utils/http";
-import useAuth from "hooks/useAuth";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import {
+  Box,
+  Flex,
+  Stack,
+  Heading,
+  Text,
+  Container,
+  SimpleGrid,
+  Button,
+  useColorModeValue,
+  Icon,
+  HStack,
+  VStack,
+  Divider,
+  Circle,
+  ScaleFade,
+} from "@chakra-ui/react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  HiCheck,
+  HiShoppingCart,
+  HiTruck,
+  HiCreditCard,
+  HiChevronRight,
+  HiChevronLeft,
+} from "react-icons/hi";
+import { Layout, Section, Loader, Empty } from "components/components/pages";
+import { Image, TextField } from "components/shared/lib";
+import useCart from "hooks/useCart";
 import useToast from "hooks/useToast";
+import http from "utils/http";
+import formatPrice from "utils/formatPrice";
+import buildSEO from "utils/buildSEO";
 
-const pageSEO = buildSEO(
-  "Checkout",
-  "Checkout your products in cart ready to be purchased"
-);
+const pageSEO = buildSEO("Checkout", "Complete your purchase securely");
 
-const MiniSection = ({ children, header, ...rest }) => (
-  <Box
-    rounded="md"
-    shadow="md"
-    pt={4}
-    pb={3}
-    px={3}
-    mb={{ base: 3, md: 5 }}
-    {...rest}
-    bg="brand.white"
-  >
-    <Heading type="h5">{header}</Heading>
+const steps = [
+  { label: "Review Cart", icon: HiShoppingCart },
+  { label: "Shipping", icon: HiTruck },
+  { label: "Payment", icon: HiCreditCard },
+];
 
-    {children}
-  </Box>
-);
+const StepIndicator = ({ activeStep }) => {
+  return (
+    <HStack spacing={4} justify="center" mb={12}>
+      {steps.map((step, idx) => (
+        <React.Fragment key={idx}>
+          <VStack spacing={2} align="center">
+            <Circle
+              size="12"
+              bg={idx <= activeStep ? "blue.500" : "gray.200"}
+              color={idx <= activeStep ? "white" : "gray.400"}
+              shadow={idx === activeStep ? "lg" : "none"}
+              transition="all 0.3s"
+            >
+              <Icon as={idx < activeStep ? HiCheck : step.icon} w={6} h={6} />
+            </Circle>
+            <Text
+              fontSize="xs"
+              fontWeight="bold"
+              color={idx <= activeStep ? "gray.700" : "gray.400"}
+              textTransform="uppercase"
+              letterSpacing="tighter"
+            >
+              {step.label}
+            </Text>
+          </VStack>
+          {idx < steps.length - 1 && (
+            <Box h="2px" w="12" bg={idx < activeStep ? "blue.500" : "gray.200"} mt="-6" transition="all 0.3s" />
+          )}
+        </React.Fragment>
+      ))}
+    </HStack>
+  );
+};
 
-const CartItem = ({ data: item, index, ...rest }) => (
-  <Flex
-    rounded={{ base: "none", md: "md" }}
-    overflow="hidden"
-    py={4}
-    borderTop={index && "1px solid"}
-    borderColor="brand.gray5"
-    {...rest}
-  >
-    <Image w="75px" h="75px" src={item.imageUrl} isProduct dropShadow />
-
-    <Flex
-      alignItems={{ md: "center" }}
-      justifyContent={{ md: "space-between" }}
-      flexDir={{ base: "column", md: "row" }}
-      mx={3}
-      flex={1}
-    >
-      <Box flex={1}>
-        <Heading m={0}>{item.title}</Heading>
-        <Text m={0}>
-          {item.qty} Piece{item.qty > 1 && "s"}
-        </Text>
+const CartItem = ({ item }) => (
+  <Flex align="center" justify="space-between" py={4}>
+    <HStack spacing={4}>
+      <Box p={2} bg="white" rounded="lg" shadow="sm">
+        <Image w="60px" h="60px" src={item.imageUrl} isProduct objectFit="contain" />
       </Box>
-
-      <Text m={0} pl={2} type="nm-bold">
-        {formatPrice("en-NG", item.price, "NGN")}
-      </Text>
-    </Flex>
+      <VStack align="start" spacing={0}>
+        <Text fontWeight="bold">{item.title}</Text>
+        <Text fontSize="sm" color="gray.500">{item.qty} Piece{item.qty > 1 ? "s" : ""}</Text>
+      </VStack>
+    </HStack>
+    <Text fontWeight="bold">{formatPrice("en-NG", item.qtyPrice, "NGN")}</Text>
   </Flex>
 );
 
-const Field = ({ data }) => (
-  <GridItem>
-    <TextField
-      // State
-      label={data.label}
-      id={data.label}
-      value={data.value}
-      onChange={() => {}}
-      disabled
-      //
-      // Styles
-      flex={1}
-      bg="brand.white"
-      formGroup={{ m: 0 }}
-    />
-  </GridItem>
-);
-
-const MiniForm = ({ data }) => (
-  <Grid templateColumns={{ base: "1fr", md: "1fr 1fr 1fr" }} columnGap={3}>
-    {data.map((field, index) => (
-      <Field key={index} data={field} />
-    ))}
-  </Grid>
-);
-
-const TotalSection = ({ cart, cost, ...rest }) => {
-  return (
-    <MiniSection
-      ml={{ base: 0, md: 5 }}
-      flex={0.5}
-      alignSelf="flex-start"
-      pos="sticky"
-      // Have to consider the `height` of the `Header` in Layout
-      top={{ base: "64px", lg: "70px" }}
-      //
-      header="Total"
-      {...rest}
-    >
-      <Grid templateColumns="1.4fr .6fr">
-        <GridItem mb={2}>
-          <Text type="sm-regular" color="brand.gray2" w="150px" m={0}>
-            {cart?.count} Piece{cart?.count > 1 && "s"} of item
-            {cart?.count > 1 && "s"} in the amount of:
-          </Text>
-        </GridItem>
-        <GridItem textAlign="right">
-          {cart && (
-            <Text type="nm-bold">
-              {formatPrice("en-NG", cost?.cartTotalPrice || "0.00", "NGN")}
-            </Text>
-          )}
-        </GridItem>
-
-        <GridItem mb={8}>
-          <Text type="sm-regular" color="brand.gray2" m={0}>
-            delivery cost:
-          </Text>
-        </GridItem>
-        <GridItem textAlign="right">
-          <Text type="nm-bold">
-            {formatPrice("en-NG", cost?.deliveryFee || "0.00", "NGN")}
-          </Text>
-        </GridItem>
-
-        <GridItem>
-          <Text type="nm-bold" m={0}>
-            Total Amount:
-          </Text>
-        </GridItem>
-        <GridItem textAlign="right">
-          <Text type="md-bold" m={0}>
-            {formatPrice("en-NG", cost?.totalPrice || "0.00", "NGN")}
-          </Text>
-        </GridItem>
-      </Grid>
-    </MiniSection>
-  );
-};
-
-const PaymentTypeTab = ({ cost, setOrderData }) => {
-  const [active, setActive] = useState("Installment");
-  const [instalmentInitialAmt, setInstalmentInitialAmt] = useState("500");
-
-  useEffect(() => {
-    setOrderData((prev) => ({
-      ...prev,
-      initialAmount: 0,
-      isOutrightPurchase: active === "Installment" ? false : true,
-    }));
-  }, [active]);
-
-  useEffect(() => {
-    setOrderData((prev) => ({
-      ...prev,
-      initialAmount: +instalmentInitialAmt,
-    }));
-  }, [instalmentInitialAmt]);
-
-  const handleInstalmentChange = ({ target: { value } }) => {
-    setInstalmentInitialAmt(value);
-  };
-
-  const renderControl = (icon, text) => (
-    <Flex
-      py={{ base: 3, md: 4, lg: 6 }}
-      px={5}
-      mr={{ base: 3, md: 4, lg: 6 }}
-      bg="brand.white"
-      alignItems="center"
-      rounded="md"
-      cursor="pointer"
-      _hover={{ color: "brand.success" }}
-      tabIndex={1}
-      // Active State
-      color={active === text ? "brand.success" : "inherit"}
-      border={active === text ? "2px solid" : "none"}
-      onClick={() => setActive(text)}
-    >
-      <Icon mr={3} fontSize={{ base: "200%", md: "150%", lg: "200%" }}>
-        {icon}
-      </Icon>
-
-      <Text d={{ base: "block", md: "none" }} type="nm-bold" m={0}>
-        {text}
-      </Text>
-      <Text d={{ base: "none", md: "block" }} type="md-regular" m={0}>
-        {text} Payment
-      </Text>
-    </Flex>
-  );
-
-  const renderInstantTabBtn = () => renderControl(<GiTakeMyMoney />, "Instant");
-  const renderInstalmentTabBtn = () =>
-    renderControl(<GiPayMoney />, "Installment");
-
-  const InstantContent = (
-    <Flex
-      alignItems={{ base: "flex-start", md: "center" }}
-      color="brand.success"
-    >
-      <Icon mr={1} pt={{ base: 1, md: 0 }} fontSize="120%">
-        <IoHelpCircle />
-      </Icon>
-
-      <Text m={0} type="nm-bold">
-        You're to pay the total{" "}
-        <Text as="span" type="md-bold">
-          {formatPrice("en-NG", cost.totalPrice, "NGN")}
-        </Text>{" "}
-        at once
-      </Text>
-    </Flex>
-  );
-  const InstalmentContent = (
-    <>
-      <Heading color="brand.success">Instalment Process</Heading>
-
-      <Text mb={3}>Please fill the to choose how you are going to pay us</Text>
-
-      <Flex
-        alignItems={{ base: "flex-start", md: "center" }}
-        mb={10}
-        color="brand.success"
-      >
-        <Icon mr={1} fontSize="120%">
-          <IoHelpCircle />
-        </Icon>
-
-        <Text m={0}>The span for this payment only last for 3 months</Text>
-      </Flex>
-
-      <TextField
-        label="Initial Payment"
-        id="initial-payment"
-        placeholder="E.g. 5000"
-        value={instalmentInitialAmt}
-        onChange={handleInstalmentChange}
-        formGroup={{ m: 0, w: { base: "100%", lg: "auto" } }}
-        w="100%"
-      />
-    </>
-  );
-
-  const renderContent = () =>
-    active === "Instant" ? InstantContent : InstalmentContent;
-
-  return (
-    <>
-      <Flex mb={3}>
-        {renderInstantTabBtn()}
-        {renderInstalmentTabBtn()}
-      </Flex>
-
-      <Box bg="brand.gray6" p={3} rounded="md">
-        {renderContent()}
-      </Box>
-    </>
-  );
-};
-
-const PaymentMethod = ({ cart, router, orderData, setOrderData }) => {
-  const toast = useToast();
-
-  const [method, setMethod] = useState("card");
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    try {
-      if (!orderData.isOutrightPurchase && orderData.initialAmount < 500) {
-        toast.displayToast({
-          description:
-            "The `Initial Payment` in `Payment type`, must be from '500'",
-          duration: 5000,
-        });
-      } else {
-        const {
-          data: {
-            data: {
-              cardPaymentUrl: {
-                data: { authorization_url },
-              },
-            },
-          },
-        } = await http.post("/orders", orderData);
-
-        cart.resetCart();
-
-        router.push(authorization_url);
-      }
-    } catch (err) {
-      toast.displayToast({
-        description: err.message,
-        duration: 5000,
-      });
-    }
-  };
-
-  useEffect(() => {
-    setOrderData((prev) => ({
-      ...prev,
-      paymentSource: method.toLowerCase(),
-      walletType: "customer",
-    }));
-  }, [method]);
-
-  return (
-    <Box as="form" onSubmit={handleSubmit}>
-      <RadioGroup
-        onChange={setMethod}
-        value={method}
-        w="100%"
-        mb={6}
-        color="brand.secondary"
-      >
-        <Stack spacing={3}>
-          <Radio value="wallet">
-            <Flex alignItems="center" cursor="pointer">
-              <Text mute ml={3} mr={4} type="nm-bold">
-                Wallet
-              </Text>
-
-              <Icon opacity={0.7}>
-                <FaWallet />
-              </Icon>
-            </Flex>
-          </Radio>
-
-          <Radio value="card">
-            <Flex alignItems="center" cursor="pointer">
-              <Text mute ml={3} mr={4} type="nm-bold">
-                Card
-              </Text>
-
-              <Icon opacity={0.7}>
-                <ImCreditCard />
-              </Icon>
-            </Flex>
-          </Radio>
-        </Stack>
-      </RadioGroup>
-
-      <Button
-        w={{ base: "100%", lg: "auto" }}
-        mt={{ base: 1, lg: 0 }}
-        variant="secondary"
-        type="submit"
-      >
-        Make The Payment
-      </Button>
-    </Box>
-  );
-};
-
-const Checkout = () => {
-  const auth = useAuth();
-  const router = useRouter();
+const CheckoutPage = () => {
   const cart = useCart();
+  const router = useRouter();
+  const toast = useToast();
+  const [activeStep, setActiveStep] = useState(0);
+  const bgColor = useColorModeValue("gray.50", "gray.900");
+  const cardBg = useColorModeValue("white", "gray.800");
 
-  const [cost, setCost] = useState({});
-
-  // Data to be sent for an `order initialization`, to the server
-  const [orderData, setOrderData] = useState({
-    walletType: "",
-    customerRefCode: "",
-    paymentSource: "",
-    // if false ? instalment : instant
-    isOutrightPurchase: false,
-    initialAmount: 0,
+  const [formData, setFormData] = useState({
+    name: "Test User",
+    email: "user@example.com",
+    phone: "+234 800 000 000",
+    address: "123 Business St, Lagos",
+    state: "Lagos",
   });
 
-  // useEffect(() => {
-  //   setOrderData((prev) => ({
-  //     ...prev,
-  //     customerRefCode: auth.currentUser.refCode,
-  //   }));
-  // }, [auth.currentUser.refCode]);
+  const nextStep = () => setActiveStep((prev) => Math.min(prev + 1, steps.length - 1));
+  const prevStep = () => setActiveStep((prev) => Math.max(prev - 1, 0));
 
-  useEffect(() => {
-    if (cart?.isReady) {
-      const deliveryFee = 0;
-
-      setCost({
-        deliveryFee,
-        cartTotalPrice: cart?.total,
-        totalPrice: cart?.total + deliveryFee,
+  const handlePlaceOrder = async () => {
+    try {
+      // Simulate order placement
+      toast.displayToast({
+        title: "Order Received",
+        description: "Your order has been placed successfully!",
+        status: "success",
       });
+      cart.resetCart();
+      router.push("/store");
+    } catch (err) {
+      toast.displayToast({ title: "Error", description: err.message, status: "error" });
     }
-  }, [cart?.isReady, cart?.total]);
-
-  const forms = {
-    contactInfo: [
-      { label: "Phone Number", value: "(+234) 70-xxx-xxx-xx" },
-      { label: "Name", value: "Test Name" },
-      { label: "Email", value: "samaplemail@sample.com" },
-    ],
-    personalInfo: [
-      { label: "State", value: "Lagos state" },
-      { label: "Nearest Bus-stop", value: "Ojuelegba" },
-      { label: "Address", value: "85 Ayilara street, ojuelegba." },
-    ],
   };
 
+  if (cart?.isEmpty) return <Layout SEO={pageSEO}><Container py={20}><Empty /></Container></Layout>;
+
   return (
-    <Layout SEO={pageSEO} bg="brand.gray6">
-      {/* <PageHeader>My Checkout</PageHeader> */}
+    <Layout SEO={pageSEO} bg={bgColor}>
+      <Container maxW="container.xl" py={12}>
+        <StepIndicator activeStep={activeStep} />
 
-      {cart?.isEmpty ? (
-        <Empty />
-      ) : (
-        <Section pb={20}>
-          <Flex>
-            {/* Main Content */}
-            <Box flex={1.5}>
-              <MiniSection header="Products in Cart">
-                {cart?.loading ? (
-                  <Box pos="relative" h="200px">
-                    <Loader pos="absolute" top={0} left={0} w="100%" h="100%" />
-                  </Box>
-                ) : (
-                  cart?.data?.map((item, index) => (
-                    <CartItem key={index} index={index} data={item} />
-                  ))
-                )}
-              </MiniSection>
+        <SimpleGrid columns={{ base: 1, lg: 3 }} spacing={10}>
+          {/* Main Wizard */}
+          <GridItem colSpan={{ base: 1, lg: 2 }}>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeStep}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.3 }}
+              >
+                <Box bg={cardBg} p={8} rounded="2xl" shadow="sm" borderWidth="1px">
+                  {activeStep === 0 && (
+                    <VStack align="stretch" spacing={6}>
+                      <Heading size="md">Review Your Items</Heading>
+                      <Divider />
+                      <Stack spacing={4}>
+                        {cart.data?.map((item) => <CartItem key={item.id} item={item} />)}
+                      </Stack>
+                    </VStack>
+                  )}
 
-              <MiniSection header="Contact Information">
-                <MiniForm data={forms.contactInfo} />
+                  {activeStep === 1 && (
+                    <VStack align="stretch" spacing={6}>
+                      <Heading size="md">Shipping Information</Heading>
+                      <Divider />
+                      <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
+                        <TextField label="Full Name" value={formData.name} />
+                        <TextField label="Email" value={formData.email} />
+                        <TextField label="Phone" value={formData.phone} />
+                        <TextField label="Address" value={formData.address} />
+                        <TextField label="State" value={formData.state} />
+                      </SimpleGrid>
+                    </VStack>
+                  )}
 
-                <Button mute mt={6} mb={1} color="brand.success">
-                  Another person will receive this order
-                </Button>
-              </MiniSection>
+                  {activeStep === 2 && (
+                    <VStack align="stretch" spacing={6}>
+                      <Heading size="md">Payment Method</Heading>
+                      <Divider />
+                      <SimpleGrid columns={1} spacing={4}>
+                         <Box p={6} border="2px solid" borderColor="blue.500" bg="blue.50" rounded="xl" cursor="pointer">
+                            <HStack spacing={4}>
+                               <Icon as={HiCreditCard} w={8} h={8} color="blue.500" />
+                               <VStack align="start" spacing={0}>
+                                  <Text fontWeight="bold">Credit / Debit Card</Text>
+                                  <Text fontSize="sm" color="gray.500">Pay securely with your card via Paystack</Text>
+                               </VStack>
+                            </HStack>
+                         </Box>
+                      </SimpleGrid>
+                    </VStack>
+                  )}
 
-              {/* Total Section for only Mobile viewers */}
-              <TotalSection
-                pos="unset"
-                d={{ base: "block", md: "none" }}
-                cart={cart}
-                cost={cost}
-              />
+                  <Flex justify="space-between" mt={12}>
+                    <Button
+                      leftIcon={<HiChevronLeft />}
+                      onClick={prevStep}
+                      disabled={activeStep === 0}
+                      variant="ghost"
+                    >
+                      Back
+                    </Button>
+                    {activeStep < steps.length - 1 ? (
+                      <Button
+                        rightIcon={<HiChevronRight />}
+                        onClick={nextStep}
+                        colorScheme="blue"
+                        px={10}
+                      >
+                        Next Step
+                      </Button>
+                    ) : (
+                      <Button
+                        colorScheme="green"
+                        px={10}
+                        onClick={handlePlaceOrder}
+                        size="lg"
+                        shadow="xl"
+                        _hover={{ transform: "scale(1.05)" }}
+                      >
+                        Place Order
+                      </Button>
+                    )}
+                  </Flex>
+                </Box>
+              </motion.div>
+            </AnimatePresence>
+          </GridItem>
 
-              {cart?.isReady && (
-                <>
-                  <MiniSection header="Payment type">
-                    <PaymentTypeTab cost={cost} setOrderData={setOrderData} />
-                  </MiniSection>
-
-                  <MiniSection header="Payment method">
-                    <PaymentMethod
-                      cart={cart}
-                      router={router}
-                      orderData={orderData}
-                      setOrderData={setOrderData}
-                    />
-                  </MiniSection>
-                </>
-              )}
+          {/* Sidebar Summary */}
+          <GridItem>
+            <Box bg={cardBg} p={8} rounded="2xl" shadow="lg" position="sticky" top="100px">
+              <Heading size="md" mb={6}>Order Summary</Heading>
+              <VStack align="stretch" spacing={4}>
+                <Flex justify="space-between">
+                  <Text color="gray.500">Subtotal</Text>
+                  <Text fontWeight="bold">{formatPrice("en-NG", cart.total, "NGN")}</Text>
+                </Flex>
+                <Flex justify="space-between">
+                  <Text color="gray.500">Shipping</Text>
+                  <Text fontWeight="bold" color="green.500">FREE</Text>
+                </Flex>
+                <Divider />
+                <Flex justify="space-between" align="center">
+                  <Text fontSize="lg" fontWeight="bold">Total</Text>
+                  <Heading size="lg" color="blue.500">
+                    {formatPrice("en-NG", cart.total, "NGN")}
+                  </Heading>
+                </Flex>
+              </VStack>
             </Box>
-
-            {/* Aside */}
-            <TotalSection
-              d={{ base: "none", md: "block" }}
-              cart={cart}
-              cost={cost}
-            />
-          </Flex>
-        </Section>
-      )}
+          </GridItem>
+        </SimpleGrid>
+      </Container>
     </Layout>
   );
 };
 
-export default Checkout;
+const GridItem = ({ children, ...props }) => <Box {...props}>{children}</Box>;
+
+export default CheckoutPage;
+
