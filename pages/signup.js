@@ -71,7 +71,7 @@ const SignupPage = () => {
     try {
       const body = { ...fieldsObj, refCode: router.query.ref };
       await http.post("/auth/signup", body);
-      
+
       toast.displayToast({
         title: "Account created.",
         description: "We've created your account for you.",
@@ -92,8 +92,8 @@ const SignupPage = () => {
   return (
     <Layout>
       <Flex minH={"100vh"} align={"center"} justify={"center"} bg={useColorModeValue("gray.50", "gray.800")}>
-        <Stack spacing={0} mx={"auto"} maxW={"lg"} py={12} px={6} direction={{ base: "column", md: "row" }} w="full" maxW="1200px" rounded="3xl" overflow="hidden" shadow="2xl">
-          
+        <Stack spacing={0} mx={"auto"} maxW={"lg"} py={12} px={6} direction={{ base: "column", md: "row" }} w="full" rounded="3xl" overflow="hidden" shadow="2xl">
+
           {/* Form Side */}
           <Box
             flex={1}
@@ -246,4 +246,3 @@ const SignupPage = () => {
 
 export default SignupPage;
 
-  

@@ -79,7 +79,7 @@ const SignInPage = () => {
   return (
     <Layout>
       <Flex minH={"100vh"} align={"center"} justify={"center"} bg={useColorModeValue("gray.50", "gray.800")}>
-        <Stack spacing={0} mx={"auto"} maxW={"lg"} py={12} px={6} direction={{ base: "column", md: "row" }} w="full" maxW="1200px" rounded="3xl" overflow="hidden" shadow="2xl">
+        <Stack spacing={0} mx={"auto"} maxW={"lg"} py={12} px={6} direction={{ base: "column", md: "row" }} w="full" rounded="3xl" overflow="hidden" shadow="2xl">
           {/* Image Side */}
           <Box
             display={{ base: "none", md: "block" }}
