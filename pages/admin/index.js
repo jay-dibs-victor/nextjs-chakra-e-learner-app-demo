@@ -101,6 +101,8 @@ const statusColor = (s) =>
 const AdminDashboard = () => {
   const cardBg = useColorModeValue("white", "gray.700");
   const bg = useColorModeValue("gray.50", "gray.900");
+  const itemHoverBg = useColorModeValue("gray.50", "gray.600");
+  const cardBorderColor = useColorModeValue("gray.100", "gray.600");
 
   return (
     <LayoutAdmin>
@@ -130,7 +132,7 @@ const AdminDashboard = () => {
               rounded="2xl"
               shadow="sm"
               borderWidth="1px"
-              borderColor={useColorModeValue("gray.100", "gray.600")}
+              borderColor={cardBorderColor}
             >
               <Flex justify="space-between" align="flex-start">
                 <Box>
@@ -201,7 +203,7 @@ const AdminDashboard = () => {
               </Thead>
               <Tbody>
                 {recentOrders.map((order) => (
-                  <Tr key={order.id} _hover={{ bg: useColorModeValue("gray.50", "gray.600") }} transition="background 0.15s">
+                  <Tr key={order.id} _hover={{ bg: itemHoverBg }} transition="background 0.15s">
                     <Td fontWeight="bold" color="blue.500">{order.id}</Td>
                     <Td>{order.customer}</Td>
                     <Td color="gray.500">{order.date}</Td>

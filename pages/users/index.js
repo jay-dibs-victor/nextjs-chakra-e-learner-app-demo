@@ -58,6 +58,8 @@ const DashboardOverview = () => {
   const auth = useAuth();
   const { me } = auth;
   const bgColor = useColorModeValue("gray.50", "gray.800");
+  const cardBg = useColorModeValue("white", "gray.700");
+  const itemHoverBg = useColorModeValue("gray.50", "gray.600");
 
   return (
     <Layout SEO={pageSEO} bg={bgColor}>
@@ -89,7 +91,7 @@ const DashboardOverview = () => {
 
         <SimpleGrid columns={{ base: 1, lg: 2 }} spacing={10}>
           {/* Recent Orders */}
-          <Box bg={useColorModeValue("white", "gray.700")} p={8} rounded="2xl" shadow="sm" borderWidth="1px">
+          <Box bg={cardBg} p={8} rounded="2xl" shadow="sm" borderWidth="1px">
             <Flex justify="space-between" align="center" mb={6}>
               <Heading size="md">Recent Orders</Heading>
               <Link href="/users/orders" passHref>
@@ -115,7 +117,7 @@ const DashboardOverview = () => {
           </Box>
 
           {/* Account Quick Links */}
-          <Box bg={useColorModeValue("white", "gray.700")} p={8} rounded="2xl" shadow="sm" borderWidth="1px">
+          <Box bg={cardBg} p={8} rounded="2xl" shadow="sm" borderWidth="1px">
             <Heading size="md" mb={6}>Account Settings</Heading>
             <VStack align="stretch" spacing={2}>
               {[
@@ -128,7 +130,7 @@ const DashboardOverview = () => {
                   <Flex
                     p={4}
                     rounded="xl"
-                    _hover={{ bg: useColorModeValue("gray.50", "gray.600") }}
+                    _hover={{ bg: itemHoverBg }}
                     transition="all 0.2s"
                     cursor="pointer"
                     align="center"
