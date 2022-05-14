@@ -115,7 +115,7 @@ const VerifyAccountPage = () => {
     } else {
       router.replace("/store");
     }
-  }, [auth.currentUser]);
+  }, [auth.currentUser, router]);
 
   return (
     <Layout SEO={pageSEO}>

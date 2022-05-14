@@ -2,7 +2,7 @@
 
 
 
-import { Button, Heading, Icon, Link } from "components/components/pages/";
+import { Button, Heading, Icon, Link } from "components/shared/lib";
 import { Section } from "../Section/Section";
 import { GiShoppingCart } from "react-icons/gi";
 import { AiOutlineLeft } from "react-icons/ai";
