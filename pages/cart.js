@@ -5,11 +5,13 @@ import {
   Grid,
   GridItem,
   Heading,
-  Center,
   Container,
   Stack,
   useColorModeValue,
   Divider,
+  VStack,
+  HStack,
+  Icon,
 } from "@chakra-ui/react";
 import {
   Button,
@@ -21,148 +23,130 @@ import {
 } from "components/shared/lib";
 import {
   Layout,
-  PageHeader,
   Section,
   Loader,
   Empty,
 } from "components/components/pages";
 import useCart from "hooks/useCart";
-import { HiArrowLeft, HiArrowRight, HiTrash } from "react-icons/hi";
+import { HiArrowLeft, HiArrowRight, HiTrash, HiShoppingCart } from "react-icons/hi";
 import { motion, AnimatePresence } from "framer-motion";
 import buildSEO from "utils/buildSEO";
 import formatPrice from "utils/formatPrice";
 
-const pageSEO = buildSEO("Cart", "Your items in cart");
+const pageSEO = buildSEO("Your Cart", "Review and manage your shopping cart items");
 
 const MotionBox = motion(Box);
 
-const Table = ({
-  rows,
+const CartItem = ({
+  item,
+  index,
   handleQtyIncrease,
   handleQtyDecrease,
   handleItemDelete,
 }) => {
-  const bgColor = useColorModeValue("white", "gray.700");
-  const borderColor = useColorModeValue("gray.200", "gray.600");
+  const borderColor = useColorModeValue("gray.100", "gray.600");
+  const itemBg = useColorModeValue("white", "gray.800");
 
   return (
-    <Box bg={bgColor} p={{ base: 4, md: 8 }} rounded="2xl" shadow="sm" borderWidth="1px" borderColor={borderColor}>
-      {/* Head */}
+    <MotionBox
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.95 }}
+      transition={{ duration: 0.4, delay: index * 0.1 }}
+      bg={itemBg}
+      p={{ base: 4, md: 6 }}
+      rounded="2xl"
+      shadow="sm"
+      borderWidth="1px"
+      borderColor={borderColor}
+      mb={4}
+      _hover={{ shadow: "md", borderColor: "blue.200" }}
+    >
       <Grid
-        templateColumns="3fr 1fr 1fr .5fr"
-        display={{ base: "none", md: "grid" }}
-        pb={4}
-        borderBottom="2px solid"
-        borderColor={borderColor}
-        mb={4}
+        templateColumns={{ base: "1fr", md: "4fr 2fr 2fr 0.5fr" }}
+        gap={6}
+        alignItems="center"
       >
         <GridItem>
-          <Text fontWeight="bold" color="gray.500" fontSize="sm" textTransform="uppercase">Product</Text>
+          <Flex align="center">
+            <Box rounded="xl" overflow="hidden" shadow="sm" bg="white" p={2} border="1px solid" borderColor="gray.100">
+              <Image
+                w="100px"
+                h="100px"
+                src={item.imageUrl}
+                isProduct
+                objectFit="contain"
+              />
+            </Box>
+            <VStack align="start" ml={5} spacing={1}>
+              <Text fontWeight="bold" fontSize="lg" lineHeight="tight">
+                {item.title}
+              </Text>
+              <Text fontSize="sm" color="gray.500" noOfLines={2}>
+                {item.description}
+              </Text>
+              <Badge colorScheme="blue" variant="subtle" rounded="full" px={2}>
+                In Stock
+              </Badge>
+            </VStack>
+          </Flex>
         </GridItem>
+
         <GridItem>
-          <Text fontWeight="bold" color="gray.500" fontSize="sm" textTransform="uppercase">Quantity</Text>
+          <VStack align={{ base: "start", md: "center" }} spacing={1}>
+            <Text display={{ base: "block", md: "none" }} fontSize="xs" color="gray.500" fontWeight="bold">QUANTITY</Text>
+            <Counter
+              qty={item.qty}
+              onQtyIncrease={() => handleQtyIncrease(item)}
+              onQtyDecrease={() => handleQtyDecrease(item)}
+            />
+          </VStack>
         </GridItem>
+
         <GridItem>
-          <Text fontWeight="bold" color="gray.500" fontSize="sm" textTransform="uppercase">Price</Text>
+          <VStack align={{ base: "start", md: "end" }} spacing={0}>
+            <Text display={{ base: "block", md: "none" }} fontSize="xs" color="gray.500" fontWeight="bold">PRICE</Text>
+            <Text fontWeight="black" fontSize="xl" color="blue.600">
+              {formatPrice("en-NG", item.qtyPrice, "NGN")}
+            </Text>
+            <Text fontSize="xs" color="gray.400">
+              {formatPrice("en-NG", item.price, "NGN")} / unit
+            </Text>
+          </VStack>
         </GridItem>
+
         <GridItem textAlign="right">
-           <Text fontWeight="bold" color="gray.500" fontSize="sm" textTransform="uppercase">Action</Text>
+          <IconButton
+            onClick={() => handleItemDelete(item.id)}
+            variant="ghost"
+            colorScheme="red"
+            icon={<HiTrash size={20} />}
+            rounded="full"
+            aria-label="Remove item"
+          />
         </GridItem>
       </Grid>
-
-      {/* Body */}
-      <AnimatePresence>
-        {rows.map((item, index) => (
-          <MotionBox
-            key={item.id || index}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 20 }}
-            transition={{ duration: 0.3 }}
-          >
-            <Grid
-              templateColumns={{ base: "1fr", md: "3fr 1fr 1fr .5fr" }}
-              py={6}
-              borderTop={index !== 0 ? "1px solid" : "none"}
-              borderColor={borderColor}
-              alignItems="center"
-            >
-              <GridItem>
-                <Flex align="center">
-                  <Box rounded="xl" overflow="hidden" shadow="sm" bg="white" p={2}>
-                    <Image
-                      w="80px"
-                      h="80px"
-                      src={item.imageUrl}
-                      isProduct
-                      objectFit="contain"
-                    />
-                  </Box>
-
-                  <Box ml={5}>
-                    <Text mb={1} fontWeight="bold" fontSize="lg">
-                      {item.title}
-                    </Text>
-                    <Text m={0} fontSize="sm" color="gray.500">{item.description}</Text>
-                  </Box>
-                </Flex>
-              </GridItem>
-
-              <GridItem display={{ base: "none", md: "block" }}>
-                <Counter
-                  qty={item.qty}
-                  onQtyIncrease={handleQtyIncrease.bind(null, item)}
-                  onQtyDecrease={handleQtyDecrease.bind(null, item)}
-                />
-              </GridItem>
-
-              <GridItem display={{ base: "none", md: "block" }}>
-                <Text m={0} fontWeight="bold" fontSize="lg">
-                  {formatPrice("en-NG", item.qtyPrice, "NGN")}
-                </Text>
-              </GridItem>
-
-              <GridItem display={{ base: "none", md: "block" }} textAlign="right">
-                <IconButton
-                  onClick={handleItemDelete.bind(null, item.id)}
-                  variant="ghost"
-                  colorScheme="red"
-                  icon={<HiTrash />}
-                  rounded="full"
-                />
-              </GridItem>
-
-              {/* Mobile Only */}
-              <GridItem display={{ base: "block", md: "none" }} mt={4}>
-                <Flex justifyContent="space-between" alignItems="center">
-                  <Counter
-                    qty={item.qty}
-                    onQtyIncrease={handleQtyIncrease.bind(null, item)}
-                    onQtyDecrease={handleQtyDecrease.bind(null, item)}
-                  />
-                  <Text fontWeight="bold" fontSize="lg">
-                    {formatPrice("en-NG", item.qtyPrice, "NGN")}
-                  </Text>
-                  <IconButton
-                    onClick={handleItemDelete.bind(null, item.id)}
-                    variant="ghost"
-                    colorScheme="red"
-                    icon={<HiTrash />}
-                    rounded="full"
-                  />
-                </Flex>
-              </GridItem>
-            </Grid>
-          </MotionBox>
-        ))}
-      </AnimatePresence>
-    </Box>
+    </MotionBox>
   );
 };
+
+const Badge = ({ children, ...props }) => (
+  <Box
+    as="span"
+    px={2}
+    py={0.5}
+    fontSize="xs"
+    fontWeight="bold"
+    {...props}
+  >
+    {children}
+  </Box>
+);
 
 const Cart = () => {
   const cart = useCart();
   const bgColor = useColorModeValue("gray.50", "gray.900");
+  const summaryBg = useColorModeValue("white", "gray.800");
 
   const handleQtyIncrease = (item) => cart.increaseQty(item);
   const handleQtyDecrease = (item) => cart.decreaseQty(item);
@@ -170,87 +154,123 @@ const Cart = () => {
 
   return (
     <Layout SEO={pageSEO} bg={bgColor}>
-      <Container maxW="container.xl" py={12}>
-        <VStack spacing={8} align="stretch">
-          <Box textAlign="center" mb={4}>
-            <Heading size="2xl" mb={2}>Your Shopping Cart</Heading>
-            <Text color="gray.500">
-              {cart?.count || 0} items currently in your bag
-            </Text>
-          </Box>
+      <Container maxW="container.xl" py={16}>
+        <VStack spacing={12} align="stretch">
+          <Flex justify="space-between" align="end" borderBottom="2px solid" borderColor="blue.500" pb={4}>
+            <VStack align="start" spacing={1}>
+              <Heading size="2xl">Shopping Bag</Heading>
+              <HStack color="gray.500">
+                <Icon as={HiShoppingCart} />
+                <Text fontWeight="medium">
+                  {cart?.count || 0} {cart?.count === 1 ? "item" : "items"} ready for checkout
+                </Text>
+              </HStack>
+            </VStack>
+            <Link href="/store" passHref>
+              <Button
+                as="a"
+                leftIcon={<HiArrowLeft />}
+                variant="ghost"
+                colorScheme="blue"
+                rounded="full"
+                display={{ base: "none", md: "flex" }}
+              >
+                Back to Store
+              </Button>
+            </Link>
+          </Flex>
 
           {cart?.isEmpty ? (
             <Empty />
           ) : (
-            <>
-              <Section>
+            <Grid templateColumns={{ base: "1fr", lg: "1fr 350px" }} gap={10}>
+              <GridItem>
                 {cart?.loading ? (
                   <Loader />
                 ) : (
-                  cart?.data && (
-                    <Table
-                      rows={cart?.data}
-                      handleQtyIncrease={handleQtyIncrease}
-                      handleQtyDecrease={handleQtyDecrease}
-                      handleItemDelete={handleItemDelete}
-                    />
-                  )
+                  <AnimatePresence>
+                    {cart?.data?.map((item, index) => (
+                      <CartItem
+                        key={item.id}
+                        item={item}
+                        index={index}
+                        handleQtyIncrease={handleQtyIncrease}
+                        handleQtyDecrease={handleQtyDecrease}
+                        handleItemDelete={handleItemDelete}
+                      />
+                    ))}
+                  </AnimatePresence>
                 )}
-              </Section>
+              </GridItem>
 
-              {/* Summary Section */}
-              {!cart?.loading && cart?.data && (
-                <Box bg={useColorModeValue("white", "gray.700")} p={8} rounded="2xl" shadow="lg">
-                  <Flex
-                    direction={{ base: "column", md: "row" }}
-                    justify="space-between"
-                    align="center"
-                    gap={8}
-                  >
-                    <Box>
-                      <Link href="/store" passHref>
-                        <Button
-                          as="a"
-                          leftIcon={<HiArrowLeft />}
-                          variant="ghost"
-                          colorScheme="blue"
-                          rounded="full"
-                        >
-                          Continue Shopping
-                        </Button>
-                      </Link>
-                    </Box>
-
-                    <HStack spacing={12} align="center">
+              <GridItem>
+                <VStack
+                  spacing={6}
+                  align="stretch"
+                  position="sticky"
+                  top="100px"
+                  bg={summaryBg}
+                  p={8}
+                  rounded="3xl"
+                  shadow="2xl"
+                  borderWidth="1px"
+                  borderColor={useColorModeValue("gray.100", "gray.700")}
+                >
+                  <Heading size="md">Order Summary</Heading>
+                  
+                  <VStack spacing={4} align="stretch">
+                    <Flex justify="space-between">
+                      <Text color="gray.500">Subtotal</Text>
+                      <Text fontWeight="bold">{formatPrice("en-NG", cart.total, "NGN")}</Text>
+                    </Flex>
+                    <Flex justify="space-between">
+                      <Text color="gray.500">Shipping</Text>
+                      <Text color="green.500" fontWeight="bold">FREE</Text>
+                    </Flex>
+                    <Divider />
+                    <Flex justify="space-between" align="center">
+                      <Text fontSize="lg" fontWeight="bold">Total</Text>
                       <VStack align="end" spacing={0}>
-                        <Text color="gray.500" fontSize="sm">Estimated Total</Text>
-                        <Heading size="xl" color="blue.500">
+                        <Text fontSize="2xl" fontWeight="black" color="blue.500">
                           {formatPrice("en-NG", cart.total, "NGN")}
-                        </Heading>
+                        </Text>
+                        <Text fontSize="xs" color="gray.400">Including all taxes</Text>
                       </VStack>
+                    </Flex>
+                  </VStack>
 
-                      <Link href="/checkout" passHref>
-                        <Button
-                          as="a"
-                          size="lg"
-                          colorScheme="blue"
-                          rightIcon={<HiArrowRight />}
-                          rounded="full"
-                          px={10}
-                          h={16}
-                          fontSize="lg"
-                          shadow="xl"
-                          _hover={{ transform: "scale(1.05)", shadow: "2xl" }}
-                          transition="all 0.2s"
-                        >
-                          Checkout Now
-                        </Button>
-                      </Link>
+                  <Link href="/checkout" passHref>
+                    <Button
+                      as="a"
+                      size="lg"
+                      colorScheme="blue"
+                      rightIcon={<HiArrowRight />}
+                      rounded="full"
+                      w="full"
+                      h={16}
+                      fontSize="xl"
+                      shadow="xl"
+                      _hover={{ transform: "translateY(-2px)", shadow: "2xl" }}
+                      _active={{ transform: "translateY(0)" }}
+                      transition="all 0.2s"
+                    >
+                      Checkout Now
+                    </Button>
+                  </Link>
+
+                  <VStack spacing={2} pt={4}>
+                    <HStack fontSize="xs" color="gray.500">
+                      <Icon as={HiArrowLeft} />
+                      <Text>Easy 14-day returns</Text>
                     </HStack>
-                  </Flex>
-                </Box>
-              )}
-            </>
+                    <HStack fontSize="xs" color="gray.500">
+                      <Icon as={HiArrowRight} />
+                      <Text>Secure SSL encryption</Text>
+                    </HStack>
+                  </VStack>
+                </VStack>
+              </GridItem>
+            </Grid>
           )}
         </VStack>
       </Container>
@@ -258,8 +278,6 @@ const Cart = () => {
   );
 };
 
-const VStack = ({ children, ...props }) => <Stack direction="column" {...props}>{children}</Stack>;
-const HStack = ({ children, ...props }) => <Stack direction="row" {...props}>{children}</Stack>;
-
 export default Cart;
+
 
