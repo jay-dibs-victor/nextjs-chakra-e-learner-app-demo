@@ -4,23 +4,19 @@ import {
   Flex,
   Grid,
   GridItem,
-  ListItem,
   Stack,
-  UnorderedList,
   VStack,
   HStack,
   Divider,
   useColorModeValue,
   Container,
-  ScaleFade,
+  Icon,
+  Badge,
+  Circle,
+  Tag,
+  TagLabel,
 } from "@chakra-ui/react";
 import { Radio, RadioGroup } from "@chakra-ui/radio";
-import {
-  Slider,
-  SliderFilledTrack,
-  SliderThumb,
-  SliderTrack,
-} from "@chakra-ui/slider";
 import {
   Accordion,
   Button,
@@ -28,7 +24,6 @@ import {
   DropdownContent,
   Heading,
   IconButton,
-  ProductCards,
   Ratings,
   Text,
   TextField,
@@ -54,22 +49,22 @@ import { BiCaretDown, BiSort, BiFilterAlt } from "react-icons/bi";
 import { BsGridFill } from "react-icons/bs";
 import { ImList } from "react-icons/im";
 import { IoFilterOutline } from "react-icons/io5";
+import { HiCheckCircle, HiStar } from "react-icons/hi";
 import { motion, AnimatePresence } from "framer-motion";
 import buildSEO from "utils/buildSEO";
 import createRange from "utils/createRange";
 import http from "utils/http";
 
-const pageSEO = buildSEO("Categories", "Description ...");
+const pageSEO = buildSEO("Explore Collections", "Browse our curated selection of premium products across all categories");
 
 const MotionGridItem = motion(GridItem);
+const MotionBox = motion(Box);
 
 const Aside = ({
   router,
   category,
-  defaultIndex,
   onCloseModal,
   fetchProducts,
-
   priceFromValue,
   setPriceFromValue,
   priceToValue,
@@ -77,8 +72,8 @@ const Aside = ({
   rating,
   setRating,
 }) => {
-  const bgColor = useColorModeValue("white", "gray.700");
-  const borderColor = useColorModeValue("gray.200", "gray.600");
+  const bgColor = useColorModeValue("white", "gray.800");
+  const borderColor = useColorModeValue("gray.100", "gray.700");
 
   const CategoryContent = () => {
     const handleCategoryChange = (queryString) => {
@@ -89,43 +84,34 @@ const Aside = ({
     const getActiveControl = (condition) =>
       condition
         ? { color: "blue.500", bg: "blue.50", fontWeight: "bold" }
-        : {};
+        : { color: "gray.500" };
 
     const controlProps = (condition, queryString) => ({
       ...getActiveControl(condition),
       onClick: handleCategoryChange.bind(null, queryString),
-      _hover: { bg: useColorModeValue("gray.100", "gray.600") },
+      _hover: { bg: useColorModeValue("gray.100", "gray.700"), color: "blue.500" },
       as: "button",
       w: "full",
       textAlign: "left",
-      py: 2,
+      py: 2.5,
       px: 4,
-      rounded: "md",
+      rounded: "xl",
       transition: "all 0.2s",
+      fontSize: "sm",
     });
 
     return (
       <VStack align="start" py={4} spacing={1}>
-        <Text
-          {...controlProps(!router.query.subCategory, category.queryString)}
-          fontSize="sm"
-          textTransform="capitalize"
-        >
+        <Text {...controlProps(!router.query.subCategory, category.queryString)}>
           All {category.name || "Products"}
         </Text>
 
         {category.subCategories.map((subCategory) => (
-          <Text
-            {...controlProps(
-              router.query.subCategory === subCategory.slug,
-              subCategory.queryString
-            )}
-            key={subCategory.id}
-            fontSize="sm"
-            textTransform="capitalize"
-          >
-            {subCategory.name}
-          </Text>
+          <HStack key={subCategory.id} w="full" spacing={0}>
+             <Text {...controlProps(router.query.subCategory === subCategory.slug, subCategory.queryString)}>
+              {subCategory.name}
+            </Text>
+          </HStack>
         ))}
       </VStack>
     );
@@ -150,38 +136,39 @@ const Aside = ({
     };
 
     return (
-      <Box as="form" onSubmit={handleSubmit} py={4} px={4}>
-        <HStack spacing={2} mb={4}>
-          <TextField
-            label="From"
-            id="from"
-            value={values.from}
-            onChange={handleType}
-            type="number"
-            variant="filled"
-          />
-          <TextField
-            label="To"
-            id="to"
-            value={values.to}
-            onChange={handleType}
-            type="number"
-            variant="filled"
-          />
-        </HStack>
-        <Button size="sm" colorScheme="blue" w="full" type="submit">
-          Apply Price
-        </Button>
+      <Box as="form" onSubmit={handleSubmit} py={6} px={4}>
+        <VStack spacing={4}>
+          <HStack spacing={2} w="full">
+            <TextField
+              label="From"
+              id="from"
+              value={values.from}
+              onChange={handleType}
+              type="number"
+              variant="filled"
+              rounded="xl"
+            />
+            <TextField
+              label="To"
+              id="to"
+              value={values.to}
+              onChange={handleType}
+              type="number"
+              variant="filled"
+              rounded="xl"
+            />
+          </HStack>
+          <Button size="md" colorScheme="blue" w="full" type="submit" rounded="full" shadow="lg">
+            Apply Price
+          </Button>
+        </VStack>
       </Box>
     );
   };
 
   const RatingsContent = () => {
     const ratings = [{ value: 4 }, { value: 3 }, { value: 2 }, { value: 1 }];
-
-    const handleRatingChange = (rating) => {
-      setRating(+rating);
-    };
+    const handleRatingChange = (rating) => setRating(+rating);
 
     const handleSubmit = (e) => {
       e.preventDefault();
@@ -190,24 +177,20 @@ const Aside = ({
     };
 
     return (
-      <Box as="form" onSubmit={handleSubmit} py={4} px={4}>
-        <RadioGroup
-          onChange={handleRatingChange}
-          value={rating}
-          colorScheme="blue"
-        >
-          <Stack spacing={3}>
+      <Box as="form" onSubmit={handleSubmit} py={6} px={4}>
+        <RadioGroup onChange={handleRatingChange} value={rating} colorScheme="blue">
+          <Stack spacing={4}>
             {ratings.map((rating) => (
-              <Radio value={rating.value} key={rating.value}>
-                <HStack>
+              <Radio value={rating.value} key={rating.value} size="lg">
+                <HStack spacing={3}>
                   <Ratings color="orange.400" value={rating.value} sm />
-                  <Text fontSize="sm" color="gray.500">& Up</Text>
+                  <Text fontSize="sm" fontWeight="medium" color="gray.600">& Up</Text>
                 </HStack>
               </Radio>
             ))}
           </Stack>
         </RadioGroup>
-        <Button size="sm" colorScheme="blue" w="full" mt={6} type="submit">
+        <Button size="md" colorScheme="blue" w="full" mt={8} type="submit" rounded="full" shadow="lg">
           Apply Filter
         </Button>
       </Box>
@@ -215,32 +198,23 @@ const Aside = ({
   };
 
   const asideList = category && [
-    {
-      header: "Category",
-      content: <CategoryContent />,
-    },
-    {
-      header: "Price Range",
-      content: <PriceContent />,
-    },
-    {
-      header: "Ratings",
-      content: <RatingsContent />,
-    },
+    { header: "Categories", content: <CategoryContent /> },
+    { header: "Price Range", content: <PriceContent /> },
+    { header: "Customer Ratings", content: <RatingsContent /> },
   ];
 
   return (
     <Box
       flexShrink={0}
-      w={{ base: "full", md: "250px" }}
+      w={{ base: "full", md: "280px" }}
       bg={bgColor}
-      rounded="xl"
-      shadow="sm"
+      rounded="2xl"
+      shadow="xl"
       borderWidth="1px"
       borderColor={borderColor}
       overflow="hidden"
       position="sticky"
-      top={headerHeight + 20}
+      top={headerHeight + 24}
     >
       {category && (
         <Accordion
@@ -249,12 +223,12 @@ const Aside = ({
           defaultIndex={[0, 1, 2]}
           headerProps={{
             fontSize: "xs",
-            fontWeight: "bold",
+            fontWeight: "black",
             textTransform: "uppercase",
-            letterSpacing: "wider",
-            py: 4,
-            px: 4,
-            _hover: { bg: useColorModeValue("gray.50", "gray.600") },
+            letterSpacing: "2px",
+            py: 5,
+            px: 6,
+            _hover: { bg: useColorModeValue("gray.50", "gray.700") },
           }}
         />
       )}
@@ -264,18 +238,18 @@ const Aside = ({
 
 const LayoutProductCards = ({ products, cart, layout, onPageChange, page }) => {
   return (
-    <Box pb={10}>
+    <Box pb={12}>
       <AnimatePresence mode="popLayout">
         <Grid
-          py={5}
-          gap={6}
+          py={6}
+          gap={8}
           templateColumns={
             layout === "grid"
               ? {
                   base: "1fr",
                   sm: "1fr 1fr",
                   lg: "1fr 1fr 1fr",
-                  xl: "1fr 1fr 1fr 1fr",
+                  xl: "1fr 1fr 1fr",
                 }
               : "1fr"
           }
@@ -283,10 +257,10 @@ const LayoutProductCards = ({ products, cart, layout, onPageChange, page }) => {
           {products.map((product, idx) => (
             <MotionGridItem
               key={product.id}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.4, delay: idx * 0.05 }}
+              transition={{ duration: 0.5, delay: idx * 0.05, ease: "easeOut" }}
             >
               {layout === "grid" ? (
                 <ProductBoxedCard data={product} cart={cart} w="full" />
@@ -297,20 +271,23 @@ const LayoutProductCards = ({ products, cart, layout, onPageChange, page }) => {
           ))}
         </Grid>
       </AnimatePresence>
-      <Flex justify="center" mt={10}>
-        <Pagination
-          page={page}
-          onPageChange={onPageChange}
-          itemTotal={products.length}
-          pageTotal={1}
-        />
-      </Flex>
+      
+      {products.length > 0 && (
+        <Flex justify="center" mt={12} pt={8} borderTop="1px solid" borderColor="gray.100">
+          <Pagination
+            page={page}
+            onPageChange={onPageChange}
+            itemTotal={products.length}
+            pageTotal={1}
+          />
+        </Flex>
+      )}
     </Box>
   );
 };
 
 const MainArea = ({
-  title = "Products",
+  title = "Explore Products",
   products,
   children,
   sortBy,
@@ -328,54 +305,63 @@ const MainArea = ({
   };
 
   const sortByDropdownList = [
-    { text: "Latest", onClick: handleSortBy.bind(null, "Latest") },
+    { text: "Latest Arrivals", onClick: handleSortBy.bind(null, "Latest") },
     { text: "Price: Low to High", onClick: handleSortBy.bind(null, "Price: low to high") },
     { text: "Price: High to Low", onClick: handleSortBy.bind(null, "Price: high to low") },
   ];
 
   return (
-    <Box flex={1} ml={{ base: 0, md: 8 }}>
+    <Box flex={1} ml={{ base: 0, md: 10 }}>
       <Flex
         justify="space-between"
         align="center"
-        mb={6}
+        mb={8}
         flexDir={{ base: "column", sm: "row" }}
-        gap={4}
+        gap={6}
       >
-        <VStack align="start" spacing={0}>
-          <Heading size="lg" textTransform="capitalize">{title}</Heading>
-          <Text fontSize="sm" color="gray.500">
-            Showing <Text as="span" fontWeight="bold" color="blue.500">{products.total || 0}</Text> results
-          </Text>
+        <VStack align="start" spacing={1}>
+          <Heading size="xl" fontWeight="black" letterSpacing="tight">
+            {title}
+          </Heading>
+          <HStack color="gray.500" fontSize="sm">
+            <Icon as={HiCheckCircle} color="green.400" />
+            <Text>
+              Showing <Text as="span" fontWeight="bold" color="blue.500">{products.total || 0}</Text> premium products
+            </Text>
+          </HStack>
         </VStack>
 
-        <HStack spacing={2}>
+        <HStack spacing={3}>
           <Box display={{ base: "block", md: "none" }}>{children}</Box>
           <Dropdown
             renderTrigger={({ onClick }) => (
               <Button
-                variant="outline"
-                size="sm"
+                variant="ghost"
+                size="md"
                 leftIcon={<BiSort />}
                 rightIcon={<BiCaretDown />}
                 onClick={onClick}
                 rounded="full"
+                borderWidth="1px"
+                bg={useColorModeValue("white", "gray.800")}
               >
-                Sort: {sortBy}
+                Sort By: <Text as="span" ml={1} color="blue.500" fontWeight="bold">{sortBy}</Text>
               </Button>
             )}
           >
             <DropdownContent list={sortByDropdownList} />
           </Dropdown>
 
-          <ButtonGroup isAttached size="sm" variant="outline" rounded="full">
+          <ButtonGroup isAttached size="md" variant="outline" rounded="full" bg={useColorModeValue("white", "gray.800")}>
             <IconButton
+              aria-label="Grid View"
               icon={<BsGridFill />}
               isActive={currentLayoutStyle === "grid"}
               onClick={() => setCurrentLayoutStyle("grid")}
               roundedLeft="full"
             />
             <IconButton
+              aria-label="List View"
               icon={<ImList />}
               isActive={currentLayoutStyle === "list"}
               onClick={() => setCurrentLayoutStyle("list")}
@@ -385,17 +371,24 @@ const MainArea = ({
         </HStack>
       </Flex>
 
-      <Divider mb={6} />
+      <Divider mb={10} borderColor="gray.200" />
 
       {products.loading ? (
-        <Loader h="400px" />
+        <Loader h="500px" />
       ) : products.error ? (
-        <SomethingWentWrong h="400px" onRetry={fetchProducts} />
+        <SomethingWentWrong h="500px" onRetry={fetchProducts} />
       ) : products.total === 0 ? (
-        <VStack h="400px" justify="center" spacing={4}>
-           <Icon as={BiFilterAlt} w={12} h={12} color="gray.300" />
-           <Text color="gray.500">No products match your filters</Text>
-           <Button variant="link" colorScheme="blue" onClick={() => router.reload()}>Clear all filters</Button>
+        <VStack h="500px" justify="center" spacing={6} bg="gray.50" rounded="3xl" border="2px dashed" borderColor="gray.200">
+           <Circle size="20" bg="white" shadow="lg">
+             <Icon as={BiFilterAlt} w={10} h={10} color="blue.500" />
+           </Circle>
+           <VStack spacing={2}>
+             <Heading size="md">No products found</Heading>
+             <Text color="gray.500">Try adjusting your filters or search criteria</Text>
+           </VStack>
+           <Button variant="outline" colorScheme="blue" rounded="full" onClick={() => window.location.reload()}>
+             Clear All Filters
+           </Button>
         </VStack>
       ) : (
         <LayoutProductCards
@@ -534,7 +527,7 @@ const CategoriesPage = () => {
 
   return (
     <Layout SEO={pageSEO} breadcrumb={breadcrumb} bg={useColorModeValue("gray.50", "gray.900")}>
-      <Section pt={10} pb={20}>
+      <Section pt={12} pb={24}>
         <Container maxW="container.xl">
           {categories.loading ? (
             <Loader />
@@ -563,13 +556,15 @@ const CategoriesPage = () => {
                       renderTrigger={({ handleOpen }) => (
                         <Button
                           variant="outline"
-                          size="sm"
+                          size="md"
                           leftIcon={<IoFilterOutline />}
                           rightIcon={<BiCaretDown />}
                           onClick={handleOpen}
                           rounded="full"
+                          bg="white"
+                          shadow="md"
                         >
-                          Filters
+                          Filters & Sorting
                         </Button>
                       )}
                     >
@@ -587,4 +582,5 @@ const CategoriesPage = () => {
 };
 
 export default CategoriesPage;
+
 
