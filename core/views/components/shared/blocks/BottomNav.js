@@ -53,7 +53,7 @@ import {
        
         { text: "Profile", href: "/users/profile" },
         { text: "Dashboard", href: "/users" },
-        { text: "Courses/Programs", href: "/courses" },
+        { text: "Courses/Programs", href: "/store" },
         { text: "More Pages", href: "#" },
         { text: "Career Oportunities", href: "/careers" },
         { text: "Login", href: "/signin" },

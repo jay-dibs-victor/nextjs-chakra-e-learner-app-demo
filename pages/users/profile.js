@@ -1,17 +1,43 @@
 
 
-import { ButtonGroup } from "@chakra-ui/button";
-import { Box, Flex, Grid, GridItem } from "@chakra-ui/layout";
-import { Button, Heading, Icon, Text, Modal, TextField } from "components/shared/lib";
-import { Layout, PageHeader, Section } from "components/components/pages";
+import React from "react";
+import {
+  Box,
+  Flex,
+  Grid,
+  GridItem,
+  Heading,
+  Text,
+  Icon,
+  HStack,
+  VStack,
+  Divider,
+  Badge,
+  Circle,
+  useColorModeValue,
+  SimpleGrid,
+  Container,
+  ButtonGroup,
+} from "@chakra-ui/react";
+import { 
+  HiPencilAlt, 
+  HiTrash, 
+  HiPlus, 
+  HiUserCircle, 
+  HiCreditCard, 
+  HiMap, 
+  HiShieldCheck 
+} from "react-icons/hi";
+import { motion } from "framer-motion";
+import { Button, Modal, TextField } from "components/shared/lib";
+import { Layout, Section } from "components/components/pages";
 import useForm from "hooks/useForm";
-import { FaPen, FaTrashAlt } from "react-icons/fa";
-import { IoAdd } from "react-icons/io5";
-import breakpoints from "theme/breakpoints";
 import buildSEO from "utils/buildSEO";
 import http from "utils/http";
 
-const pageSEO = buildSEO("My Preferences", "...");
+const pageSEO = buildSEO("User Profile", "Manage your account preferences and security settings");
+
+const MotionBox = motion(Box);
 
 const PopModal = ({
   heading,
@@ -28,229 +54,242 @@ const PopModal = ({
   return (
     <Modal renderTrigger={renderTrigger}>
       {({ handleClose }) => (
-        <Box as="form" {...formProps}>
-          <Box as="header">
-            <Heading type="h5">{heading}</Heading>
-          </Box>
+        <VStack as="form" {...formProps} spacing={8} align="stretch" p={4}>
+          <VStack align="start" spacing={1}>
+            <Heading size="md" fontWeight="black">{heading}</Heading>
+            <Text fontSize="sm" color="gray.500">Please provide the updated information below.</Text>
+          </VStack>
 
-          {fieldsProps.map((field) => (
-            <TextField {...field} key={field.id} onChange={handleType} />
-          ))}
+          <VStack spacing={4}>
+            {fieldsProps.map((field) => (
+              <TextField {...field} key={field.id} onChange={handleType} variant="filled" rounded="xl" />
+            ))}
+          </VStack>
 
           <Flex justifyContent="flex-end">
-            <ButtonGroup spacing={2} justifyContent="flex-end">
-              {renderSubmitBtn({
-                text: submitButtonText || "Add",
-                variant: "primary",
-                sm: true,
-              })}
-
-              <Button variant="secondary" sm onClick={handleClose}>
+            <ButtonGroup spacing={3}>
+              <Button variant="ghost" rounded="full" onClick={handleClose}>
                 Cancel
               </Button>
+              {renderSubmitBtn({
+                text: submitButtonText || "Save Changes",
+                variant: "primary",
+                rounded: "full",
+                px: 8,
+              })}
             </ButtonGroup>
           </Flex>
-        </Box>
+        </VStack>
       )}
     </Modal>
   );
 };
 
-const Card = ({ heading, data, subHeading, onEdit }) => {
+const Card = ({ heading, data, subHeading, onEdit, icon, color }) => {
+  const cardBg = useColorModeValue("white", "gray.800");
+  const borderColor = useColorModeValue("gray.100", "gray.700");
+
   const handleRemove = async () => {
-    const yes = confirm("Are you sure you want to REMOVE this?");
-
+    const yes = confirm("Are you sure you want to remove this information?");
     if (yes) {
-      // Make a request to remove this card info...
       await http.get("/me");
-
-      // cause a reload
       location.reload();
     }
   };
 
-  const renderControl = (onClick) => (
-    <Flex
-      alignItems="center"
-      justifyContent="space-between"
-      color={onClick ? "brand.black2" : "brand.error"}
-      _hover={{
-        bg: "brand.gray5",
-        cursor: "pointer",
-      }}
-      onClick={onClick || handleRemove}
-      rounded="md"
-      px={2}
-    >
-      <Text mute type={onClick ? "nm-bold" : "nm-regular"}>
-        {onClick ? "Edit" : "Remove"}
-      </Text>
-
-      <Icon fontSize="70%" ml={2}>
-        {onClick ? <FaPen /> : <FaTrashAlt />}
-      </Icon>
-    </Flex>
-  );
-
-  const renderRemoveButton = () => renderControl();
-
-  const renderEditButton = () => (
-    <PopModal
-      heading={subHeading}
-      initialFieldsProps={data}
-      doSubmit={onEdit}
-      renderTrigger={({ handleOpen }) => renderControl(handleOpen)}
-      submitButtonText="Edit"
-    />
-  );
-
   return (
-    <Box>
-      <Text type="md-bold" mb={2}>
-        {heading}
-      </Text>
-
-      <Flex justifyContent="space-between" bg="brand.gray5" rounded="md" p={3}>
-        <Grid templateColumns="1fr 1fr 1fr" columnGap={5}>
-          {data.map((item, index) => (
-            <GridItem key={index}>
-              <Text type="nm-bold" mute>
-                {item.label}
-              </Text>
-              <Text>{item.value}</Text>
-            </GridItem>
-          ))}
-        </Grid>
-
-        <Box alignSelf="flex-end">
-          {renderEditButton()}
-          {renderRemoveButton()}
-        </Box>
+    <MotionBox
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      bg={cardBg}
+      rounded="3xl"
+      shadow="xl"
+      borderWidth="1px"
+      borderColor={borderColor}
+      p={8}
+      position="relative"
+      overflow="hidden"
+    >
+      <Box position="absolute" top={0} left={0} w="full" h="4px" bg={`${color}.500`} />
+      
+      <Flex justify="space-between" align="start" mb={8}>
+        <HStack spacing={4}>
+          <Circle size={12} bg={`${color}.50`} color={`${color}.500`}>
+            <Icon as={icon} w={6} h={6} />
+          </Circle>
+          <VStack align="start" spacing={0}>
+             <Heading size="sm" fontWeight="black">{heading}</Heading>
+             <Text fontSize="xs" color="gray.400" fontWeight="bold" textTransform="uppercase">{subHeading}</Text>
+          </VStack>
+        </HStack>
+        
+        <HStack spacing={2}>
+           <PopModal
+             heading={`Edit ${heading}`}
+             initialFieldsProps={data}
+             doSubmit={onEdit}
+             renderTrigger={({ handleOpen }) => (
+                <Button variant="ghost" size="sm" rounded="full" colorScheme={color} onClick={handleOpen} leftIcon={<HiPencilAlt />}>
+                   Edit
+                </Button>
+             )}
+             submitButtonText="Update"
+           />
+           <Button variant="ghost" size="sm" rounded="full" colorScheme="red" onClick={handleRemove} leftIcon={<HiTrash />}>
+              Remove
+           </Button>
+        </HStack>
       </Flex>
-    </Box>
+
+      <SimpleGrid columns={{ base: 1, md: 2 }} spacing={8}>
+        {data.map((item, index) => (
+          <VStack align="start" key={index} spacing={1}>
+            <Text fontSize="xs" fontWeight="black" color="gray.400" textTransform="uppercase" letterSpacing="widest">
+              {item.label}
+            </Text>
+            <Text fontWeight="medium" fontSize="md" color="blue.900">
+              {item.value}
+            </Text>
+          </VStack>
+        ))}
+      </SimpleGrid>
+    </MotionBox>
   );
 };
 
-const Header = ({ initialFieldsProps, heading, subHeading, onAdd }) => (
-  <Flex
-    alignItems="center"
-    justifyContent="space-between"
-    borderBottom="1px"
-    color="brand.secondary"
-    mb={5}
-    pb={2}
-  >
-    <Heading type="h5" mute>
-      {heading}
-    </Heading>
-
-    <PopModal
-      heading={subHeading}
-      initialFieldsProps={initialFieldsProps}
-      doSubmit={onAdd}
-      renderTrigger={({ handleOpen }) => (
-        <Button
-          leftIcon={<IoAdd />}
-          variant="secondary"
-          sm
-          onClick={handleOpen}
-        >
-          Add
-        </Button>
-      )}
-    />
-  </Flex>
-);
-
-const EditPreferencePage = () => {
-  const formDataInitializer = (formData) =>
-    formData.map((item) => ({ ...item, value: "" }));
+const SettingsPage = () => {
+  const cardBg = useColorModeValue("white", "gray.800");
 
   const accountInfoCardData = [
     {
       id: "address",
-      label: "Address",
-      textarea: true,
-      minH: "40px",
-      value: "85 Ayilara street, ojuelegba, Lagos state, Nigeria",
+      label: "Default Shipping Address",
+      value: "15 Admiralty Way, Lekki Phase 1, Lagos State, Nigeria",
     },
     {
       id: "phone-number",
-      label: "Phone Number",
-      type: "number",
-      value: "07032917504",
+      label: "Phone Contact",
+      value: "+234 812 345 6789",
     },
   ];
 
   const cardDetailsCardData = [
     {
       id: "card-name",
-      label: "Card Name",
-      value: "Salau Oluwole Olorunjuedalo",
+      label: "Name on Card",
+      value: "JOHN DOE",
     },
     {
       id: "card-type",
-      label: "Card Type",
-      value: "VISA",
+      label: "Payment Network",
+      value: "VISA PREMIUM",
     },
     {
       id: "card-number",
-      label: "Card Number",
-      value: "53999 xxxx",
+      label: "Masked Number",
+      value: "**** **** **** 5399",
     },
   ];
 
-  const accountInfoFormData = formDataInitializer(accountInfoCardData);
-  const cardDetailsFormData = formDataInitializer(cardDetailsCardData);
-
-  const handleAddAccountInfo = async (fieldsObj, router) => {
-    console.log(fieldsObj);
+  const handleUpdate = async (fieldsObj) => {
+    console.log("Updating:", fieldsObj);
     await http.get("/me");
-
-    router.reload();
-  };
-  const handleAddCardDetail = async (fieldsObj, router) => {
-    console.log(fieldsObj);
-    await http.get("/me");
-
-    router.reload();
+    location.reload();
   };
 
   return (
     <Layout SEO={pageSEO}>
-      {/* <PageHeader>Edit Preference</PageHeader> */}
+      <Box bg="gray.50" minH="100vh" pt={12} pb={24}>
+        <Container maxW="container.lg">
+          <VStack spacing={12} align="stretch">
+            {/* Header Section */}
+            <Flex justify="space-between" align="end">
+              <VStack align="start" spacing={2}>
+                <HStack color="blue.500">
+                  <Icon as={HiUserCircle} w={6} h={6} />
+                  <Text fontWeight="black" letterSpacing="widest" fontSize="xs">USER SETTINGS</Text>
+                </HStack>
+                <Heading size="2xl" fontWeight="black" letterSpacing="tight">Profile & Preferences</Heading>
+              </VStack>
+              
+              <HStack bg="blue.50" px={4} py={2} rounded="2xl" color="blue.600">
+                 <Icon as={HiShieldCheck} />
+                 <Text fontSize="sm" fontWeight="bold">Verified Account</Text>
+              </HStack>
+            </Flex>
 
-      <Section mb={16} maxW={breakpoints.md}>
-        <Header
-          heading="Addresses"
-          subHeading="Account Information"
-          onAdd={handleAddAccountInfo}
-          initialFieldsProps={accountInfoFormData}
-        />
-        <Card
-          heading="Account Information"
-          data={accountInfoCardData}
-          subHeading="Account Information"
-          onEdit={handleAddAccountInfo}
-        />
-      </Section>
+            <Divider borderColor="gray.200" />
 
-      <Section mb={16} maxW={breakpoints.md}>
-        <Header
-          heading="Payments"
-          subHeading="Card Details"
-          onAdd={handleAddCardDetail}
-          initialFieldsProps={cardDetailsFormData}
-        />
-        <Card
-          heading="Card Details"
-          data={cardDetailsCardData}
-          subHeading="Card Details"
-          onEdit={handleAddCardDetail}
-        />
-      </Section>
+            {/* Content Sections */}
+            <VStack spacing={10} align="stretch">
+              <VStack align="stretch" spacing={6}>
+                 <Flex justify="space-between" align="center">
+                    <Heading size="md" fontWeight="black">Shipping Information</Heading>
+                    <PopModal
+                      heading="Add New Address"
+                      initialFieldsProps={accountInfoCardData.map(i => ({...i, value: ""}))}
+                      doSubmit={handleUpdate}
+                      renderTrigger={({ handleOpen }) => (
+                         <Button leftIcon={<HiPlus />} colorScheme="blue" rounded="full" size="sm" px={6} onClick={handleOpen}>
+                            Add Address
+                         </Button>
+                      )}
+                    />
+                 </Flex>
+                 <Card
+                   icon={HiMap}
+                   color="blue"
+                   heading="Primary Residence"
+                   subHeading="Main Delivery Point"
+                   data={accountInfoCardData}
+                   onEdit={handleUpdate}
+                 />
+              </VStack>
+
+              <VStack align="stretch" spacing={6}>
+                 <Flex justify="space-between" align="center">
+                    <Heading size="md" fontWeight="black">Payment Methods</Heading>
+                    <PopModal
+                      heading="Add Payment Method"
+                      initialFieldsProps={cardDetailsCardData.map(i => ({...i, value: ""}))}
+                      doSubmit={handleUpdate}
+                      renderTrigger={({ handleOpen }) => (
+                         <Button leftIcon={<HiPlus />} colorScheme="purple" rounded="full" size="sm" px={6} onClick={handleOpen}>
+                            Add Card
+                         </Button>
+                      )}
+                    />
+                 </Flex>
+                 <Card
+                   icon={HiCreditCard}
+                   color="purple"
+                   heading="Default Payment Card"
+                   subHeading="Secure Billing Information"
+                   data={cardDetailsCardData}
+                   onEdit={handleUpdate}
+                 />
+              </VStack>
+            </VStack>
+
+            {/* Security Tip */}
+            <Box bg="blue.900" rounded="3xl" p={10} color="white" position="relative" overflow="hidden">
+               <Box position="absolute" top="-20%" right="-10%" w="40%" h="140%" bg="whiteAlpha.100" rounded="full" blur="40px" />
+               <VStack align="start" spacing={6} position="relative" zIndex={1}>
+                  <Heading size="lg" fontWeight="black">Security Reminder</Heading>
+                  <Text fontSize="lg" opacity={0.8} maxW="2xl">
+                     Keep your account information secure. We will never ask for your full credit card number or password via email or SMS.
+                  </Text>
+                  <Button variant="outline" color="white" borderColor="whiteAlpha.400" rounded="full" px={10} _hover={{ bg: "whiteAlpha.200" }}>
+                     Manage Security Settings
+                  </Button>
+               </VStack>
+            </Box>
+          </VStack>
+        </Container>
+      </Box>
     </Layout>
   );
 };
 
-export default EditPreferencePage;
+export default SettingsPage;
+

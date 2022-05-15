@@ -18,6 +18,7 @@ import {
   ScaleFade,
   HStack,
   Badge,
+  Divider,
 } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { HiMail, HiLockClosed, HiArrowRight, HiSparkles } from "react-icons/hi";
