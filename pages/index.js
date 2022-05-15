@@ -8,19 +8,38 @@ import {
   Center,
   SimpleGrid,
   VStack,
+  HStack,
+  Icon,
+  Badge,
+  Circle,
+  useColorModeValue,
+  Container,
 } from "@chakra-ui/react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Image } from "components/shared/blocks/Image";
 import Layout from "components/shared/blocks/Layout";
 import { Link } from "components/shared/blocks/Link";
 import { Swiper, SwiperSlide } from "swiper/react";
-import SwiperCore, { Autoplay, Pagination, EffectFade } from "swiper/core";
+import SwiperCore, { Autoplay, Pagination, EffectFade, Navigation } from "swiper/core";
 import "swiper/swiper.min.css";
 import "swiper/components/pagination/pagination.min.css";
 import "swiper/components/effect-fade/effect-fade.min.css";
+import "swiper/components/navigation/navigation.min.css";
 import breakpoints from "core/theme/breakpoints";
+import { 
+  HiArrowRight, 
+  HiSparkles, 
+  HiLightningBolt, 
+  HiShieldCheck, 
+  HiChatAlt2, 
+  HiUserGroup,
+  HiGlobe,
+  HiBriefcase,
+  HiAcademicCap,
+  HiRocket
+} from "react-icons/hi";
 
-SwiperCore.use([Autoplay, Pagination, EffectFade]);
+SwiperCore.use([Autoplay, Pagination, EffectFade, Navigation]);
 
 const MotionBox = motion(Box);
 const MotionFlex = motion(Flex);
@@ -30,273 +49,337 @@ const MotionText = motion(Text);
 // Animation Variants
 const fadeInUp = {
   hidden: { opacity: 0, y: 40 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
 };
 
 const staggerContainer = {
   hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.2 } }
+  visible: { opacity: 1, transition: { staggerChildren: 0.15 } }
 };
 
 export const Section = ({ children, bg, ...rest }) => (
-  <Box as="section" bg={bg} py={{ base: 16, lg: 24 }} px={{ base: 6, md: 10 }} overflow="hidden" {...rest}>
-    <Box maxW={breakpoints.xl} mx="auto">
+  <Box as="section" bg={bg} py={{ base: 20, lg: 32 }} px={{ base: 6, md: 10 }} overflow="hidden" {...rest}>
+    <Container maxW="container.xl">
       {children}
-    </Box>
+    </Container>
   </Box>
 );
 
-const HeroSlide = ({ image, title, subtitle }) => (
-  <Box position="relative" h={{ base: "60vh", md: "80vh" }} w="100%" overflow="hidden">
+const HeroSlide = ({ image, title, subtitle, badge }) => (
+  <Box position="relative" h={{ base: "70vh", md: "90vh" }} w="100%" overflow="hidden">
     <Image src={image} w="100%" h="100%" objectFit="cover" />
-    {/* Removed backdropFilter="blur(2px)" for performance, slightly darkened bg instead */}
     <Box
       position="absolute" top="0" left="0" w="100%" h="100%"
-      bg="rgba(0,0,0,0.65)"
+      bgGradient="linear(to-r, blackAlpha.800, blackAlpha.400)"
     />
     <Flex
       position="absolute" top="0" left="0" w="100%" h="100%"
-      alignItems="center" justifyContent="center" textAlign="center" px={4}
+      alignItems="center" px={{ base: 6, md: 24 }}
     >
-      {/* Removed backdropFilter="blur(10px)" for performance on scroll */}
-      <VStack spacing={6} maxW="800px" bg="rgba(0, 0, 0, 0.3)" p={10} rounded="2xl" border="1px solid rgba(255,255,255,0.1)">
+      <VStack spacing={8} maxW="900px" align="start">
+        <MotionBox
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <Badge colorScheme="blue" variant="solid" px={4} py={1} rounded="full" fontSize="sm" letterSpacing="widest">{badge}</Badge>
+        </MotionBox>
         <MotionHeading 
-          as="h1" size="2xl" color="white" fontWeight="extrabold"
-          initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }}
+          as="h1" size="4xl" color="white" fontWeight="black" lineHeight="1.1" letterSpacing="tight"
+          initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }}
         >
           {title}
         </MotionHeading>
         <MotionText 
-          fontSize="xl" color="gray.200"
+          fontSize="xl" color="whiteAlpha.900" maxW="xl" fontWeight="medium"
           initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8, delay: 0.4 }}
         >
           {subtitle}
         </MotionText>
-        <MotionBox initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: 0.6 }}>
-          <Link mute href="/signup">
-            <Button size="lg" colorScheme="blue" px={10} rounded="full" _hover={{ transform: "translateY(-2px)", boxShadow: "xl" }}>
-              Get Started
-            </Button>
-          </Link>
+        <MotionBox initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: 0.6 }}>
+          <HStack spacing={4}>
+            <Link mute href="/signup">
+              <Button size="lg" colorScheme="blue" px={12} h={16} rounded="full" shadow="2xl" rightIcon={<HiArrowRight />} _hover={{ transform: "scale(1.05)", shadow: "dark-lg" }}>
+                Get Started
+              </Button>
+            </Link>
+            <Link mute href="/about">
+              <Button size="lg" variant="outline" color="white" borderColor="whiteAlpha.400" px={10} h={16} rounded="full" _hover={{ bg: "whiteAlpha.200" }}>
+                Learn More
+              </Button>
+            </Link>
+          </HStack>
         </MotionBox>
       </VStack>
     </Flex>
   </Box>
 );
 
-const CustomerReview = ({ contentText, contentTitle }) => {
+const FeatureCard = ({ icon, title, description, color }) => (
+  <MotionBox
+    variants={fadeInUp}
+    bg="white"
+    p={10}
+    rounded="3xl"
+    shadow="xl"
+    borderWidth="1px"
+    borderColor="gray.50"
+    _hover={{ transform: "translateY(-12px)", shadow: "2xl", borderColor: `${color}.200` }}
+    transition="all 0.4s cubic-bezier(.175,.885,.32,1.275)"
+  >
+    <Circle size={16} bg={`${color}.50`} color={`${color}.500`} mb={8} shadow="inner">
+      <Icon as={icon} w={8} h={8} />
+    </Circle>
+    <Heading size="md" mb={4} fontWeight="black" letterSpacing="tight">{title}</Heading>
+    <Text color="gray.500" fontSize="md" lineHeight="tall">{description}</Text>
+  </MotionBox>
+);
+
+const CustomerReview = ({ contentText, name, role, color }) => {
   return (
     <MotionBox
       variants={fadeInUp}
-      whileHover={{ y: -10, boxShadow: "0 20px 40px rgba(0,0,0,0.1)" }}
-      bg="white" rounded="2xl" p={8} m={4}
-      w={{ base: "100%", md: "350px" }}
-      boxShadow="0 10px 30px rgba(0,0,0,0.05)"
-      borderTop="4px solid" borderColor="blue.500"
+      bg={useColorModeValue("white", "gray.800")}
+      rounded="3xl"
+      p={10}
+      m={4}
+      w={{ base: "100%", md: "400px" }}
+      shadow="xl"
+      borderWidth="1px"
+      borderColor={useColorModeValue("gray.50", "gray.700")}
+      position="relative"
     >
-      <Text color="gray.600" lineHeight="tall" fontStyle="italic" mb={6}>
-        "{contentText}"
-      </Text>
-      <Flex mt="auto" justifyContent="space-between" alignItems="center">
-        <Box>
-          <Text fontWeight="bold" color="blue.900" mb={0}>Jame. S. Samuel</Text>
-          <Text fontSize="sm" color="gray.500">Lesa Restaurant</Text>
-        </Box>
-        <Image
-          src="/images/lg/customer-satisfaction.jpeg"
-          w="50px" h="50px" rounded="full" objectFit="cover" border="2px solid #E2E8F0"
-        />
-      </Flex>
+      <Icon as={HiChatAlt2} w={12} h={12} color={`${color}.100`} position="absolute" top={6} right={8} zIndex={0} />
+      <VStack align="start" spacing={6} position="relative" zIndex={1}>
+        <Text color="gray.600" fontSize="lg" lineHeight="tall" fontStyle="italic">
+          "{contentText}"
+        </Text>
+        <HStack spacing={4}>
+          <Circle size={12} bg={`${color}.500`} color="white">
+            <Icon as={HiUserGroup} />
+          </Circle>
+          <VStack align="start" spacing={0}>
+            <Text fontWeight="black" color="blue.900" fontSize="md">{name}</Text>
+            <Text fontSize="xs" color="gray.400" fontWeight="bold" textTransform="uppercase">{role}</Text>
+          </VStack>
+        </HStack>
+      </VStack>
     </MotionBox>
   );
 };
 
 const HomePage = () => {
+  const bgColor = useColorModeValue("gray.50", "gray.900");
+  
   return (
     <Layout>
       {/* Hero Section */}
       <Box w="100%">
-        <Swiper effect="fade" autoplay={{ delay: 5000, disableOnInteraction: false }} pagination={{ clickable: true }} loop>
+        <Swiper 
+          effect="fade" 
+          autoplay={{ delay: 6000, disableOnInteraction: false }} 
+          pagination={{ clickable: true }} 
+          navigation={true}
+          loop
+        >
           <SwiperSlide>
             <HeroSlide 
+              badge="REVOLUTIONIZING WORK"
               image="/img/herolanding.jpg" 
-              title="Empowering Careers & Entrepreneurship" 
-              subtitle="Online learning and capacity building for remote jobs, office roles, and the modern workforce."
+              title="Empowering Careers & The Modern Workforce" 
+              subtitle="The all-in-one platform for remote jobs, professional training, and high-impact capacity building."
             />
           </SwiperSlide>
           <SwiperSlide>
             <HeroSlide 
+              badge="AI-POWERED HIRING"
               image="/img/matchingemployees.jpg" 
-              title="Hiring the Best Candidates" 
-              subtitle="Powered by AI and expert knowledge to evaluate personality traits and ensure the perfect fit."
+              title="Match With The Best Candidates Instantly" 
+              subtitle="Our advanced AI evaluates personality traits and professional skills to ensure the perfect culture fit."
             />
           </SwiperSlide>
         </Swiper>
       </Box>
 
-      {/* Intro Section - One Click Away */}
-      <Section bg="gray.50">
+      {/* Intro Stats Section */}
+      <Section py={20}>
+         <SimpleGrid columns={{ base: 2, md: 4 }} spacing={10}>
+            <VStack align="start" spacing={1}>
+               <Heading color="blue.500" size="2xl" fontWeight="black">1M+</Heading>
+               <Text fontWeight="bold" color="gray.500" fontSize="sm" textTransform="uppercase">Active Learners</Text>
+            </VStack>
+            <VStack align="start" spacing={1}>
+               <Heading color="blue.500" size="2xl" fontWeight="black">50k+</Heading>
+               <Text fontWeight="bold" color="gray.500" fontSize="sm" textTransform="uppercase">Hired Talents</Text>
+            </VStack>
+            <VStack align="start" spacing={1}>
+               <Heading color="blue.500" size="2xl" fontWeight="black">98%</Heading>
+               <Text fontWeight="bold" color="gray.500" fontSize="sm" textTransform="uppercase">Satisfaction Rate</Text>
+            </VStack>
+            <VStack align="start" spacing={1}>
+               <Heading color="blue.500" size="2xl" fontWeight="black">200+</Heading>
+               <Text fontWeight="bold" color="gray.500" fontSize="sm" textTransform="uppercase">Enterprise Partners</Text>
+            </VStack>
+         </SimpleGrid>
+      </Section>
+
+      {/* Main Value Proposition */}
+      <Section bg="gray.50" rounded={{ base: "none", lg: "100px" }} mx={{ base: 0, lg: 8 }}>
         <MotionFlex 
           initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={fadeInUp}
-          direction="column" align="center" textAlign="center" maxW="900px" mx="auto"
+          direction="column" align="center" textAlign="center" maxW="1000px" mx="auto"
         >
-          <Heading size="xl" color="blue.900" mb={6}>ONE CLICK AWAY TO FINDING YOUR DREAM JOB OR CREATE ONE</Heading>
-          <Text fontSize="lg" color="gray.600" mb={10}>
-            Learn at your own pace, hire a reputable vetted responsive employer and lots more...
-            Looking to build entrepreneurship programs that ensure a conscious approach towards developing ideas into startups? Leverage ImpactXplorer to build intelligent processes that assess, train, and support entrepreneurs on their path towards building scalable businesses.
+          <Badge colorScheme="blue" mb={6} px={4} py={1} rounded="full">WHY IMPACTXPLORER?</Badge>
+          <Heading size="3xl" color="blue.900" mb={8} fontWeight="black" letterSpacing="tight">
+            One Click Away From Your <Text as="span" color="blue.500">Dream Career</Text>
+          </Heading>
+          <Text fontSize="xl" color="gray.600" mb={12} lineHeight="tall">
+            ImpactXplorer is the intelligent gateway to global opportunities. Whether you're an entrepreneur scaling a startup or a professional seeking your next big break, our AI-driven ecosystem provides the assessment, training, and support you need to succeed.
           </Text>
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+          <HStack spacing={6}>
             <Link mute href="/signup">
-              <Button size="lg" colorScheme="blue" rounded="full" px={12}>
-                GET STARTED
+              <Button size="lg" colorScheme="blue" rounded="full" px={16} h={16} shadow="xl">
+                GET STARTED NOW
               </Button>
             </Link>
-          </motion.div>
+          </HStack>
         </MotionFlex>
       </Section>
 
-      {/* Alternating Feature Layouts */}
+      {/* Interactive Feature Grid */}
       <Section>
-        {/* Growth Programmes */}
-        <MotionFlex 
-          initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={staggerContainer}
-          direction={{ base: "column", lg: "row" }} align="center" justify="space-between" mb={32}
-        >
-          <MotionBox variants={fadeInUp} flex={1} pr={{ lg: 16 }} mb={{ base: 10, lg: 0 }}>
-            <Heading size="xl" color="blue.900" mb={6}>Growth Programmes.</Heading>
-            <Text fontSize="lg" color="gray.600" mb={8}>
-              For entities looking to design effective programs and activities (which can be delivered on-site or remotely) to empower entrepreneurs with relevant business skills, networking opportunities and tailored support on their entrepreneurial journey.
-            </Text>
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Link mute href="/signup"><Button colorScheme="blue" variant="outline" rounded="full">Learn more</Button></Link>
-            </motion.div>
-          </MotionBox>
-          <MotionBox variants={fadeInUp} flex={1}>
-            <Box rounded="3xl" overflow="hidden" boxShadow="2xl">
-              <Image src="/img/skillacquisition.jpg" w="100%" h="400px" objectFit="cover" />
-            </Box>
-          </MotionBox>
-        </MotionFlex>
+        <VStack spacing={4} mb={16} textAlign="center">
+           <Heading size="2xl" fontWeight="black">Comprehensive Solutions</Heading>
+           <Text color="gray.500" fontSize="xl" maxW="2xl">Everything you need to thrive in the modern digital economy</Text>
+        </VStack>
+        <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={10}>
+          <FeatureCard 
+            color="blue"
+            icon={HiLightningBolt}
+            title="Growth Programmes"
+            description="Scalable frameworks designed to empower entrepreneurs with high-impact skills and global networking opportunities."
+          />
+          <FeatureCard 
+            color="purple"
+            icon={HiBriefcase}
+            title="Talent Sourcing"
+            description="AI-powered recruitment that matches vetted candidates with forward-thinking organizations in real-time."
+          />
+          <FeatureCard 
+            color="green"
+            icon={HiAcademicCap}
+            title="Professional Training"
+            description="Project-based online learning covering technology, marketing, and essential soft skills for the modern workplace."
+          />
+          <FeatureCard 
+            color="orange"
+            icon={HiGlobe}
+            title="Remote Work Hub"
+            description="Access a curated board of high-paying remote opportunities from companies across the globe."
+          />
+          <FeatureCard 
+            color="red"
+            icon={HiShieldCheck}
+            title="Verified Credentials"
+            description="Blockchain-backed certifications that give you instant credibility with top-tier recruiters and partners."
+          />
+          <FeatureCard 
+            color="cyan"
+            icon={HiRocket}
+            title="Startup Accelerator"
+            description="Direct mentorship and funding pathways for high-potential startups within our global ecosystem."
+          />
+        </SimpleGrid>
+      </Section>
 
-        {/* Employment Support */}
-        <MotionFlex 
-          initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={staggerContainer}
-          direction={{ base: "column-reverse", lg: "row" }} align="center" justify="space-between" mb={32}
-        >
-          <MotionBox variants={fadeInUp} flex={1}>
-            <Box rounded="3xl" overflow="hidden" boxShadow="2xl">
-              <Image src="/img/proworker.jpg" w="100%" h="400px" objectFit="cover" />
-            </Box>
-          </MotionBox>
-          <MotionBox variants={fadeInUp} flex={1} pl={{ lg: 16 }} mb={{ base: 10, lg: 0 }}>
-            <Heading size="xl" color="blue.900" mb={6}>Job Seekers and Manpower Finders</Heading>
-            <Text fontSize="lg" color="gray.600" mb={8}>
-              For organizations who are invested in human capital development, and are looking to establish highly effective career development programs designed to empower people with in-demand skills and have them subsequently integrated into decent and dignified jobs.
-            </Text>
-          </MotionBox>
-        </MotionFlex>
+      {/* Feature Highlight Sections */}
+      <Section bg="blue.900" color="white" rounded={{ base: "none", lg: "100px" }} mx={{ base: 0, lg: 8 }}>
+         <SimpleGrid columns={{ base: 1, lg: 2 }} spacing={20} alignItems="center">
+            <MotionBox
+              initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}
+            >
+               <VStack align="start" spacing={8}>
+                  <Badge colorScheme="blue" variant="solid" px={3} rounded="full">GLOBAL REACH</Badge>
+                  <Heading size="3xl" fontWeight="black" lineHeight="1.1">PEOPLE. TECHNOLOGY. INNOVATION.</Heading>
+                  <Text fontSize="xl" opacity={0.8} lineHeight="tall">
+                    ACE-TRACE develops cutting-edge AI SaaS solutions that bridge the gap between education and employment. We provide governments and NGOs with the digital infrastructure to manage workforce development at scale.
+                  </Text>
+                  <SimpleGrid columns={2} spacing={8} w="full">
+                     <VStack align="start">
+                        <Text color="blue.300" fontWeight="black" fontSize="2xl">100%</Text>
+                        <Text fontSize="sm" fontWeight="bold" opacity={0.6} textTransform="uppercase">Satisfaction</Text>
+                     </VStack>
+                     <VStack align="start">
+                        <Text color="blue.300" fontWeight="black" fontSize="2xl">24/7</Text>
+                        <Text fontSize="sm" fontWeight="bold" opacity={0.6} textTransform="uppercase">Expert Support</Text>
+                     </VStack>
+                  </SimpleGrid>
+                  <Button size="lg" colorScheme="blue" rounded="full" px={10} rightIcon={<HiArrowRight />}>Discover Our Vision</Button>
+               </VStack>
+            </MotionBox>
+            <MotionBox
+               initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}
+            >
+               <Box rounded="4xl" overflow="hidden" shadow="dark-lg" transform="rotate(2deg)" border="8px solid rgba(255,255,255,0.1)">
+                  <Image src="/img/skillacquisition.jpg" w="100%" h="600px" objectFit="cover" />
+               </Box>
+            </MotionBox>
+         </SimpleGrid>
+      </Section>
 
-        {/* Talent Sourcing */}
+      {/* Social Proof Section */}
+      <Section py={32}>
+        <VStack spacing={4} mb={20} textAlign="center">
+           <Badge colorScheme="blue" px={4} py={1} rounded="full">SUCCESS STORIES</Badge>
+           <Heading size="2xl" fontWeight="black">Voices of the Community</Heading>
+        </VStack>
         <MotionFlex 
           initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={staggerContainer}
-          direction={{ base: "column", lg: "row" }} align="center" justify="space-between" mb={32}
+          justify="center" align="stretch" flexWrap="wrap"
         >
-          <MotionBox variants={fadeInUp} flex={1} pr={{ lg: 16 }} mb={{ base: 10, lg: 0 }}>
-            <Heading size="xl" color="blue.900" mb={6}>Talent Sourcing & Work Opportunities.</Heading>
-            <Text fontSize="lg" color="gray.600" mb={8}>
-              Quickly find skilled talent for businesses in your entrepreneurship programs. Allow recruiters to automatically recruit talents who meet their requirements, directly from your program.
-            </Text>
-          </MotionBox>
-          <MotionBox variants={fadeInUp} flex={1}>
-            <Box rounded="3xl" overflow="hidden" boxShadow="2xl">
-              <Image src="/img/talentsource.jpg" w="100%" h="400px" objectFit="cover" />
-            </Box>
-          </MotionBox>
-        </MotionFlex>
-
-        {/* Adapt Training */}
-        <MotionFlex 
-          initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={staggerContainer}
-          direction={{ base: "column-reverse", lg: "row" }} align="center" justify="space-between" mb={32}
-        >
-          <MotionBox variants={fadeInUp} flex={1}>
-            <Box rounded="3xl" overflow="hidden" boxShadow="2xl">
-              <Image src="/img/matchingemployees.jpg" w="100%" h="400px" objectFit="cover" />
-            </Box>
-          </MotionBox>
-          <MotionBox variants={fadeInUp} flex={1} pl={{ lg: 16 }} mb={{ base: 10, lg: 0 }}>
-            <Heading size="xl" color="blue.900" mb={6}>Adapt or Create New Training Programmes.</Heading>
-            <Text fontSize="lg" color="gray.600" mb={8}>
-              Leverage our pre-built project-based online programmes that cover top skills in technology, business, digital marketing as well as life skills and soft skills, or upload your own training programmes.
-            </Text>
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Link mute href="/store">
-                <Button colorScheme="blue" rounded="full">Explore our Programmes</Button>
-              </Link>
-            </motion.div>
-          </MotionBox>
-        </MotionFlex>
-
-        {/* Guarantee Satisfaction */}
-        <MotionFlex 
-          initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={staggerContainer}
-          direction={{ base: "column", lg: "row" }} align="center" justify="space-between"
-        >
-          <MotionBox variants={fadeInUp} flex={1} pr={{ lg: 16 }} mb={{ base: 10, lg: 0 }}>
-            <Heading size="xl" color="blue.900" mb={6}>Guarantee Customer Satisfaction.</Heading>
-            <Text fontSize="lg" color="gray.600" mb={8}>
-              With over a 100% satisfaction rate and 1k+ successfully placed individuals, we ensure a premium experience for every learner and recruiter on the platform.
-            </Text>
-          </MotionBox>
-          <MotionBox variants={fadeInUp} flex={1}>
-            <Box rounded="3xl" overflow="hidden" boxShadow="2xl">
-              <Image src="/img/herolanding.jpg" w="100%" h="400px" objectFit="cover" />
-            </Box>
-          </MotionBox>
+          <CustomerReview 
+            color="blue"
+            name="James S. Samuel"
+            role="CEO, LESA RESTAURANT"
+            contentText="The talent sourcing platform has completely transformed how we build our team. The AI matching is remarkably accurate." 
+          />
+          <CustomerReview 
+            color="purple"
+            name="Sarah Jenkins"
+            role="DIRECTOR, EDU-TECH"
+            contentText="Leverage our cutting-edge technology solutions to develop and optimize your learning and workforce management processes quickly." 
+          />
+          <CustomerReview 
+            color="green"
+            name="Michael Chen"
+            role="FOUNDER, TECH-START"
+            contentText="Building our entrepreneurship programs on this platform saved us months of development time. Truly a game changer." 
+          />
         </MotionFlex>
       </Section>
 
-      {/* About & Customer Stories */}
-      <Section bg="blue.900" textAlign="center">
-        <MotionBox initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={fadeInUp}>
-          <Heading color="blue.300" size="sm" letterSpacing="widest" textTransform="uppercase" mb={4}>About Ace-Trace</Heading>
-          <Text color="gray.200" fontSize="lg" maxW="800px" mx="auto" mb={16}>
-            ACE-TRACE is a technology company that develops AI-powered SaaS solutions for learning and workforce development. Governments, social impact organizations, businesses, and individuals leverage our cutting-edge digital platforms to run their learning and workforce management programs.
+      {/* Final CTA / Contact */}
+      <Section bg="gray.100" textAlign="center" roundedTop="100px">
+        <MotionFlex initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp} direction="column" align="center" maxW="3xl" mx="auto">
+          <Circle size={20} bg="blue.500" color="white" mb={10} shadow="2xl">
+             <Icon as={HiSparkles} w={10} h={10} />
+          </Circle>
+          <Heading size="3xl" color="blue.900" mb={8} fontWeight="black">Ready To Scale Your Future?</Heading>
+          <Text fontSize="xl" color="gray.600" mb={12}>
+            Join thousands of professionals and organizations leveraging technology to solve the world's biggest challenges. Speak with a representative today.
           </Text>
-          
-          <Heading color="white" size="xl" mb={10}>PEOPLE, TECHNOLOGY, INNOVATION.</Heading>
-        </MotionBox>
-
-        <MotionFlex 
-          initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={staggerContainer}
-          direction={{ base: "column", md: "row" }} justify="center" align="stretch" flexWrap="wrap"
-        >
-          <CustomerReview contentText="Leverage our cutting-edge technology solutions to develop and optimize your learning and workforce management processes quickly." />
-          <CustomerReview contentText="The platform has completely transformed how we source talent. The AI matching is remarkably accurate." />
-          <CustomerReview contentText="Building our entrepreneurship programs on this platform saved us months of development time." />
-        </MotionFlex>
-      </Section>
-
-      {/* Want Technology to Work For You */}
-      <Section bg="gray.100" textAlign="center">
-        <MotionFlex initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={fadeInUp} direction="column" align="center">
-          <Heading size="xl" color="blue.900" mb={6}>WANT TECHNOLOGY TO WORK FOR YOU? WE CAN HELP</Heading>
-          <Text fontSize="lg" color="gray.600" maxW="800px" mx="auto" mb={16}>
-            Some of the fastest and most scalable ways to solve the world's biggest problems are digital. We have built and continue to build platforms that allow forward-thinking organizations to improve efficiency, increase knowledge and do good.
-          </Text>
-        </MotionFlex>
-      </Section>
-
-      {/* Final CTA */}
-      <Section bg="white" textAlign="center">
-        <MotionFlex initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp} direction="column" align="center">
-          <Heading size="xl" color="blue.900" mb={6}>Speak with a representative</Heading>
-          <Text fontSize="lg" color="gray.600" maxW="700px" mb={10}>
-            If you'd like to talk about your needs and explore how best we can be of help to you, please schedule a meeting with us. We have solutions for government agencies, businesses, non-profits, students, and job seekers.
-          </Text>
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Link mute href="/signup"><Button size="lg" colorScheme="blue" px={12} rounded="full" boxShadow="xl">Contact Us</Button></Link>
-          </motion.div>
+          <HStack spacing={6}>
+            <Link mute href="/signup">
+              <Button size="lg" colorScheme="blue" px={16} h={16} rounded="full" shadow="2xl" fontSize="xl" fontWeight="black">
+                JOIN NOW
+              </Button>
+            </Link>
+            <Link mute href="/contact">
+              <Button size="lg" variant="ghost" color="blue.600" px={10} h={16} rounded="full" fontWeight="bold">
+                Contact Sales
+              </Button>
+            </Link>
+          </HStack>
         </MotionFlex>
       </Section>
 
@@ -305,3 +388,4 @@ const HomePage = () => {
 };
 
 export default HomePage;
+
