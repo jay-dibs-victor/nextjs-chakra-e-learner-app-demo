@@ -1,403 +1,229 @@
+import React from "react";
 import {
-    Box,
-    Button,
-    Center,
-    Flex,
-    Grid,
-    GridItem,
-    Heading,
-    HStack,
-    Icon,
-    Input,
-    Stack,
-    Text,
-  } from "@chakra-ui/react";
-
-
-
-
+  Box,
+  Button,
+  Flex,
+  Heading,
+  HStack,
+  Icon,
+  Stack,
+  Text,
+  SimpleGrid,
+  VStack,
+  Circle,
+  Badge,
+  useColorModeValue,
+  Container,
+  Divider,
+} from "@chakra-ui/react";
+import { motion } from "framer-motion";
 import { Image } from "components/shared/blocks/Image";
-import Layout, { Container } from "components/shared/blocks/Layout";
+import Layout from "components/shared/blocks/Layout";
 import { Link } from "components/shared/blocks/Link";
-import dateFormat from "dateformat";
-import { TiMediaPlay, TiSocialFacebook, TiSocialTwitter } from "react-icons/ti";
-import { GoThreeBars } from "react-icons/go";
+import { 
+  HiAcademicCap, 
+  HiGlobeAlt, 
+  HiPresentationChartLine, 
+  HiUserGroup, 
+  HiArrowRight, 
+  HiLightningBolt,
+  HiSparkles
+} from "react-icons/hi";
 
-import { Swiper, SwiperSlide } from "swiper/react";
-// // import Swiper core and required modules
-import SwiperCore, { Autoplay, Pagination, Navigation } from "swiper/core";
-import breakpoints  from "core/theme/breakpoints";
+const MotionBox = motion(Box);
 
-export const Section = ({ children, ...rest }) => {
-    return (
-      <Box
-        as="section"
-        px={{ base: 2, sm2: 6 }}
-        maxW={breakpoints.xl}
-        mx="auto"
-        {...rest}
+const Feature = ({ title, description, icon }) => (
+  <VStack
+    align="start"
+    spacing={4}
+    p={8}
+    bg={useColorModeValue("white", "gray.800")}
+    rounded="3xl"
+    shadow="xl"
+    borderWidth="1px"
+    borderColor={useColorModeValue("gray.50", "gray.700")}
+    _hover={{ transform: "translateY(-8px)", shadow: "2xl" }}
+    transition="all 0.3s cubic-bezier(.175,.885,.32,1.275)"
+  >
+    <Circle size={14} bg="blue.50" color="blue.500" shadow="inner">
+      <Icon as={icon} w={7} h={7} />
+    </Circle>
+    <VStack align="start" spacing={1}>
+      <Heading size="md" fontWeight="black" letterSpacing="tight">{title}</Heading>
+      <Text color="gray.500" fontSize="sm" lineHeight="tall">{description}</Text>
+    </VStack>
+  </VStack>
+);
+
+const ElearningAcceleratorPage = () => {
+  const bgColor = useColorModeValue("gray.50", "gray.900");
+
+  return (
+    <Layout>
+      {/* Hero Section */}
+      <Box 
+        position="relative" 
+        overflow="hidden" 
+        bg="blue.900" 
+        pt={{ base: 20, lg: 32 }} 
+        pb={{ base: 24, lg: 40 }}
+        color="white"
       >
-        {children}
-      </Box>
-    );
-  };
-  
-  const HomePage = () => {
-    return (
-      <Layout>
-
-
-
-
-            {/* Hero */}
-      <Section
-        maxW={breakpoints.xxl}
-        bg="linear-gradient(to right, #3379d1, rgba(110, 106, 131, 0.8)) "
-        px={6}
-        py={{ base: 10, lg: 20 }}
-        mt="-20px"
-   
-      >
-        <Flex justifyContent="center" >
-          <Flex alignItems="" mr={{ lg: 16 }}>
-            <Box pt={6} pb={{ lg: "45px" }} color="white">
-              <Box maxW="500px">
-                <Heading type="h1" as="h1" color="brand.secondary">
-                Education ,Job portal, Online learning Saas.
-                  
+        <Box 
+          position="absolute" 
+          top="-10%" 
+          right="-5%" 
+          w="50%" 
+          h="120%" 
+          bgGradient="radial(blue.600, transparent)" 
+          opacity={0.4} 
+          rounded="full" 
+          blur="80px" 
+        />
+        <Container maxW="container.xl" position="relative" zIndex={1}>
+          <SimpleGrid columns={{ base: 1, lg: 2 }} spacing={16} alignItems="center">
+            <VStack align="start" spacing={8}>
+              <HStack spacing={3}>
+                <Badge colorScheme="blue" variant="solid" px={3} rounded="full" textTransform="uppercase">New for 2022</Badge>
+                <HStack color="blue.300" spacing={1}>
+                  <Icon as={HiSparkles} />
+                  <Text fontWeight="black" fontSize="xs" letterSpacing="widest">PREMIUM PROGRAM</Text>
+                </HStack>
+              </HStack>
+              <VStack align="start" spacing={4}>
+                <Heading size="3xl" fontWeight="black" lineHeight="1.1" letterSpacing="tight">
+                  The Future of <Text as="span" color="blue.300">Online Learning</Text> SaaS
                 </Heading>
-
-                <Text type="lg-regular" mb={{ base: 10, md: "30px" }}>
-                Learna provides tools and resources to help instructors and organizations that are looking to create robust online learning programs. From structured certificate programs to simple 
-                "how-to" courses, we enable you offer your classes to millions of participants online.
+                <Text fontSize="xl" opacity={0.8} fontWeight="medium">
+                  ImpactXplorer provides the tools and infrastructure to help instructors and organizations build robust, global online learning programs at scale.
                 </Text>
+              </VStack>
+              <Stack direction={{ base: "column", sm: "row" }} spacing={4} w="full">
+                <Link mute href="/signup">
+                  <Button size="lg" colorScheme="blue" h={16} px={12} rounded="full" shadow="2xl" rightIcon={<HiArrowRight />}>
+                    Launch Your Program
+                  </Button>
+                </Link>
+                <Button size="lg" variant="ghost" color="white" border="1px solid" borderColor="whiteAlpha.300" h={16} px={10} rounded="full" _hover={{ bg: "whiteAlpha.200" }}>
+                  View Demo
+                </Button>
+              </Stack>
+            </VStack>
+            <MotionBox
+              initial={{ opacity: 0, scale: 0.9, rotate: 2 }}
+              animate={{ opacity: 1, scale: 1, rotate: 0 }}
+              transition={{ duration: 1 }}
+            >
+              <Box rounded="4xl" overflow="hidden" shadow="dark-lg" border="12px solid" borderColor="whiteAlpha.100">
+                <Image src="/img/herolanding.jpg" w="100%" h="500px" objectFit="cover" />
               </Box>
-              <Link mute href="/signup">
-                <Button variant="primary">Create an Account</Button>
-              </Link>
-
-          
-            </Box>
-          </Flex>
-
-          <Flex
-            flexShrink={0}
-            alignSelf="center"
-            d={{ base: "none", lg: "flex" }}
-            w={{ lg: "550px", xl: "600px" }}
-            h={{ lg: "350px", xl: "400px" }}
-            pos="relative"
-          >
-            <Image
-              pos="absolute"
-              w="100%"
-              h="300px"
-              src="/img/herolanding.jpg"
-             boxShadow="-50px 50px 25px rgba(0, 0, 0, .08)"
-            />
-          </Flex>
-        </Flex>
-      </Section>
-
-
-      <Section px={6} pt={20} pb={{ base: 0, lg: 20 }}>
-        <Flex justifyContent="center" maxW={{ lg: "1150px", xl: "1200px" }} mx="auto">
-          <Heading type="h2" color="brand.secondary" maxW="900px">
-          Learn at your own pace, hire a reputable vetted  responsive employer and lots more...
-
-          </Heading>
-
-          
-        </Flex><br/>
-
-        <Center>
-        <Text>Looking to build entrepreneurship programs that ensure a conscious approach 
-            is applied towards developing ideas into startups and startups into profitable businesses? 
-            Leverage ImpactXplorer to build intelligent processes that assess,
-             train and support entrepreneurs on their path towards building scalable businesses.</Text>
-        </Center>
-      </Section>
-
-
-
-
-
-        
-               <Container as="section" wider pos="relative">
-          <Box
-            bg="purple.800"
-            pos="absolute"
-            top={0}
-            left={0}
-            w="100%"
-            h={{ base: 223, md: 130, lg: 200 }}
-          ></Box>
-  
-          <Container pos="relative" zIndex={1} px={0}>
-            <Box color="white" pt={{ base: 4, lg: 10 }}>
-              <Heading
-                fontSize={{ base: "3xl", lg: "5xl" }}
-                mb={{ base: 1, xl: 3 }}
-              >
-               Brief
-              </Heading>
-              <Text>
-              Learna allows me the flexibility I need while also providing the tools that help me create comprehensive courses that are engaging and fulfilling for my participants.
-              </Text>
-            </Box>
-  
-            <Grid
-              templateColumns={{
-                base: "1fr",
-                md: "1.35fr 1.65fr",
-                xl: "1.25fr 1.75fr",
-              }}
-              columnGap={{ base: 2, md: 3, lg: 5 }}
-              rowGap={{ base: 5, xl: 10 }}
-              mb={10}
-              mt={{ base: 7, lg: 0 }}
-            >
-             
-            </Grid>
-          </Container>
+            </MotionBox>
+          </SimpleGrid>
         </Container>
-  
-      
-      </Layout>
-    );
-  };
-  
-  const LG_StackCard = ({
-    badge,
-    imageBadge,
-    revereHeader,
-    moreText = true,
-    ...rest
-  }) => {
-    const renderHeader = () => (
-      <Box mb={3}>
-        {!imageBadge && <Badge text="news" />}
-  
-        <TitleText
-          text={`Leveraging Artificial Intelligence for profit, and social good .`}
-          size={{ base: "4xl", xl: "4xl" }}
-        />
-  
-        <DateText text="Ace Trace is a technology company that develops AI-powered SaaS (Software-as-a-service) platforms for learning and workforce development. Governments, social impact organizations, and businesses leverage our cutting-edge digital platforms to build or run their learning and workforce development activities." />
       </Box>
-    );
-  
-    return (
-      <Box pb={5} mb={{ base: 5, md: 0 }} {...rest}>
-        {!revereHeader && renderHeader()}
-  
-        <CardImage
-          w="100%"
-          h={{
-            base: "230px",
-            sm: "300px",
-            md: "260px",
-            lg: "400px",
-            xl: "500px",
-          }}
-          src="/img/talentsource.jpg"
-          badge={imageBadge && badge}
-          wrapperProps={{ mb: 3 }}
-        />
-  
-        {revereHeader && renderHeader()}
-  
-        {moreText && (
-          <MoreText text="We empower and support governments, businesses, and everyday people to harness the power of AI." />
-        )}
+
+      {/* Intro Context */}
+      <Box py={24} bg={bgColor}>
+        <Container maxW="3xl" textAlign="center">
+           <VStack spacing={8}>
+             <Heading size="xl" fontWeight="black" letterSpacing="tight">One Click To Scale Your Impact</Heading>
+             <Text fontSize="lg" color="gray.600" lineHeight="tall">
+               Whether you're creating structured certificate programs or simple "how-to" courses, our platform enables you to offer your classes to millions of participants online with zero friction. Leverage our intelligent processes to assess, train, and support learners globally.
+             </Text>
+             <Divider w="40px" borderColor="blue.500" borderBottomWidth="4px" rounded="full" />
+           </VStack>
+        </Container>
       </Box>
-    );
-  };
-  
-  const MD_StackCard = ({ badge, title, imageProps }) => (
-    <Box mb={{ base: 5, md: 0 }}>
-      <CardImage
-        w="100%"
-        h={{ base: "150px", md: "73.19px", lg: "100px" }}
-        src="/img/skillacquisition.jpg"
-        badge={badge}
-        {...imageProps}
-      />
-  
-      <TitleText size={{ base: "lg", md: "sm" }} text={title} my={2} />
-  
-      <DateText />
-    </Box>
-  );
-  
-  const MD_ListCard = ({ badge, title }) => (
-    <Flex mb={{ base: 5, md: 0 }}>
-      <Box>
-        <CardImage
-          w={{ base: "100px", md: "127px", lg: "168px", xl: "280px" }}
-          h={{ base: "70px", md: "76px", lg: "100px", xl: "170px" }}
-          src="/img/matchingemployees.jpg"
-          badge={badge}
-        />
+
+      {/* Core Features */}
+      <Box pb={32} bg={bgColor}>
+        <Container maxW="container.xl">
+          <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={8}>
+            <Feature 
+              icon={HiLightningBolt}
+              title="Fast Deployment"
+              description="Go from course concept to a fully functional global LMS in less than 24 hours."
+            />
+            <Feature 
+              icon={HiUserGroup}
+              title="Global Community"
+              description="Integrate seamlessly with our existing network of 1M+ active learners and mentors."
+            />
+            <Feature 
+              icon={HiPresentationChartLine}
+              title="AI Analytics"
+              description="Understand learner behavior and optimize course completion rates with deep AI insights."
+            />
+            <Feature 
+              icon={HiGlobeAlt}
+              title="Scalable Infrastructure"
+              description="Built on cloud-native technology that scales automatically with your participant growth."
+            />
+          </SimpleGrid>
+        </Container>
       </Box>
-  
-      <Box
-        borderTop="1px"
-        borderColor="gray.100"
-        p={{ base: 1, lg: 2 }}
-        ml={{ base: 2, md: 1, lg: 3 }}
-      >
-        <TitleText
-          size={{ base: "sm", xl: "lg" }}
-          mb={{ base: 1, xl: 2 }}
-          text={title}
-        />
-  
-        <DateText mb={{ xl: 5 }} />
-  
-        <MoreText
-          d={{ base: "none", xl: "block" }}
-          text="The main thing that you have to remember on this journey is just be nice to everyone and always smile. Refreshingly, what was expected of her was the..."
-        />
+
+      {/* The Brief / Testimonial */}
+      <Box py={24} bg="blue.900" position="relative" overflow="hidden">
+        <Box position="absolute" bottom="-10%" left="-5%" w="40%" h="100%" bg="whiteAlpha.50" rounded="full" blur="60px" />
+        <Container maxW="container.xl">
+           <SimpleGrid columns={{ base: 1, lg: 2 }} spacing={16} alignItems="center">
+              <VStack align="start" spacing={6} color="white">
+                <Heading size="2xl" fontWeight="black" letterSpacing="tight">The Learna Experience</Heading>
+                <Text fontSize="xl" opacity={0.8}>
+                  "Learna allows me the flexibility I need while also providing the tools that help me create comprehensive courses that are engaging and fulfilling for my participants. It's the new standard for digital education."
+                </Text>
+                <HStack spacing={4}>
+                  <Circle size={12} bg="blue.500" shadow="lg">
+                    <Icon as={HiAcademicCap} w={6} h={6} color="white" />
+                  </Circle>
+                  <VStack align="start" spacing={0}>
+                    <Text fontWeight="black" fontSize="md">Prof. Johnathan Smith</Text>
+                    <Text fontSize="xs" fontWeight="bold" opacity={0.6} textTransform="uppercase">Founder, EduScale</Text>
+                  </VStack>
+                </HStack>
+              </VStack>
+              <SimpleGrid columns={2} spacing={6} w="full">
+                 <Box p={8} bg="whiteAlpha.100" rounded="3xl" backdropFilter="blur(10px)" border="1px solid" borderColor="whiteAlpha.200">
+                    <Heading size="xl" color="blue.300" fontWeight="black">150+</Heading>
+                    <Text color="white" fontWeight="bold" fontSize="sm" opacity={0.7} mt={1}>ENTERPRISE TOOLS</Text>
+                 </Box>
+                 <Box p={8} bg="whiteAlpha.100" rounded="3xl" backdropFilter="blur(10px)" border="1px solid" borderColor="whiteAlpha.200">
+                    <Heading size="xl" color="blue.300" fontWeight="black">99.9%</Heading>
+                    <Text color="white" fontWeight="bold" fontSize="sm" opacity={0.7} mt={1}>UPTIME GUARANTEE</Text>
+                 </Box>
+                 <Box p={8} bg="whiteAlpha.100" rounded="3xl" backdropFilter="blur(10px)" border="1px solid" borderColor="whiteAlpha.200">
+                    <Heading size="xl" color="blue.300" fontWeight="black">256-bit</Heading>
+                    <Text color="white" fontWeight="bold" fontSize="sm" opacity={0.7} mt={1}>SSL SECURITY</Text>
+                 </Box>
+                 <Box p={8} bg="whiteAlpha.100" rounded="3xl" backdropFilter="blur(10px)" border="1px solid" borderColor="whiteAlpha.200">
+                    <Heading size="xl" color="blue.300" fontWeight="black">API</Heading>
+                    <Text color="white" fontWeight="bold" fontSize="sm" opacity={0.7} mt={1}>READY ACCESS</Text>
+                 </Box>
+              </SimpleGrid>
+           </SimpleGrid>
+        </Container>
       </Box>
-    </Flex>
-  );
-  
-  const SM_ListCard = ({ title, imageIsRound = "full", noImage, ...rest }) => (
-    <Flex {...rest}>
-      <Box mr={{ base: 2, md: 5 }}>
-        <TitleText
-          size={{ base: "lg", md: "xs", lg: "sm" }}
-          text={title}
-          mb={1}
-        />
-  
-        <DateText d={{ md: "none", lg: "block" }} />
+
+      {/* Final CTA */}
+      <Box py={32} textAlign="center" bg={bgColor}>
+        <Container maxW="3xl">
+           <VStack spacing={10}>
+             <Circle size={20} bg="blue.500" color="white" shadow="2xl">
+                <Icon as={HiAcademicCap} w={10} h={10} />
+             </Circle>
+             <VStack spacing={4}>
+               <Heading size="2xl" fontWeight="black" letterSpacing="tight">Ready to Transform Your Knowledge into a Global Academy?</Heading>
+               <Text fontSize="xl" color="gray.500">Join the elite organizations leveraging ACE-TRACE to power the next generation of online learning.</Text>
+             </VStack>
+             <Button size="lg" colorScheme="blue" h={16} px={16} rounded="full" shadow="2xl" fontSize="xl" fontWeight="black" rightIcon={<HiArrowRight />}>
+               Get Started for Free
+             </Button>
+           </VStack>
+        </Container>
       </Box>
-  
-      {!noImage && (
-        <CardImage
-          wrapperProps={{
-            flexShrink: 0,
-          }}
-          boxSize={{ base: "64px", md: 45, lg: 50, xl: 78 }}
-          src="/img/news.jpg"
-          rounded={imageIsRound}
-        />
-      )}
-    </Flex>
+    </Layout>
   );
-  
-  const AdCard = ({ imageProps, ...rest }) => (
-    <Flex flexDir="column" alignItems="center" {...rest}>
-      <Text
-        textAlign="center"
-        opacity=".7"
-        fontSize={{ base: "sm", md: "xs" }}
-        mb={1}
-      >
-        - Advertisement -
-      </Text>
-  
-      <CardImage
-        w={{ base: 280, sm: 300, md: 166, lg: 200, xl: 300 }}
-        h={{ base: 280, sm: 300, md: 166, lg: 200, xl: 300 }}
-        src="/img/shoes.jpg"
-        {...imageProps}
-      />
-    </Flex>
-  );
-  
-  const CardImage = ({ wrapperProps, badge, w, h, src, ...rest }) => (
-    <Box w={w} h={h} pos="relative" {...wrapperProps}>
-      <Image w="100%" h="100%" src={src} {...rest} />
-      {badge && (
-        <Badge pos="absolute" bottom={0} left={0} zIndex={1} text={badge} />
-      )}
-    </Box>
-  );
-  
-  const Badge = ({ text, ...rest }) => (
-    <Text
-      whiteSpace="nowrap"
-      wordBreak="keep-all"
-      p={1}
-      lineHeight={1}
-      fontSize="xx-small"
-      fontWeight={500}
-      letterSpacing={1}
-      bg="purple.800"
-      color="white"
-      textTransform="uppercase"
-      w="fit-content"
-      {...rest}
-    >
-      {text}
-    </Text>
-  );
-  
-  const TitleText = ({ text, size = "2xl", ...rest }) => (
-    <Heading
-      fontSize={size}
-      fontFamily="Cambria, Cochin, Georgia, Times, 'Times New Roman', serif"
-      {...rest}
-    >
-      {text}
-    </Heading>
-  );
-  
-  const DateText = ({
-    date = Date.now(),
-    text,
-    size = { base: "sm", md: "xs" },
-    ...rest
-  }) => (
-    <Text fontStyle="italic" fontSize={size} {...rest}>
-      {text}
-      {text && " - "}
-      {dateFormat(date, "fullDate")}
-    </Text>
-  );
-  
-  const MoreText = ({ text, size = "sm", ...rest }) => (
-    <Text fontWeight={{ xl: "bold" }} fontSize={size} {...rest}>
-      {text}
-    </Text>
-  );
-  
-  const MiniSection = ({ title, titleProps, children, moreButton, ...rest }) => {
-    return (
-      <Box {...rest}>
-        <Stack spacing={{ base: 4, xl: 6 }}>
-          {title && (
-            <Heading
-              fontSize={{ base: "xl", md: "lg" }}
-              color="purple.800"
-              {...titleProps}
-            >
-              {title}
-            </Heading>
-          )}
-          {children}
-        </Stack>
-  
-        {moreButton && (
-          <Button
-            rightIcon={<GoThreeBars />}
-            size="sm"
-            bg="black"
-            color="white"
-            rounded="sm"
-            _hover={{ bg: "purple.800" }}
-            w="fit-content"
-            mt={8}
-          >
-            More from {title}
-          </Button>
-        )}
-      </Box>
-    );
-  };
-  
-  export default HomePage;
-  
+};
+
+export default ElearningAcceleratorPage;
