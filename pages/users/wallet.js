@@ -27,6 +27,7 @@ import {
   Tr,
   Th,
   Td,
+  Center,
 } from "@chakra-ui/react";
 import { 
   HiCreditCard, 
