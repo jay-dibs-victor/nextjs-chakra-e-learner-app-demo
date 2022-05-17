@@ -1,256 +1,217 @@
 
 
-import { ButtonGroup } from "@chakra-ui/button";
-import { Box, Flex, Grid, GridItem } from "@chakra-ui/layout";
-import { Button, Heading, Icon, Text, Modal, TextField } from "components/shared/lib";
-import { Layout, PageHeader, Section } from "components/components/pages";
-import useForm from "hooks/useForm";
-import { FaPen, FaTrashAlt } from "react-icons/fa";
-import { IoAdd } from "react-icons/io5";
-import breakpoints from "theme/breakpoints";
+import React from "react";
+import {
+  Box,
+  Flex,
+  Heading,
+  Text,
+  Icon,
+  HStack,
+  VStack,
+  Divider,
+  Switch,
+  FormControl,
+  FormLabel,
+  useColorModeValue,
+  Container,
+  SimpleGrid,
+  Circle,
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
+} from "@chakra-ui/react";
+import { 
+  HiBell, 
+  HiLockClosed, 
+  HiCog, 
+  HiUser, 
+  HiMail, 
+  HiGlobe,
+  HiChevronRight
+} from "react-icons/hi";
+import { motion } from "framer-motion";
+import { Layout } from "components/components/pages";
+import { Button } from "components/shared/lib";
 import buildSEO from "utils/buildSEO";
-import http from "utils/http";
 
-const pageSEO = buildSEO("My Preferences", "...");
+const pageSEO = buildSEO("Preferences", "Customize your notification and privacy settings");
 
-const PopModal = ({
-  heading,
-  initialFieldsProps,
-  doSubmit,
-  renderTrigger,
-  submitButtonText,
-}) => {
-  const { formProps, handleType, fieldsProps, renderSubmitBtn } = useForm({
-    doSubmit,
-    initialFieldsProps,
-  });
+const MotionBox = motion(Box);
 
+const PreferenceItem = ({ icon, title, description, defaultChecked, color = "blue" }) => {
+  const borderColor = useColorModeValue("gray.100", "gray.700");
+  
   return (
-    <Modal renderTrigger={renderTrigger}>
-      {({ handleClose }) => (
-        <Box as="form" {...formProps}>
-          <Box as="header">
-            <Heading type="h5">{heading}</Heading>
-          </Box>
-
-          {fieldsProps.map((field) => (
-            <TextField {...field} key={field.id} onChange={handleType} />
-          ))}
-
-          <Flex justifyContent="flex-end">
-            <ButtonGroup spacing={2} justifyContent="flex-end">
-              {renderSubmitBtn({
-                text: submitButtonText || "Add",
-                variant: "primary",
-                sm: true,
-              })}
-
-              <Button variant="secondary" sm onClick={handleClose}>
-                Cancel
-              </Button>
-            </ButtonGroup>
-          </Flex>
-        </Box>
-      )}
-    </Modal>
-  );
-};
-
-const Card = ({ heading, data, subHeading, onEdit }) => {
-  const handleRemove = async () => {
-    const yes = confirm("Are you sure you want to REMOVE this?");
-
-    if (yes) {
-      // Make a request to remove this card info...
-      await http.get("/me");
-
-      // cause a reload
-      location.reload();
-    }
-  };
-
-  const renderControl = (onClick) => (
-    <Flex
-      alignItems="center"
-      justifyContent="space-between"
-      color={onClick ? "brand.black2" : "brand.error"}
-      _hover={{
-        bg: "brand.gray5",
-        cursor: "pointer",
-      }}
-      onClick={onClick || handleRemove}
-      rounded="md"
-      px={2}
+    <Flex 
+      justify="space-between" 
+      align="center" 
+      p={6} 
+      borderBottom="1px solid" 
+      borderColor={borderColor}
+      _last={{ borderBottom: "none" }}
     >
-      <Text mute type={onClick ? "nm-bold" : "nm-regular"}>
-        {onClick ? "Edit" : "Remove"}
-      </Text>
-
-      <Icon fontSize="70%" ml={2}>
-        {onClick ? <FaPen /> : <FaTrashAlt />}
-      </Icon>
+      <HStack spacing={4}>
+        <Circle size={10} bg={`${color}.50`} color={`${color}.500`}>
+          <Icon as={icon} w={5} h={5} />
+        </Circle>
+        <VStack align="start" spacing={0}>
+          <Text fontWeight="black" fontSize="md">{title}</Text>
+          <Text fontSize="sm" color="gray.500">{description}</Text>
+        </VStack>
+      </HStack>
+      <Switch colorScheme={color} defaultChecked={defaultChecked} size="lg" />
     </Flex>
   );
-
-  const renderRemoveButton = () => renderControl();
-
-  const renderEditButton = () => (
-    <PopModal
-      heading={subHeading}
-      initialFieldsProps={data}
-      doSubmit={onEdit}
-      renderTrigger={({ handleOpen }) => renderControl(handleOpen)}
-      submitButtonText="Edit"
-    />
-  );
-
-  return (
-    <Box>
-      <Text type="md-bold" mb={2}>
-        {heading}
-      </Text>
-
-      <Flex justifyContent="space-between" bg="brand.gray5" rounded="md" p={3}>
-        <Grid templateColumns="1fr 1fr 1fr" columnGap={5}>
-          {data.map((item, index) => (
-            <GridItem key={index}>
-              <Text type="nm-bold" mute>
-                {item.label}
-              </Text>
-              <Text>{item.value}</Text>
-            </GridItem>
-          ))}
-        </Grid>
-
-        <Box alignSelf="flex-end">
-          {renderEditButton()}
-          {renderRemoveButton()}
-        </Box>
-      </Flex>
-    </Box>
-  );
 };
 
-const Header = ({ initialFieldsProps, heading, subHeading, onAdd }) => (
-  <Flex
-    alignItems="center"
-    justifyContent="space-between"
-    borderBottom="1px"
-    color="brand.secondary"
-    mb={5}
-    pb={2}
-  >
-    <Heading type="h5" mute>
-      {heading}
-    </Heading>
-
-    <PopModal
-      heading={subHeading}
-      initialFieldsProps={initialFieldsProps}
-      doSubmit={onAdd}
-      renderTrigger={({ handleOpen }) => (
-        <Button
-          leftIcon={<IoAdd />}
-          variant="secondary"
-          sm
-          onClick={handleOpen}
-        >
-          Add
-        </Button>
-      )}
-    />
-  </Flex>
-);
-
-const EditPreferencePage = () => {
-  const formDataInitializer = (formData) =>
-    formData.map((item) => ({ ...item, value: "" }));
-
-  const accountInfoCardData = [
-    {
-      id: "address",
-      label: "Address",
-      textarea: true,
-      minH: "40px",
-      value: "85 Ayilara street, ojuelegba, Lagos state, Nigeria",
-    },
-    {
-      id: "phone-number",
-      label: "Phone Number",
-      type: "number",
-      value: "07032917504",
-    },
-  ];
-
-  const cardDetailsCardData = [
-    {
-      id: "card-name",
-      label: "Card Name",
-      value: "Salau Oluwole Olorunjuedalo",
-    },
-    {
-      id: "card-type",
-      label: "Card Type",
-      value: "VISA",
-    },
-    {
-      id: "card-number",
-      label: "Card Number",
-      value: "53999 xxxx",
-    },
-  ];
-
-  const accountInfoFormData = formDataInitializer(accountInfoCardData);
-  const cardDetailsFormData = formDataInitializer(cardDetailsCardData);
-
-  const handleAddAccountInfo = async (fieldsObj, router) => {
-    console.log(fieldsObj);
-    await http.get("/me");
-
-    router.reload();
-  };
-  const handleAddCardDetail = async (fieldsObj, router) => {
-    console.log(fieldsObj);
-    await http.get("/me");
-
-    router.reload();
-  };
+const PreferencePage = () => {
+  const bgColor = useColorModeValue("gray.50", "gray.900");
+  const cardBg = useColorModeValue("white", "gray.800");
 
   return (
     <Layout SEO={pageSEO}>
-      {/* <PageHeader>Edit Preference</PageHeader> */}
+      <Box bg={bgColor} minH="100vh" pt={12} pb={24}>
+        <Container maxW="container.lg">
+          <VStack spacing={12} align="stretch">
+            {/* Header */}
+            <VStack align="start" spacing={2}>
+              <HStack color="blue.500">
+                <Icon as={HiCog} w={6} h={6} />
+                <Text fontWeight="black" letterSpacing="widest" fontSize="xs">USER PREFERENCES</Text>
+              </HStack>
+              <Heading size="2xl" fontWeight="black" letterSpacing="tight">Settings & Privacy</Heading>
+              <Text color="gray.500" fontSize="lg">Control how you interact with the platform and manage your digital footprint.</Text>
+            </VStack>
 
-      <Section mb={16} maxW={breakpoints.md}>
-        <Header
-          heading="Addresses"
-          subHeading="Account Information"
-          onAdd={handleAddAccountInfo}
-          initialFieldsProps={accountInfoFormData}
-        />
-        <Card
-          heading="Account Information"
-          data={accountInfoCardData}
-          subHeading="Account Information"
-          onEdit={handleAddAccountInfo}
-        />
-      </Section>
+            <Tabs variant="soft-rounded" colorScheme="blue">
+              <TabList bg={cardBg} p={2} rounded="full" shadow="sm" border="1px solid" borderColor="gray.100" w="fit-content">
+                <Tab px={8} py={3} fontWeight="bold"><Icon as={HiBell} mr={2} /> Notifications</Tab>
+                <Tab px={8} py={3} fontWeight="bold"><Icon as={HiLockClosed} mr={2} /> Security</Tab>
+                <Tab px={8} py={3} fontWeight="bold"><Icon as={HiGlobe} mr={2} /> Language</Tab>
+              </TabList>
 
-      <Section mb={16} maxW={breakpoints.md}>
-        <Header
-          heading="Payments"
-          subHeading="Card Details"
-          onAdd={handleAddCardDetail}
-          initialFieldsProps={cardDetailsFormData}
-        />
-        <Card
-          heading="Card Details"
-          data={cardDetailsCardData}
-          subHeading="Card Details"
-          onEdit={handleAddCardDetail}
-        />
-      </Section>
+              <TabPanels mt={10}>
+                {/* Notifications Panel */}
+                <TabPanel p={0}>
+                  <MotionBox
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    bg={cardBg}
+                    rounded="3xl"
+                    shadow="xl"
+                    overflow="hidden"
+                    borderWidth="1px"
+                    borderColor="gray.100"
+                  >
+                    <Box p={8} bg="blue.900" color="white">
+                       <Heading size="md" fontWeight="black">Alert Preferences</Heading>
+                       <Text opacity={0.7} fontSize="sm">Stay updated with what's happening in your academy.</Text>
+                    </Box>
+                    <VStack align="stretch" spacing={0}>
+                      <PreferenceItem 
+                        icon={HiMail} 
+                        title="Email Notifications" 
+                        description="Receive weekly summaries and course updates via email."
+                        defaultChecked={true}
+                      />
+                      <PreferenceItem 
+                        icon={HiBell} 
+                        title="Push Notifications" 
+                        description="Get real-time alerts for course mentions and messages."
+                        defaultChecked={true}
+                        color="purple"
+                      />
+                      <PreferenceItem 
+                        icon={HiGlobe} 
+                        title="Browser Alerts" 
+                        description="Show desktop notifications when you're active on the platform."
+                        defaultChecked={false}
+                        color="orange"
+                      />
+                    </VStack>
+                    <Box p={6} bg="gray.50">
+                       <Button variant="primary" rounded="full" px={10}>Save Notification Settings</Button>
+                    </Box>
+                  </MotionBox>
+                </TabPanel>
+
+                {/* Security Panel */}
+                <TabPanel p={0}>
+                  <SimpleGrid columns={{ base: 1, md: 2 }} spacing={8}>
+                     <MotionBox
+                       initial={{ opacity: 0, scale: 0.95 }}
+                       animate={{ opacity: 1, scale: 1 }}
+                       bg={cardBg}
+                       rounded="3xl"
+                       p={8}
+                       shadow="xl"
+                       borderWidth="1px"
+                       borderColor="gray.100"
+                     >
+                        <VStack align="start" spacing={6}>
+                           <Circle size={12} bg="red.50" color="red.500">
+                              <Icon as={HiLockClosed} w={6} h={6} />
+                           </Circle>
+                           <VStack align="start" spacing={2}>
+                              <Heading size="md" fontWeight="black">Two-Factor Auth</Heading>
+                              <Text fontSize="sm" color="gray.500">Add an extra layer of security to your account by enabling 2FA.</Text>
+                           </VStack>
+                           <Button colorScheme="red" variant="outline" rounded="full" w="full" h={12}>Enable 2FA</Button>
+                        </VStack>
+                     </MotionBox>
+
+                     <MotionBox
+                       initial={{ opacity: 0, scale: 0.95 }}
+                       animate={{ opacity: 1, scale: 1 }}
+                       transition={{ delay: 0.1 }}
+                       bg={cardBg}
+                       rounded="3xl"
+                       p={8}
+                       shadow="xl"
+                       borderWidth="1px"
+                       borderColor="gray.100"
+                     >
+                        <VStack align="start" spacing={6}>
+                           <Circle size={12} bg="green.50" color="green.500">
+                              <Icon as={HiUser} w={6} h={6} />
+                           </Circle>
+                           <VStack align="start" spacing={2}>
+                              <Heading size="md" fontWeight="black">Account Privacy</Heading>
+                              <Text fontSize="sm" color="gray.500">Decide who can see your course progress and certificates.</Text>
+                           </VStack>
+                           <Button colorScheme="green" variant="outline" rounded="full" w="full" h={12}>Manage Privacy</Button>
+                        </VStack>
+                     </MotionBox>
+                  </SimpleGrid>
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
+
+            {/* Support CTA */}
+            <Box bg="blue.900" rounded="4xl" p={12} color="white" position="relative" overflow="hidden">
+               <Box position="absolute" top="-20%" right="-10%" w="40%" h="140%" bg="whiteAlpha.100" rounded="full" blur="40px" />
+               <HStack justify="space-between" align="center" direction={{ base: "column", md: "row" }} gap={10}>
+                  <VStack align="start" spacing={6} maxW="2xl">
+                     <Heading size="xl" fontWeight="black">Need help with your account?</Heading>
+                     <Text fontSize="lg" opacity={0.8}>
+                        Our support team is available 24/7 to help you with any issues regarding your profile or security settings.
+                     </Text>
+                     <Button bg="white" color="blue.900" rounded="full" px={10} h={14} fontWeight="black" rightIcon={<HiChevronRight />}>
+                        Visit Help Center
+                     </Button>
+                  </VStack>
+                  <Icon as={HiCog} w="200px" h="200px" opacity={0.1} />
+               </HStack>
+            </Box>
+          </VStack>
+        </Container>
+      </Box>
     </Layout>
   );
 };
 
-export default EditPreferencePage;
+export default PreferencePage;
+
