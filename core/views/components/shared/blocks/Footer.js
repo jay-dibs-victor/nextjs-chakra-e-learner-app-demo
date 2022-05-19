@@ -13,6 +13,7 @@ import {
   VStack,
   Divider,
   Container,
+  Circle,
 } from "@chakra-ui/react";
 import {
   TiSocialFacebook,
