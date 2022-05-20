@@ -23,7 +23,7 @@ import {
 
   
 const CenteredLeft = () => (
-    <Box pt={5}>
+    <Box py={8}>
       <Container>
         <Flex justifyContent="space-between" alignItems="center">
           {/* <Flex alignItems="flex-end">

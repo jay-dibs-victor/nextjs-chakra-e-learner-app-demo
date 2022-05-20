@@ -139,7 +139,7 @@ import {
       );
     
       return (
-        <Box py={2} shadow={{ md: "lg" }} {...rest}>
+        <Box py={4} shadow={{ md: "lg" }} {...rest}>
           <Container px={{ base: 0, md: 6 }} wider>
             <Flex
               flexDir={{ md: "column", lg: "row" }}

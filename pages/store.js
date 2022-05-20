@@ -96,7 +96,7 @@ const StorePage = () => {
               position="relative"
             >
               <Box position="absolute" inset={0} bgGradient="linear(to-r, blackAlpha.700, transparent)" />
-              <Container maxW="container.xl" position="relative" zIndex={1}>
+              <Container maxW="full" px={{ base: 6, lg: 24 }} position="relative" zIndex={1}>
                 <VStack
                   align="start"
                   spacing={8}
@@ -140,7 +140,7 @@ const StorePage = () => {
               position="relative"
             >
               <Box position="absolute" inset={0} bgGradient="linear(to-r, blackAlpha.800, transparent)" />
-              <Container maxW="container.xl" position="relative" zIndex={1}>
+              <Container maxW="full" px={{ base: 6, lg: 24 }} position="relative" zIndex={1}>
                 <VStack
                   align="start"
                   spacing={8}
@@ -180,19 +180,21 @@ const StorePage = () => {
       </Box>
 
       {/* Featured Products */}
-      <Section mb={24}>
-        <VStack spacing={3} mb={16} textAlign="center">
-          <Badge colorScheme="blue" variant="subtle" px={4} py={1} rounded="full">Editor's Choice</Badge>
-          <Heading size="2xl" fontWeight="black">Latest Collections</Heading>
-          <Text color="gray.500" fontSize="lg">Discover our newest arrivals curated for the modern minimalist</Text>
-        </VStack>
-        <ProductCards mb={12} />
-      </Section>
+      <Box px={{ base: 6, lg: 12 }}>
+        <Section mb={24} maxW="full">
+          <VStack spacing={3} mb={16} textAlign="center">
+            <Badge colorScheme="blue" variant="subtle" px={4} py={1} rounded="full">Editor's Choice</Badge>
+            <Heading size="2xl" fontWeight="black">Latest Collections</Heading>
+            <Text color="gray.500" fontSize="lg">Discover our newest arrivals curated for the modern minimalist</Text>
+          </VStack>
+          <ProductCards mb={12} maxW="full" />
+        </Section>
+      </Box>
 
       {/* Promotional Section */}
       <Box py={24} bg={"blue.600"} mb={24} position="relative" overflow="hidden">
         <Box position="absolute" top="-10%" right="-5%" w="40%" h="120%" bg="whiteAlpha.100" rounded="full" blur="80px" />
-        <Container maxW="container.xl" position="relative">
+        <Container maxW="full" px={{ base: 6, lg: 24 }} position="relative">
           <SimpleGrid columns={{ base: 1, md: 2 }} spacing={16}>
             <VStack align="start" spacing={8} justify="center" color="white">
               <VStack align="start" spacing={2}>
@@ -228,20 +230,22 @@ const StorePage = () => {
       </Box>
 
       {/* Trending Section */}
-      <Section mb={24}>
-        <HStack mb={12} justify="space-between" align="end">
-          <VStack align="start" spacing={1}>
-            <Heading size="xl" fontWeight="black">Trending Now</Heading>
-            <Text color="gray.500">Most loved products by our community this week</Text>
-          </VStack>
-          <Button variant="link" colorScheme="blue" rightIcon={<HiArrowRight />}>Explore All</Button>
-        </HStack>
-        <ProductCards mb={10} />
-      </Section>
+      <Box px={{ base: 6, lg: 12 }}>
+        <Section mb={24} maxW="full">
+          <HStack mb={12} justify="space-between" align="end">
+            <VStack align="start" spacing={1}>
+              <Heading size="xl" fontWeight="black">Trending Now</Heading>
+              <Text color="gray.500">Most loved products by our community this week</Text>
+            </VStack>
+            <Button variant="link" colorScheme="blue" rightIcon={<HiArrowRight />}>Explore All</Button>
+          </HStack>
+          <ProductCards mb={10} maxW="full" />
+        </Section>
+      </Box>
 
       {/* Features Grid */}
       <Box py={24} bg={useColorModeValue("white", "gray.800")} borderTop="1px solid" borderColor={useColorModeValue("gray.100", "gray.700")}>
-        <Container maxW="container.xl">
+        <Container maxW="full" px={{ base: 6, lg: 24 }}>
           <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={10}>
             <Feature
               icon={HiTruck}
