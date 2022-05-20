@@ -20,6 +20,10 @@ import { Layout, Section } from "components/components/pages";
 import { ProductCards } from "components/shared/lib";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Autoplay, Pagination, Navigation, EffectFade } from "swiper/core";
+import "swiper/swiper.min.css";
+import "swiper/components/pagination/pagination.min.css";
+import "swiper/components/effect-fade/effect-fade.min.css";
+import "swiper/components/navigation/navigation.min.css";
 import { motion } from "framer-motion";
 import { HiTruck, HiShieldCheck, HiCreditCard, HiRefresh, HiArrowRight, HiSparkles } from "react-icons/hi";
 
@@ -62,18 +66,28 @@ const StorePage = () => {
   return (
     <Layout withFooterEmailSection bg={bgColor}>
       {/* Hero Carousel */}
-      <Box mb={24}>
+      <Box mb={24} position="relative">
         <Swiper
           spaceBetween={0}
           effect={"fade"}
-          pagination={{ clickable: true }}
-          autoplay={{ delay: 6000, disableOnInteraction: false }}
+          pagination={{ 
+            clickable: true,
+            dynamicBullets: true,
+          }}
+          autoplay={{ 
+            delay: 5000, 
+            disableOnInteraction: false 
+          }}
           navigation={true}
           className="main-swiper"
+          style={{
+            "--swiper-navigation-color": "#fff",
+            "--swiper-pagination-color": "#fff",
+          }}
         >
           <SwiperSlide>
             <Box
-              h={{ base: "500px", md: "700px" }}
+              h={{ base: "500px", md: "800px" }}
               bgImage="url('/img/banner-1.png')"
               bgSize="cover"
               bgPosition="center"
@@ -81,26 +95,21 @@ const StorePage = () => {
               alignItems="center"
               position="relative"
             >
-              <Box position="absolute" inset={0} bg="blackAlpha.400" />
+              <Box position="absolute" inset={0} bgGradient="linear(to-r, blackAlpha.700, transparent)" />
               <Container maxW="container.xl" position="relative" zIndex={1}>
                 <VStack
                   align="start"
                   spacing={8}
                   maxW="2xl"
-                  bg="whiteAlpha.100"
-                  p={{ base: 6, md: 12 }}
-                  rounded="3xl"
-                  backdropFilter="blur(20px)"
-                  border="1px solid"
-                  borderColor="whiteAlpha.300"
+                  p={{ base: 6, md: 0 }}
                 >
-                  <Badge colorScheme="blue" variant="solid" px={3} rounded="full" textTransform="uppercase">New Arrival</Badge>
+                  <Badge colorScheme="blue" variant="solid" px={4} py={1} rounded="full" letterSpacing="widest">NEW COLLECTION 2022</Badge>
                   <VStack align="start" spacing={4}>
-                    <Heading size="3xl" color="white" lineHeight="shorter" fontWeight="black">
-                      Premium Home <Text as="span" color="blue.400">Office</Text>
+                    <Heading size="4xl" color="white" lineHeight="1" fontWeight="black" letterSpacing="tight">
+                      Elevate Your <Text as="span" color="blue.400">Home Office</Text>
                     </Heading>
-                    <Text fontSize="xl" color="whiteAlpha.900" fontWeight="medium">
-                      Transform your workspace with our curated selection of high-end furniture and next-gen technology.
+                    <Text fontSize="xl" color="whiteAlpha.900" fontWeight="medium" maxW="lg">
+                      Discover the perfect balance of ergonomics and aesthetics with our new premium series.
                     </Text>
                   </VStack>
                   <Button
@@ -108,10 +117,11 @@ const StorePage = () => {
                     colorScheme="blue"
                     rightIcon={<HiArrowRight />}
                     rounded="full"
-                    px={10}
-                    h={14}
+                    px={12}
+                    h={16}
                     fontSize="lg"
                     shadow="2xl"
+                    _hover={{ transform: "translateY(-4px)", shadow: "dark-lg" }}
                   >
                     Shop Collection
                   </Button>
@@ -121,7 +131,7 @@ const StorePage = () => {
           </SwiperSlide>
           <SwiperSlide>
             <Box
-              h={{ base: "500px", md: "700px" }}
+              h={{ base: "500px", md: "800px" }}
               bgImage="url('/img/banner-2.png')"
               bgSize="cover"
               bgPosition="center"
@@ -129,30 +139,24 @@ const StorePage = () => {
               alignItems="center"
               position="relative"
             >
-              <Box position="absolute" inset={0} bg="blackAlpha.500" />
+              <Box position="absolute" inset={0} bgGradient="linear(to-r, blackAlpha.800, transparent)" />
               <Container maxW="container.xl" position="relative" zIndex={1}>
                 <VStack
                   align="start"
                   spacing={8}
                   maxW="2xl"
-                  bg="blackAlpha.600"
-                  p={{ base: 6, md: 12 }}
-                  rounded="3xl"
-                  backdropFilter="blur(20px)"
-                  border="1px solid"
-                  borderColor="whiteAlpha.200"
-                  color="white"
+                  p={{ base: 6, md: 0 }}
                 >
                    <HStack color="blue.400">
                     <Icon as={HiSparkles} />
-                    <Text fontWeight="bold" letterSpacing="widest">EXCLUSIVE ACCESS</Text>
+                    <Text fontWeight="bold" letterSpacing="widest">EXCLUSIVE TECH</Text>
                   </HStack>
                   <VStack align="start" spacing={4}>
-                    <Heading size="3xl" lineHeight="shorter" fontWeight="black">
-                      The Future of <Text as="span" color="blue.400">Tech</Text>
+                    <Heading size="4xl" color="white" lineHeight="1" fontWeight="black" letterSpacing="tight">
+                      The Next Gen <Text as="span" color="blue.400">Workspace</Text>
                     </Heading>
-                    <Text fontSize="xl" opacity={0.9} fontWeight="medium">
-                      Stay ahead of the curve with the latest gadgets and accessories designed for your digital lifestyle.
+                    <Text fontSize="xl" color="whiteAlpha.900" fontWeight="medium" maxW="lg">
+                      Cutting-edge gadgets and seamless integration for the high-performance professional.
                     </Text>
                   </VStack>
                   <Button
@@ -160,12 +164,13 @@ const StorePage = () => {
                     colorScheme="blue"
                     rightIcon={<HiArrowRight />}
                     rounded="full"
-                    px={10}
-                    h={14}
+                    px={12}
+                    h={16}
                     fontSize="lg"
                     shadow="2xl"
+                    _hover={{ transform: "translateY(-4px)", shadow: "dark-lg" }}
                   >
-                    View Catalog
+                    Explore Gadgets
                   </Button>
                 </VStack>
               </Container>
