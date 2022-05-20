@@ -14,6 +14,7 @@ import {
   Divider,
   Container,
   Circle,
+  SimpleGrid,
 } from "@chakra-ui/react";
 import {
   TiSocialFacebook,
@@ -126,7 +127,7 @@ const Footer = () => {
         >
           <VStack align={{ base: "center", md: "start" }} spacing={1}>
              <Text fontSize="sm" color="whiteAlpha.600">
-               © {new Date().getFullYear()} ImpactXplorer by Ace-Trace. All rights reserved.
+               © 2022 ImpactXplorer by Ace-Trace. All rights reserved.
              </Text>
              <HStack spacing={6} fontSize="xs" color="whiteAlpha.400" fontWeight="bold" textTransform="uppercase">
                 <Link mute href="/privacy">Privacy Policy</Link>
@@ -173,12 +174,6 @@ const FooterLink = ({ children, href }) => (
   >
     {children}
   </Link>
-);
-
-const SimpleGrid = ({ children, columns, ...rest }) => (
-  <Grid templateColumns={{ base: "1fr", md: `repeat(${columns.md || columns.base}, 1fr)` }} {...rest}>
-    {children}
-  </Grid>
 );
 
 export default Footer;
