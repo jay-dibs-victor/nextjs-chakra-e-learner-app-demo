@@ -143,12 +143,12 @@ export const ProductCards = ({
       console.warn("Product fetch failed, using mock data fallback.");
       // Mock data fallback for high-fidelity demonstration
       const mockProducts = [
-        { id: 1, title: "Ergonomic Office Chair", price: 45000, image: "/img/product-1.jpg", ratings: 5 },
-        { id: 2, title: "Mechanical Keyboard", price: 25000, image: "/img/product-2.jpg", ratings: 4 },
-        { id: 3, title: "4K Monitor", price: 120000, image: "/img/product-3.jpg", ratings: 5 },
-        { id: 4, title: "Smart Desk Lamp", price: 12000, image: "/img/product-4.jpg", ratings: 4 },
-        { id: 5, title: "Wireless Mouse", price: 8000, image: "/img/product-5.jpg", ratings: 5 },
-        { id: 6, title: "Noise Cancelling Headphones", price: 55000, image: "/img/product-6.jpg", ratings: 4 },
+        { id: 1, title: "Full-Stack Web Development", price: 85000, image: "/img/coding.png", ratings: 5 },
+        { id: 2, title: "Advanced Digital Marketing", price: 65000, image: "/img/marketing.png", ratings: 4 },
+        { id: 3, title: "Mastering UI/UX Design", price: 75000, image: "/img/design.png", ratings: 5 },
+        { id: 4, title: "Python for Data Science", price: 90000, image: "/img/coding.png", ratings: 5 },
+        { id: 5, title: "Social Media Strategy", price: 45000, image: "/img/marketing.png", ratings: 4 },
+        { id: 6, title: "Interaction Design Pro", price: 70000, image: "/img/design.png", ratings: 5 },
       ];
       
       // Simulate loading delay to show skeletons

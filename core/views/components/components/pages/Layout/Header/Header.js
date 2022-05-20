@@ -12,7 +12,7 @@ import CategoriesButton from "./CategoriesButton";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { useRouter } from "next/router";
 
-export const headerHeight = { base: 50, lg: 50 };
+export const headerHeight = { base: 100, lg: 100 };
 
 const StoreControl = ({ icon, auth }) =>
   !auth.isAuthenticated && (
@@ -58,7 +58,6 @@ const Header = ({ bottomBg, bg = "brand.white", ...rest }) => {
         as="header"
         w="100%"
         h={headerHeight}
-        maxW={breakpoints.xxl}
         mx="auto"
         bg={bg}
         color="brand.secondary"
@@ -66,7 +65,7 @@ const Header = ({ bottomBg, bg = "brand.white", ...rest }) => {
         testid="app-header"
         {...rest}
       >
-        <Box flex={1} maxW={breakpoints.xl} mx="auto" px={{ base: 2, sm2: 6 }}>
+        <Box flex={1} w="100%" mx="auto" px={{ base: 2, sm2: 6 }}>
           {/* For Mobile and Tab screens */}
           <Box flex="1" d={{ base: "block", lg: "none" }}>
             <Flex alignItems="center">
