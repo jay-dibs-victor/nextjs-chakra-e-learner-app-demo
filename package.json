@@ -37,6 +37,12 @@
     "swr": "^0.4.2",
     "uuid": "^8.3.2"
   },
+  "lint-staged": {
+    "*.{js,jsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
+  },
   "devDependencies": {
     "eslint": "7.31.0",
     "eslint-config-next": "^12.3.4"
