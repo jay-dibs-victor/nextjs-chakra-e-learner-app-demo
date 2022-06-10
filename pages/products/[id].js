@@ -43,10 +43,39 @@ import buildSEO from "utils/buildSEO";
 
 const pageSEO = buildSEO("Product Details", "Explore the features and specifications of our premium products.");
 
+import { useRouter } from "next/router";
+import { productAPI } from "utils/api";
+
 const ProductDetailPage = () => {
   const [quantity, setQuantity] = useState(1);
+  const [product, setProduct] = useState(null);
+  const router = useRouter();
+  const { id } = router.query;
+
   const cardBg = useColorModeValue("white", "gray.800");
   const borderColor = useColorModeValue("gray.100", "gray.700");
+
+  useEffect(() => {
+    if (id) {
+      const fetchProduct = async () => {
+        try {
+          const res = await productAPI.getProduct(id);
+          setProduct(res.data);
+        } catch (err) {
+          console.warn("Product fetch failed, using mock data.");
+          setProduct({
+            name: "Ergonomic Executive Chair Pro",
+            description: "Experience unparalleled comfort with our flagship ergonomic chair.",
+            price: 185000,
+            category: "Furniture"
+          });
+        }
+      };
+      fetchProduct();
+    }
+  }, [id]);
+
+  if (!product) return null;
 
   return (
     <Layout SEO={pageSEO}>
@@ -103,8 +132,8 @@ const ProductDetailPage = () => {
             {/* Right: Product Info */}
             <VStack align="start" spacing={8}>
                <VStack align="start" spacing={4}>
-                  <Badge colorScheme="blue" variant="solid" px={4} py={1} rounded="full">New Arrival</Badge>
-                  <Heading size="3xl" fontWeight="black">Ergonomic Executive Chair Pro</Heading>
+                  <Badge colorScheme="blue" variant="solid" px={4} py={1} rounded="full">{product.category || "New Arrival"}</Badge>
+                  <Heading size="3xl" fontWeight="black">{product.name}</Heading>
                   <HStack spacing={2}>
                      <HStack color="orange.400" spacing={0}>
                         <Icon as={HiStar} /><Icon as={HiStar} /><Icon as={HiStar} /><Icon as={HiStar} /><Icon as={HiStar} />
@@ -114,12 +143,12 @@ const ProductDetailPage = () => {
                </VStack>
 
                <VStack align="start" spacing={2}>
-                  <Text fontSize="5xl" fontWeight="black" color="blue.600">₦185,000</Text>
+                  <Text fontSize="5xl" fontWeight="black" color="blue.600">₦{product.price?.toLocaleString()}</Text>
                   <Text color="gray.500" fontSize="lg">Includes VAT and 2-year international warranty.</Text>
                </VStack>
 
                <Text fontSize="lg" color="gray.600" lineHeight="tall">
-                 Experience unparalleled comfort with our flagship ergonomic chair. Designed for high-performance professionals who demand both style and physical wellbeing during long working hours.
+                 {product.description}
                </Text>
 
                <Divider borderColor={borderColor} />

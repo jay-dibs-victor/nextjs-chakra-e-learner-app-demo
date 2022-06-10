@@ -48,11 +48,41 @@ import buildSEO from "utils/buildSEO";
 
 const pageSEO = buildSEO("Course Details", "Master high-demand skills with our expert-led curriculum.");
 
+import { useRouter } from "next/router";
+import { courseAPI } from "utils/api";
+
 const CourseDetailPage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isEnrolled, setIsEnrolled] = useState(false);
+  const [course, setCourse] = useState(null);
+  const router = useRouter();
+  const { id } = router.query;
+
   const cardBg = useColorModeValue("white", "gray.800");
   const borderColor = useColorModeValue("gray.100", "gray.700");
+
+  useEffect(() => {
+    if (id) {
+      const fetchCourse = async () => {
+        try {
+          const res = await courseAPI.getCourse(id);
+          setCourse(res.data);
+        } catch (err) {
+          console.warn("Course fetch failed, using mock data.");
+          // Fallback to mock data for demonstration
+          setCourse({
+            title: "Advanced Full-Stack Engineering with Next.js & Chakra UI",
+            description: "Master the art of building high-performance web applications.",
+            price: 65000,
+            instructor: { name: "Dr. Elena Rodriguez", role: "Architect", avatar: "https://bit.ly/pros-elena" }
+          });
+        }
+      };
+      fetchCourse();
+    }
+  }, [id]);
+
+  if (!course) return null;
 
   const curriculum = [
     {
@@ -108,10 +138,10 @@ const CourseDetailPage = () => {
                     </HStack>
                   </HStack>
                   <Heading size="3xl" fontWeight="black" letterSpacing="tight">
-                    Advanced Full-Stack Engineering with Next.js & Chakra UI
+                    {course.title}
                   </Heading>
                   <Text fontSize="xl" color="gray.500" maxW="3xl">
-                    Master the art of building high-performance, accessible, and visually stunning web applications using the modern React ecosystem.
+                    {course.description}
                   </Text>
                   <HStack spacing={8} pt={4}>
                     <HStack>
@@ -272,8 +302,8 @@ const CourseDetailPage = () => {
 
                     <VStack align="stretch" spacing={6}>
                        <HStack align="end" spacing={2}>
-                          <Text fontSize="4xl" fontWeight="black">₦65,000</Text>
-                          <Text fontSize="lg" color="gray.400" textDecoration="line-through" mb={2}>₦120,000</Text>
+                          <Text fontSize="4xl" fontWeight="black">₦{course.price?.toLocaleString()}</Text>
+                          <Text fontSize="lg" color="gray.400" textDecoration="line-through" mb={2}>₦{(course.price * 1.5).toLocaleString()}</Text>
                        </HStack>
                        <Text color="red.500" fontWeight="bold" fontSize="sm">🔥 45% Off ends in 12 hours!</Text>
 

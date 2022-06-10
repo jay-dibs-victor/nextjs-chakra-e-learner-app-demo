@@ -1,188 +1,99 @@
-import { Component, useEffect, useState } from "react";
-import { Box, Flex, SimpleGrid } from "@chakra-ui/react";
-import { Skeleton } from "@chakra-ui/skeleton";
-// import { Slider } from "react-rapid-carousel";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { AiOutlineRight } from "react-icons/ai";
-import { Heading, Button, ProductBoxedCard, Link } from "components/shared/lib/";
-import { Section, SomethingWentWrong } from "components/components/pages";
-import http from "utils/http";
+import React, { useState, useEffect } from "react";
+import {
+  Box,
+  SimpleGrid,
+  Skeleton,
+  VStack,
+  HStack,
+  Text,
+  Badge,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import useCart from "hooks/useCart";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Pagination, Autoplay } from "swiper";
+import "swiper/css";
+import "swiper/css/pagination";
+import { productAPI, courseAPI } from "utils/api";
 
-// import Swiper core and required modules
-import SwiperCore, { Pagination, Navigation } from "swiper/core";
-import "swiper/swiper.min.css";
-import "swiper/components/pagination/pagination.min.css";
-import "swiper/components/navigation/navigation.min.css";
+const CardSkeleton = () => (
+  <Box bg="white" p={4} rounded="2xl" shadow="sm" border="1px solid" borderColor="gray.100">
+    <Skeleton height="200px" rounded="xl" mb={4} />
+    <Skeleton height="20px" width="70%" mb={2} />
+    <Skeleton height="15px" width="40%" />
+  </Box>
+);
 
-// install Swiper modules
-SwiperCore.use([Pagination, Navigation]);
+const Cards = ({ data, sm, type = "products" }) => {
+  const cardBg = useColorModeValue("white", "gray.800");
+  const borderColor = useColorModeValue("gray.100", "gray.700");
 
-/**
- * Higher Order Component - implement with `currying`
- * @param {Component} Card
- *
- * @example
- * const props = {
- *  // make sure your <MyCard /> component is making use of each `object` in the `data`array
- *  data: [{forExample: "anything"}, {forExample: "card 2"}],
- *  header: "The best offers",
- *  // handler for `see all` button click
- *  onHeaderSeeAllClick: () => // do anything
- * }
- * Cards(MyCard)(props)
- */
-const Cards = ({ cart, sm, data, headerText, onFetch, seeAllLink }) => {
-  const renderedLoader = data === "loading" && (
+  if (data === "loading") {
+    return (
+      <SimpleGrid columns={{ base: 2, md: 4, lg: 6 }} spacing={6}>
+        {[...Array(6)].map((_, i) => <CardSkeleton key={i} />)}
+      </SimpleGrid>
+    );
+  }
+
+  return (
     <SimpleGrid columns={{ base: 2, md: 4, lg: 6 }} spacing={6}>
-      {[...Array(6)].map((_, i) => (
-        <Box key={i} bg="white" p={4} rounded="2xl" shadow="sm" border="1px solid" borderColor="gray.100">
-           <Skeleton height="200px" rounded="xl" mb={4} />
-           <Skeleton height="20px" w="70%" mb={2} />
-           <Skeleton height="15px" w="40%" />
+      {data.map((item, idx) => (
+        <Box 
+          key={idx} 
+          bg={cardBg} 
+          p={4} 
+          rounded="3xl" 
+          shadow="md" 
+          border="1px solid" 
+          borderColor={borderColor}
+          _hover={{ transform: "translateY(-5px)", shadow: "xl" }}
+          transition="all 0.3s"
+          cursor="pointer"
+        >
+          <Box h="200px" bg="gray.50" rounded="2xl" mb={4} overflow="hidden">
+             <Image src={item.image || item.thumbnail} alt={item.title || item.name} objectFit="cover" w="full" h="full" />
+          </Box>
+          <VStack align="start" spacing={1}>
+             <Badge colorScheme="blue" variant="subtle" rounded="full">{item.category}</Badge>
+             <Text fontWeight="black" noOfLines={2}>{item.title || item.name}</Text>
+             <Text fontWeight="black" color="blue.600">₦{item.price?.toLocaleString()}</Text>
+          </VStack>
         </Box>
       ))}
     </SimpleGrid>
   );
-
-  const renderSwiper = ({ spaceBetween, slidesPerView }) => (
-    <Swiper
-      navigation={true}
-      spaceBetween={spaceBetween}
-      slidesPerView={slidesPerView}
-    >
-      {data.map((card, index) => (
-        <SwiperSlide key={index}>
-          <ProductBoxedCard sm={sm} data={card} cart={cart} my={4} />
-        </SwiperSlide>
-      ))}
-    </Swiper>
-  );
-
-  const renderedCarousel = Array.isArray(data) && (
-    <>
-      {/* Mobile */}
-      <Box d={{ base: "block", md: "none" }}>
-        {renderSwiper({ spaceBetween: 1, slidesPerView: 2 })}
-      </Box>
-
-      {/* Tab */}
-      <Box d={{ base: "none", md: "block", lg: "none" }}>
-        {renderSwiper({ spaceBetween: 1, slidesPerView: 4 })}
-      </Box>
-
-      {/* Desktop */}
-      <Box d={{ base: "none", lg: "block", xl: "none" }}>
-        {renderSwiper({ spaceBetween: 1, slidesPerView: 5 })}
-      </Box>
-
-      {/* Large Desktop */}
-      <Box d={{ base: "none", xl: "block" }}>
-        {renderSwiper({ spaceBetween: 3, slidesPerView: 6 })}
-      </Box>
-    </>
-  );
-
-  return (
-    <Box bg="brand.white" rounded="md">
-      <Flex alignItems="center" justifyContent="space-between" mb={2} p={2}>
-        <Heading type="h6" as="h3" m={0}>
-          {headerText}
-        </Heading>
-
-        {seeAllLink && (
-          <Link mute href={seeAllLink}>
-            <Button rightIcon={<AiOutlineRight />} sm>
-              See all
-            </Button>
-          </Link>
-        )}
-      </Flex>
-
-      {renderedLoader}
-
-      {renderedCarousel}
-
-      {data === null && <SomethingWentWrong onRetry={onFetch} h="150px" />}
-    </Box>
-  );
 };
 
-export const ProductCards = ({
-  title = "The Best Price Offers",
-  link = "/products",
-  seeAllLink,
-  sm,
-  ...rest
-}) => {
-  const [products, setProducts] = useState("loading");
-  const cart = useCart();
-
-  const fetchProducts = async () => {
-    setProducts("loading");
-
-    try {
-      const {
-        data: {
-          data: { docs },
-        },
-      } = await http.get(
-        link,
-        // Timeout the request in 1.5 min
-        { timeout: 1.5 * (60 * 1000) }
-      );
-
-      const products = docs.map((product) => ({
-        ...product,
-        title: product.name,
-        ratings: 1,
-      }));
-
-      setProducts(products);
-    } catch (err) {
-      console.warn("Product fetch failed, using mock data fallback.");
-      // Mock data fallback for high-fidelity demonstration
-      const mockProducts = [
-        { id: 1, title: "Full-Stack Web Development", price: 85000, image: "/img/coding.png", ratings: 5 },
-        { id: 2, title: "Advanced Digital Marketing", price: 65000, image: "/img/marketing.png", ratings: 4 },
-        { id: 3, title: "Mastering UI/UX Design", price: 75000, image: "/img/design.png", ratings: 5 },
-        { id: 4, title: "Python for Data Science", price: 90000, image: "/img/coding.png", ratings: 5 },
-        { id: 5, title: "Social Media Strategy", price: 45000, image: "/img/marketing.png", ratings: 4 },
-        { id: 6, title: "Interaction Design Pro", price: 70000, image: "/img/design.png", ratings: 5 },
-      ];
-      
-      // Simulate loading delay to show skeletons
-      setTimeout(() => {
-        setProducts(mockProducts);
-      }, 2000);
-    }
-  };
+export const ProductCards = ({ type = "products" }) => {
+  const [data, setData] = useState("loading");
 
   useEffect(() => {
-    fetchProducts();
-  }, []);
+    const fetchData = async () => {
+      try {
+        const res = type === "courses" ? await courseAPI.getCourses() : await productAPI.getProducts();
+        if (res.data.length > 0) {
+          setData(res.data);
+        } else {
+          throw new Error("Empty data");
+        }
+      } catch (err) {
+        console.warn(`${type} fetch failed, using mock data.`);
+        const mockData = type === "courses" ? [
+          { title: "Full-Stack Web Development", price: 85000, image: "/img/coding.png", category: "Development" },
+          { title: "Advanced Digital Marketing", price: 65000, image: "/img/marketing.png", category: "Marketing" },
+          { title: "Mastering UI/UX Design", price: 75000, image: "/img/design.png", category: "Design" },
+        ] : [
+          { name: "Ergonomic Desk", price: 120000, image: "/img/coding.png", category: "Furniture" },
+          { name: "Mechanical Keyboard", price: 45000, image: "/img/marketing.png", category: "Tech" },
+        ];
+        setTimeout(() => setData(mockData), 1500);
+      }
+    };
+    fetchData();
+  }, [type]);
 
-  const cardProps = {
-    data: products,
-    headerText: title,
-    cart,
-    sm,
-    onFetch: fetchProducts,
-    seeAllLink,
-  };
-
-  return (
-    <Section {...rest}>
-      <Cards {...cardProps} />
-    </Section>
-  );
-  // return <Section {...rest}>products :)</Section>;
+  return <Cards data={data} type={type} />;
 };
 
-export const RecentlyViewed = ({ ...rest }) => (
-  <ProductCards
-    title="Recently Viewed"
-    // link="/me/product-views"
-    {...rest}
-  />
-);
+import { Image } from "@chakra-ui/react";

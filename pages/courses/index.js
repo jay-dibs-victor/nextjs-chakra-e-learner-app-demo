@@ -70,8 +70,7 @@ const CoursesPage = () => {
 
             {/* Courses Grid */}
             <Section>
-               {/* ProductCards is reused but the content will be course-oriented based on the internal data fetching or mock data logic */}
-               <ProductCards />
+               <ProductCards type="courses" />
             </Section>
 
             {/* Specialized CTA for the Course page */}

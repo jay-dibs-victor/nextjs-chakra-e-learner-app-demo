@@ -1,0 +1,31 @@
+import axios from 'axios';
+
+const api = axios.create({
+    baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api',
+});
+
+api.interceptors.request.use((config) => {
+    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+});
+
+export default api;
+
+export const authAPI = {
+    signup: (data) => api.post('/auth/signup', data),
+    login: (data) => api.post('/auth/login', data),
+    verifyOtp: (data) => api.post('/auth/verify-otp', data),
+};
+
+export const productAPI = {
+    getProducts: () => api.get('/products'),
+    getProduct: (id) => api.get(`/products/${id}`),
+};
+
+export const courseAPI = {
+    getCourses: () => api.get('/courses'),
+    getCourse: (id) => api.get(`/courses/${id}`),
+};
