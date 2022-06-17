@@ -35,7 +35,13 @@ import {
 import { Layout } from "components/components/pages";
 import Link from "next/link";
 
+import { useRouter } from "next/router";
+import { courseAPI, lmsAPI } from "utils/api";
+
 const LearnPage = () => {
+  const router = useRouter();
+  const { id } = router.query;
+  const [course, setCourse] = useState(null);
   const [activeUnit, setActiveUnit] = useState({ section: 0, unit: 0 });
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [quizAnswer, setQuizAnswer] = useState(null);
@@ -45,33 +51,37 @@ const LearnPage = () => {
   const playerBg = useColorModeValue("gray.50", "gray.900");
   const borderColor = useColorModeValue("gray.200", "gray.700");
 
-  const curriculum = [
-    {
-      title: "1. Getting Started",
-      units: [
-        { title: "Introduction Video", type: "video", content: "dQw4w9WgXcQ" },
-        { title: "Course Resources", type: "text", content: "Download all materials here..." },
-      ]
-    },
-    {
-      title: "2. Core Architecture",
-      units: [
-        { title: "Deep Dive into Hooks", type: "video", content: "dQw4w9WgXcQ" },
-        { title: "Project Structure", type: "pdf", content: "/docs/structure.pdf" },
-        { 
-          title: "Architecture Quiz", 
-          type: "quiz", 
-          content: {
-            question: "Which hook is used for side effects?",
-            options: ["useState", "useEffect", "useContext", "useReducer"],
-            correct: "useEffect"
-          }
-        },
-      ]
+  useEffect(() => {
+    if (id) {
+      const fetchCourse = async () => {
+        try {
+          const res = await courseAPI.getCourse(id);
+          setCourse(res.data);
+        } catch (err) {
+          console.error("Learn fetch failed");
+        }
+      };
+      fetchCourse();
     }
-  ];
+  }, [id]);
 
-  const currentUnit = curriculum[activeUnit.section].units[activeUnit.unit];
+  const curriculum = course?.sections || [];
+  const currentUnit = curriculum[activeUnit.section]?.units[activeUnit.unit];
+
+  const handleProgressUpdate = async (sIdx, uIdx) => {
+    setActiveUnit({ section: sIdx, unit: uIdx });
+    try {
+      await lmsAPI.updateProgress({
+        courseId: id,
+        unitId: curriculum[sIdx].units[uIdx]._id,
+        progress: Math.round(((sIdx + 1) / curriculum.length) * 100)
+      });
+    } catch (err) {
+      console.error("Progress update failed");
+    }
+  };
+
+  if (!course) return null;
 
   const handleQuizSubmit = () => {
     if (quizAnswer === currentUnit.content.correct) {
@@ -224,7 +234,7 @@ const LearnPage = () => {
                            cursor="pointer"
                            bg={activeUnit.section === sIdx && activeUnit.unit === uIdx ? "blue.500" : "transparent"}
                            color={activeUnit.section === sIdx && activeUnit.unit === uIdx ? "white" : "inherit"}
-                           onClick={() => setActiveUnit({ section: sIdx, unit: uIdx })}
+                           onClick={() => handleProgressUpdate(sIdx, uIdx)}
                            _hover={activeUnit.section === sIdx && activeUnit.unit === uIdx ? {} : { bg: "gray.50" }}
                          >
                             <Icon as={unit.type === "video" ? HiPlay : unit.type === "quiz" ? HiQuestionMarkCircle : HiDocumentText} />

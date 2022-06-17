@@ -29,3 +29,9 @@ export const courseAPI = {
     getCourses: () => api.get('/courses'),
     getCourse: (id) => api.get(`/courses/${id}`),
 };
+
+export const lmsAPI = {
+    enroll: (courseId) => api.post('/lms/enroll', { courseId }),
+    updateProgress: (data) => api.post('/lms/progress', data),
+    getMyCourses: () => api.get('/lms/my-courses'),
+};
