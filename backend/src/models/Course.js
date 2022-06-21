@@ -8,9 +8,14 @@ const UnitSchema = new mongoose.Schema({
     isFree: { type: Boolean, default: false }
 });
 
-const SectionSchema = new mongoose.Schema({
+const SubSectionSchema = new mongoose.Schema({
     title: { type: String, required: true },
     units: [UnitSchema]
+});
+
+const SectionSchema = new mongoose.Schema({
+    title: { type: String, required: true },
+    subSections: [SubSectionSchema]
 });
 
 const CourseSchema = new mongoose.Schema({

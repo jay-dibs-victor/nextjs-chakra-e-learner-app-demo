@@ -186,20 +186,27 @@ const CourseDetailPage = () => {
                           </AccordionButton>
                         </h2>
                         <AccordionPanel pb={4} pt={6}>
-                          <VStack align="stretch" spacing={4} pl={4}>
-                            {section.units.map((unit, uIdx) => (
-                              <HStack key={uIdx} justify="space-between" p={3} rounded="xl" _hover={{ bg: "whiteAlpha.50" }}>
-                                <HStack spacing={4}>
-                                  <Circle size={8} bg={unit.locked ? "gray.100" : "blue.50"} color={unit.locked ? "gray.400" : "blue.500"}>
-                                    <Icon as={unit.locked ? HiLockClosed : HiPlay} />
-                                  </Circle>
-                                  <Text fontWeight="bold" color={unit.locked ? "gray.400" : "inherit"}>
-                                    {unit.title}
-                                  </Text>
-                                  {!unit.locked && <Badge colorScheme="green" variant="subtle" fontSize="2xs">Free Preview</Badge>}
-                                </HStack>
-                                <Text fontSize="sm" color="gray.400" fontWeight="bold">{unit.duration}</Text>
-                              </HStack>
+                          <VStack align="stretch" spacing={6} pl={4}>
+                            {section.subSections?.map((sub, sIdx) => (
+                              <VStack key={sIdx} align="stretch" spacing={3}>
+                                <Text fontWeight="black" fontSize="md" color="gray.400">{sub.title}</Text>
+                                <VStack align="stretch" spacing={2} pl={4}>
+                                  {sub.units.map((unit, uIdx) => (
+                                    <HStack key={uIdx} justify="space-between" p={2} rounded="xl" _hover={{ bg: "whiteAlpha.50" }}>
+                                      <HStack spacing={4}>
+                                        <Circle size={8} bg={unit.locked ? "gray.100" : "blue.50"} color={unit.locked ? "gray.400" : "blue.500"}>
+                                          <Icon as={unit.locked ? HiLockClosed : HiPlay} />
+                                        </Circle>
+                                        <Text fontWeight="bold" color={unit.locked ? "gray.400" : "inherit"}>
+                                          {unit.title}
+                                        </Text>
+                                        {!unit.locked && <Badge colorScheme="green" variant="subtle" fontSize="2xs">Free Preview</Badge>}
+                                      </HStack>
+                                      <Text fontSize="sm" color="gray.400" fontWeight="bold">{unit.duration}</Text>
+                                    </HStack>
+                                  ))}
+                                </VStack>
+                              </VStack>
                             ))}
                           </VStack>
                         </AccordionPanel>

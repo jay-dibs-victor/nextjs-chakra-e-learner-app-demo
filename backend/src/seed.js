@@ -25,10 +25,15 @@ const seedData = async () => {
                 instructor: { name: 'Dr. Elena Rodriguez', role: 'Architect' },
                 sections: [
                     {
-                        title: 'Module 1',
-                        units: [
-                            { title: 'Intro', type: 'video', content: 'dQw4w9WgXcQ', duration: '10:00', isFree: true },
-                            { title: 'Setup', type: 'text', content: 'Installation guide...', duration: '05:00', isFree: true }
+                        title: 'Module 1: Getting Started',
+                        subSections: [
+                            {
+                                title: 'Introduction',
+                                units: [
+                                    { title: 'Intro Video', type: 'video', content: 'dQw4w9WgXcQ', duration: '10:00', isFree: true },
+                                    { title: 'Setup Guide', type: 'text', content: 'Installation guide...', duration: '05:00', isFree: true }
+                                ]
+                            }
                         ]
                     }
                 ]
