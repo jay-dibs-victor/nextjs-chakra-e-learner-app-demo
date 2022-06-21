@@ -63,9 +63,7 @@ export const LayoutAdmin = ({
             <Flex
               w="100vw"
               h="100vh"
-              maxW={breakpoints.xl}
               boxShadow="0 0 5px rgba(0, 0, 0, 0.2)"
-              mx="auto"
               overflowX="hidden"
             >
               <Aside
