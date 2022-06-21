@@ -17,3 +17,8 @@ export * from "./Modal/Modal";
 export * from "./Image/Image";
 export * from "./Table/Table";
 export * from "./Table/Pagination";
+export * from "./RichText/RichText";
+export * from "./Stepper/Stepper";
+export * from "./Checkbox/Checkbox";
+export * from "./Form/FilterForm";
+export * from "./Button/ExtraButtons";

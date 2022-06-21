@@ -60,6 +60,8 @@ const CourseDetailPage = () => {
 
   const cardBg = useColorModeValue("white", "gray.800");
   const borderColor = useColorModeValue("gray.100", "gray.700");
+  const pageBg = useColorModeValue("gray.50", "gray.900");
+  const accordionHoverBg = useColorModeValue("blue.50", "gray.700");
 
   useEffect(() => {
     if (id) {
@@ -69,7 +71,6 @@ const CourseDetailPage = () => {
           setCourse(res.data);
         } catch (err) {
           console.warn("Course fetch failed, using mock data.");
-          // Fallback to mock data for demonstration
           setCourse({
             title: "Advanced Full-Stack Engineering with Next.js & Chakra UI",
             description: "Master the art of building high-performance web applications.",
@@ -120,7 +121,7 @@ const CourseDetailPage = () => {
 
   return (
     <Layout SEO={pageSEO}>
-      <Box bg={useColorModeValue("gray.50", "gray.900")} minH="100vh" py={20}>
+      <Box bg={pageBg} minH="100vh" py={20}>
         <Container maxW="full" px={{ base: 6, lg: 24 }}>
           <Flex direction={{ base: "column", lg: "row" }} gap={12}>
             
@@ -177,7 +178,7 @@ const CourseDetailPage = () => {
                             p={6} 
                             rounded="2xl" 
                             shadow="sm"
-                            _hover={{ bg: useColorModeValue("blue.50", "gray.700") }}
+                            _hover={{ bg: accordionHoverBg }}
                           >
                             <Box flex="1" textAlign="left">
                               <Text fontWeight="black" fontSize="lg">{section.title}</Text>
@@ -359,5 +360,10 @@ const CourseDetailPage = () => {
     </Layout>
   );
 };
+
+
+export async function getServerSideProps() {
+  return { props: {} };
+}
 
 export default CourseDetailPage;

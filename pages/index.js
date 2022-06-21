@@ -36,7 +36,7 @@ import {
   HiGlobe,
   HiBriefcase,
   HiAcademicCap,
-  HiRocket
+  HiFire
 } from "react-icons/hi";
 
 SwiperCore.use([Autoplay, Pagination, EffectFade, Navigation]);
@@ -285,7 +285,7 @@ const HomePage = () => {
           />
           <FeatureCard 
             color="cyan"
-            icon={HiRocket}
+            icon={HiFire}
             title="Startup Accelerator"
             description="Direct mentorship and funding pathways for high-potential startups within our global ecosystem."
           />

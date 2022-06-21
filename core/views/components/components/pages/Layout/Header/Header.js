@@ -3,7 +3,8 @@ import {
   Flex, 
   HStack, 
   Button, 
-  Link, 
+  Link,
+  Text,
   Avatar, 
   Menu, 
   MenuButton, 
@@ -12,11 +13,10 @@ import {
   useDisclosure, 
   useColorModeValue,
   Icon,
-  Text
 } from "@chakra-ui/react";
 import { HiShoppingCart, HiDotsHorizontal, HiBell } from "react-icons/hi";
 import useAuth from "hooks/useAuth";
-import AuthModal from "../../../shared/lib/Modals/AuthModal";
+import AuthModal from "../../../../shared/lib/Modals/AuthModal";
 
 export const headerHeight = { base: 100, lg: 100 };
 
@@ -39,8 +39,18 @@ const Header = () => {
     >
       <Flex h="full" align="center" justify="space-between" maxW="1920px" mx="auto">
         {/* Logo */}
-        <Box fontWeight="black" fontSize="2xl" color="blue.600" cursor="pointer">
-          <Link href="/" _hover={{ textDecoration: "none" }}>LMS ECOSYSTEM</Link>
+        <Box cursor="pointer">
+          <Link href="/" _hover={{ textDecoration: "none" }}>
+            <Text
+              fontWeight="black"
+              fontSize="xl"
+              letterSpacing="tight"
+              bgGradient="linear(to-r, blue.600, blue.400)"
+              bgClip="text"
+            >
+              LMS Ecosystem
+            </Text>
+          </Link>
         </Box>
 
         {/* Navigation */}

@@ -23,6 +23,7 @@
   };
   
   export const toNaira = (amount) => formatPrice("en-NG", amount, "NGN");
+  export const formatPriceToNaira = toNaira;
   
   export default formatPrice;
   

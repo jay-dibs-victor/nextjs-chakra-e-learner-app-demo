@@ -128,7 +128,7 @@ const ElearningAcceleratorPage = () => {
            <VStack spacing={8}>
              <Heading size="xl" fontWeight="black" letterSpacing="tight">One Click To Scale Your Impact</Heading>
              <Text fontSize="lg" color="gray.600" lineHeight="tall">
-               Whether you're creating structured certificate programs or simple "how-to" courses, our platform enables you to offer your classes to millions of participants online with zero friction. Leverage our intelligent processes to assess, train, and support learners globally.
+               Whether you&apos;re creating structured certificate programs or simple &quot;how-to&quot; courses, our platform enables you to offer your classes to millions of participants online with zero friction. Leverage our intelligent processes to assess, train, and support learners globally.
              </Text>
              <Divider w="40px" borderColor="blue.500" borderBottomWidth="4px" rounded="full" />
            </VStack>
@@ -170,9 +170,9 @@ const ElearningAcceleratorPage = () => {
            <SimpleGrid columns={{ base: 1, lg: 2 }} spacing={16} alignItems="center">
               <VStack align="start" spacing={6} color="white">
                 <Heading size="2xl" fontWeight="black" letterSpacing="tight">The Learna Experience</Heading>
-                <Text fontSize="xl" opacity={0.8}>
-                  "Learna allows me the flexibility I need while also providing the tools that help me create comprehensive courses that are engaging and fulfilling for my participants. It's the new standard for digital education."
-                </Text>
+                 <Text fontSize="xl" opacity={0.8}>
+                   &quot;Learna allows me the flexibility I need while also providing the tools that help me create comprehensive courses that are engaging and fulfilling for my participants. It&apos;s the new standard for digital education.&quot;
+                 </Text>
                 <HStack spacing={4}>
                   <Circle size={12} bg="blue.500" shadow="lg">
                     <Icon as={HiAcademicCap} w={6} h={6} color="white" />

@@ -1,5 +1,5 @@
 import { Box, Flex } from "@chakra-ui/react";
-import { Heading } from "components/components/pages/";
+import { Heading } from "components/shared/lib";
 import PropTypes from "prop-types";
 import breakpoints from "theme/breakpoints";
 

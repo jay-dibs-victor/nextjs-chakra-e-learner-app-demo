@@ -9,5 +9,8 @@ export * from "./Cart/Cart";
 export * from "./Account/Account";
 export * from "./TableSection/index";
 export * from "./LayoutAdmin/Layout";
+export { IconButtonWithTooltip } from "./LayoutAdmin/Header/Header";
+export { Heading, Text, Link, Button } from "../../shared/lib";
+export const HeaderModal = () => null;
 
 

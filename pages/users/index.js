@@ -2,7 +2,7 @@
 //import Layout, { Container } from "components/shared/blocks/Layout";
 
 /*authenticated pages layout*/
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Flex,
@@ -18,6 +18,11 @@ import {
   HStack,
   Circle,
   Divider,
+  Center,
+  Progress,
+  Button,
+  Badge,
+  IconButton,
 } from "@chakra-ui/react";
 import { Layout, Section } from "components/components/pages";
 import { motion } from "framer-motion";
@@ -38,6 +43,7 @@ import {
 import Link from "next/link";
 import buildSEO from "utils/buildSEO";
 import useAuth from "hooks/useAuth";
+import { lmsAPI, jobAPI } from "utils/api";
 
 const pageSEO = buildSEO("User Dashboard", "Track your learning progress and career applications.");
 
@@ -117,7 +123,6 @@ const TimelineItem = ({ title, company, status, date, isLast }) => {
     </Flex>
   );
 };
-import { lmsAPI, jobAPI } from "utils/api";
 
 const DashboardOverview = () => {
   const auth = useAuth();
@@ -217,7 +222,7 @@ const DashboardOverview = () => {
                       <HStack spacing={4}>
                         <Circle size={10} bg="blue.50" color="blue.500"><Icon as={HiBell} /></Circle>
                         <VStack align="start" spacing={0}>
-                          <Text fontWeight="bold">New lesson added to "React Native Foundations"</Text>
+                          <Text fontWeight="bold">New lesson added to &quot;React Native Foundations&quot;</Text>
                           <Text fontSize="xs" color="gray.500">2 hours ago</Text>
                         </VStack>
                       </HStack>
@@ -256,7 +261,7 @@ const DashboardOverview = () => {
                     <Icon as={HiBadgeCheck} w={8} h={8} />
                     <VStack align="start" spacing={1}>
                       <Text fontWeight="black" fontSize="lg">Hired! 🎊</Text>
-                      <Text fontSize="sm" opacity={0.9}>You've been accepted at Meta as a UI Engineer. Review your offer letter now.</Text>
+                      <Text fontSize="sm" opacity={0.9}>You&apos;ve been accepted at Meta as a UI Engineer. Review your offer letter now.</Text>
                     </VStack>
                     <Button bg="white" color="blue.600" w="full" rounded="2xl" fontWeight="black">Review Offer</Button>
                   </VStack>

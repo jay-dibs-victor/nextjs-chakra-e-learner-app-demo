@@ -383,11 +383,11 @@ const Footer = ({ emailSection, ...rest }) => {
           <Icon>
             <AiOutlineCopyrightCircle />
           </Icon>
-          2021 Pacemaker. All rights reserved.
+          2021 LMS Ecosystem. All rights reserved.
         </Text>
 
         <Text my={{ base: 1, md: 0 }} type="sm-regular" mr={{ base: 7, md: 5 }}>
-          <Link href="#">info@pacemaker.com</Link>
+          <Link href="#">support@lmsecosystem.com</Link>
         </Text>
 
         <Text my={{ base: 1, md: 0 }} type="sm-regular" mr={{ base: 7, md: 5 }}>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Container,
@@ -54,6 +54,7 @@ const ProductDetailPage = () => {
 
   const cardBg = useColorModeValue("white", "gray.800");
   const borderColor = useColorModeValue("gray.100", "gray.700");
+  const pageBg = useColorModeValue("gray.50", "gray.900");
 
   useEffect(() => {
     if (id) {
@@ -79,7 +80,7 @@ const ProductDetailPage = () => {
 
   return (
     <Layout SEO={pageSEO}>
-      <Box bg={useColorModeValue("gray.50", "gray.900")} minH="100vh" py={20}>
+      <Box bg={pageBg} minH="100vh" py={20}>
         <Container maxW="full" px={{ base: 6, lg: 24 }}>
           
           <SimpleGrid columns={{ base: 1, lg: 2 }} spacing={16} mb={20}>
@@ -246,5 +247,10 @@ const ProductDetailPage = () => {
     </Layout>
   );
 };
+
+
+export async function getServerSideProps() {
+  return { props: {} };
+}
 
 export default ProductDetailPage;

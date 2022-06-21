@@ -20,6 +20,8 @@ import {
   TableContainer,
   Avatar,
   Divider,
+  Button,
+  IconButton,
 } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import {
@@ -316,6 +318,9 @@ const AdminDashboard = () => {
   );
 };
 
+
+export async function getServerSideProps() {
+  return { props: {} };
+}
+
 export default AdminDashboard;
-
-

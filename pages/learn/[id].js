@@ -276,4 +276,9 @@ const LearnPage = () => {
   );
 };
 
+
+export async function getServerSideProps() {
+  return { props: {} };
+}
+
 export default LearnPage;

@@ -4,16 +4,11 @@ import {
   SimpleGrid,
   Skeleton,
   VStack,
-  HStack,
   Text,
   Badge,
+  Image,
   useColorModeValue,
 } from "@chakra-ui/react";
-import useCart from "hooks/useCart";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination, Autoplay } from "swiper";
-import "swiper/css";
-import "swiper/css/pagination";
 import { productAPI, courseAPI } from "utils/api";
 
 const CardSkeleton = () => (
@@ -24,7 +19,7 @@ const CardSkeleton = () => (
   </Box>
 );
 
-const Cards = ({ data, sm, type = "products" }) => {
+const Cards = ({ data }) => {
   const cardBg = useColorModeValue("white", "gray.800");
   const borderColor = useColorModeValue("gray.100", "gray.700");
 
@@ -39,25 +34,31 @@ const Cards = ({ data, sm, type = "products" }) => {
   return (
     <SimpleGrid columns={{ base: 2, md: 4, lg: 6 }} spacing={6}>
       {data.map((item, idx) => (
-        <Box 
-          key={idx} 
-          bg={cardBg} 
-          p={4} 
-          rounded="3xl" 
-          shadow="md" 
-          border="1px solid" 
+        <Box
+          key={idx}
+          bg={cardBg}
+          p={4}
+          rounded="3xl"
+          shadow="md"
+          border="1px solid"
           borderColor={borderColor}
           _hover={{ transform: "translateY(-5px)", shadow: "xl" }}
           transition="all 0.3s"
           cursor="pointer"
         >
           <Box h="200px" bg="gray.50" rounded="2xl" mb={4} overflow="hidden">
-             <Image src={item.image || item.thumbnail} alt={item.title || item.name} objectFit="cover" w="full" h="full" />
+            <Image
+              src={item.image || item.thumbnail}
+              alt={item.title || item.name}
+              objectFit="cover"
+              w="full"
+              h="full"
+            />
           </Box>
           <VStack align="start" spacing={1}>
-             <Badge colorScheme="blue" variant="subtle" rounded="full">{item.category}</Badge>
-             <Text fontWeight="black" noOfLines={2}>{item.title || item.name}</Text>
-             <Text fontWeight="black" color="blue.600">₦{item.price?.toLocaleString()}</Text>
+            <Badge colorScheme="blue" variant="subtle" rounded="full">{item.category}</Badge>
+            <Text fontWeight="black" noOfLines={2}>{item.title || item.name}</Text>
+            <Text fontWeight="black" color="blue.600">&#8358;{item.price?.toLocaleString()}</Text>
           </VStack>
         </Box>
       ))}
@@ -71,8 +72,10 @@ export const ProductCards = ({ type = "products" }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = type === "courses" ? await courseAPI.getCourses() : await productAPI.getProducts();
-        if (res.data.length > 0) {
+        const res = type === "courses"
+          ? await courseAPI.getCourses()
+          : await productAPI.getProducts();
+        if (res.data && res.data.length > 0) {
           setData(res.data);
         } else {
           throw new Error("Empty data");
@@ -93,7 +96,5 @@ export const ProductCards = ({ type = "products" }) => {
     fetchData();
   }, [type]);
 
-  return <Cards data={data} type={type} />;
+  return <Cards data={data} />;
 };
-
-import { Image } from "@chakra-ui/react";
