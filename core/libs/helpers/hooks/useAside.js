@@ -7,11 +7,11 @@ const useAside = () => {
   const contextStore = useContext(AsideContext);
 
   const handleOpen = () =>
-    contextStore.setState((prev) => ({ ...prev, open: true }));
+    contextStore?.setState((prev) => ({ ...prev, open: true }));
   const handleClose = () =>
-    contextStore.setState((prev) => ({ ...prev, open: false }));
+    contextStore?.setState((prev) => ({ ...prev, open: false }));
   const handleToggle = () =>
-    contextStore.setState((prev) => ({ ...prev, open: !prev.open }));
+    contextStore?.setState((prev) => ({ ...prev, open: !prev.open }));
 
   return {
     store: { state, setState },

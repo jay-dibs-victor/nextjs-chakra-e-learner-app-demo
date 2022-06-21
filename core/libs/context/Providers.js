@@ -1,16 +1,21 @@
 import PropTypes from "prop-types";
 import { DefaultSeo } from "next-seo";
-import { Provider } from "react-redux";
+// import { Provider } from "react-redux";
 import { ChakraProvider } from "@chakra-ui/react";
-import store from "../redux/store";
-import SEO from "../next-seo.config";
-import theme from "../theme";
+// import store from "../redux/store";
+// import SEO from "../next-seo.config";
+import theme from "../../theme";
 import CategoriesContext from "./CategoriesContext";
 import useCategories from "hooks/useCategories";
 
 
-import AsideContext from "../../context/AsideContext";
+import AsideContext from "./AsideContext";
 import useAside from "hooks/useAside";
+
+const SEO = {
+  title: "LMS Ecosystem",
+  description: "Modernized LMS Ecosystem",
+};
 
 function Providers({ children, store: storeProps }) {
   const categories = useCategories();
@@ -29,21 +34,11 @@ function Providers({ children, store: storeProps }) {
         ]}
       />
 
-      <Provider store={storeProps || store}>
         <CategoriesContext.Provider value={categories.store}>
-          {children}
+          <AsideContext.Provider value={aside.store}>
+            {children}
+          </AsideContext.Provider>
         </CategoriesContext.Provider>
-      </Provider>
-
-
-
-
-      
-      {/* admin layout <Provider store={storeProps || store}> */}
-      <AsideContext.Provider value={aside.store}>
-        {children}
-      </AsideContext.Provider>
-      {/* </Provider> */}
 
 
     </ChakraProvider>

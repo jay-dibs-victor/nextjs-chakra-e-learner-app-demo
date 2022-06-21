@@ -2,13 +2,13 @@
 import "../core/assets/styles/globals.css"
 import "../core/assets/styles/main.scss"
 import React from "react"
-import { ChakraProvider } from "@chakra-ui/react";
+import Providers from "../core/libs/context/Providers";
 import NextNProgress from 'nextjs-progressbar';
 import { AuthProvider } from '../core/libs/context/AuthContext';
 
 export default function App({ Component, pageProps }) {
     return (
-    <ChakraProvider>
+    <Providers>
       <AuthProvider>
        <NextNProgress
           color="#29D"
@@ -20,7 +20,7 @@ export default function App({ Component, pageProps }) {
        />
        <Component {...pageProps} />
       </AuthProvider>
-    </ChakraProvider>
+    </Providers>
     )
   }
 
