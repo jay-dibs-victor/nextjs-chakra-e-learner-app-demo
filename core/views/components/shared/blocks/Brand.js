@@ -5,12 +5,14 @@ const Brand = ({ size = "2xl", ...rest }) => {
   return (
     <Link mute>
       <Text
-        fontWeight={{ base: 300, md: 200 }}
-        fontFamily=" Times, 'Times New Roman', serif"
+        fontWeight="black"
         fontSize={size}
+        letterSpacing="tight"
+        bgGradient="linear(to-r, blue.600, blue.400)"
+        bgClip="text"
         {...rest}
       >
-        PACE MAKER
+        LMS Ecosystem
       </Text>
     </Link>
   );
