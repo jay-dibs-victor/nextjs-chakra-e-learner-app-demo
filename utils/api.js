@@ -35,3 +35,9 @@ export const lmsAPI = {
     updateProgress: (data) => api.post('/lms/progress', data),
     getMyCourses: () => api.get('/lms/my-courses'),
 };
+
+export const jobAPI = {
+    apply: (data) => api.post('/jobs/apply', data),
+    getApplications: () => api.get('/jobs'),
+    updateStatus: (data) => api.patch('/jobs/status', data),
+};

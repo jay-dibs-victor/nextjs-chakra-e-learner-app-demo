@@ -21,6 +21,7 @@ app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/products', require('./routes/productRoutes'));
 app.use('/api/courses', require('./routes/courseRoutes'));
 app.use('/api/lms', require('./routes/lmsRoutes'));
+app.use('/api/jobs', require('./routes/jobRoutes'));
 app.get('/', (req, res) => res.send('LMS API Running...'));
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

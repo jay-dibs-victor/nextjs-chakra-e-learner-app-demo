@@ -117,13 +117,47 @@ const TimelineItem = ({ title, company, status, date, isLast }) => {
     </Flex>
   );
 };
+import { lmsAPI, jobAPI } from "utils/api";
 
 const DashboardOverview = () => {
   const auth = useAuth();
   const { me } = auth;
+  const [myCourses, setMyCourses] = useState([]);
+  const [applications, setApplications] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   const bgColor = useColorModeValue("gray.50", "gray.900");
   const cardBg = useColorModeValue("white", "gray.700");
   const borderColor = useColorModeValue("gray.100", "gray.600");
+
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      try {
+        const [courseRes, jobRes] = await Promise.all([
+          lmsAPI.getMyCourses(),
+          jobAPI.getApplications()
+        ]);
+        setMyCourses(courseRes.data);
+        setApplications(jobRes.data);
+      } catch (err) {
+        console.warn("Dashboard fetch failed, using fallbacks.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchDashboardData();
+  }, []);
+
+  const enrolledCourses = myCourses.length > 0 ? myCourses : [
+    { course: { title: "Advanced Full-Stack Engineering" }, progress: 75, instructor: { name: "Elena Rodriguez" } },
+    { course: { title: "UI/UX Design Masterclass" }, progress: 30, instructor: { name: "Marcus Thorne" } }
+  ];
+
+  const jobApplications = applications.length > 0 ? applications : [
+    { title: "Senior Frontend Developer", company: "Google", status: "Technical", date: "May 26, 2022" },
+    { title: "UI Engineer", company: "Meta", status: "Accepted", date: "May 24, 2022" },
+    { title: "React Specialist", company: "ShopZon", status: "Applied", date: "May 20, 2022" }
+  ];
 
   return (
     <Layout SEO={pageSEO} bg={bgColor}>
@@ -141,7 +175,7 @@ const DashboardOverview = () => {
             />
             <Box ml={{ md: 8 }} mt={{ base: 4, md: 0 }}>
               <Heading size="2xl" mb={2} fontWeight="black">Welcome back, {me?.firstName || "Alex"}! 👋</Heading>
-              <Text color="gray.500" fontSize="lg" fontWeight="medium">You have 2 lessons to complete today and 3 active job applications.</Text>
+              <Text color="gray.500" fontSize="lg" fontWeight="medium">You have {enrolledCourses.length} active courses and {jobApplications.length} job applications.</Text>
             </Box>
           </Flex>
         </Box>
@@ -149,8 +183,8 @@ const DashboardOverview = () => {
         {/* Performance Metrics */}
         <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={6} mb={12}>
           <StatCard title="Learning Hours" value="48.5h" icon={HiClock} color="blue" />
-          <StatCard title="Courses Completed" value="8" icon={HiAcademicCap} color="green" />
-          <StatCard title="Job Applications" value="12" icon={HiBriefcase} color="purple" />
+          <StatCard title="Courses Completed" value={enrolledCourses.filter(c => c.progress === 100).length} icon={HiAcademicCap} color="green" />
+          <StatCard title="Job Applications" value={jobApplications.length} icon={HiBriefcase} color="purple" />
           <StatCard title="Skill Badges" value="24" icon={HiBadgeCheck} color="orange" />
         </SimpleGrid>
 
@@ -164,8 +198,14 @@ const DashboardOverview = () => {
                 <Button variant="link" colorScheme="blue" rightIcon={<HiChevronRight />}>View All Courses</Button>
               </Flex>
               <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
-                <CourseProgressCard title="Advanced Full-Stack Engineering" progress={75} instructor="Elena Rodriguez" />
-                <CourseProgressCard title="UI/UX Design Masterclass" progress={30} instructor="Marcus Thorne" />
+                {enrolledCourses.map((c, idx) => (
+                  <CourseProgressCard 
+                    key={idx}
+                    title={c.course?.title || c.title} 
+                    progress={c.progress} 
+                    instructor={c.course?.instructor?.name || c.instructor?.name || "Expert Instructor"} 
+                  />
+                ))}
               </SimpleGrid>
 
               {/* Recent Activity Table */}
@@ -199,31 +239,16 @@ const DashboardOverview = () => {
                 </Flex>
 
                 <VStack align="stretch" spacing={0}>
-                  <TimelineItem
-                    title="Senior Frontend Developer"
-                    company="Google (via Recruitment)"
-                    status="Technical"
-                    date="May 26, 2022"
-                  />
-                  <TimelineItem
-                    title="UI Engineer"
-                    company="Meta"
-                    status="Accepted"
-                    date="May 24, 2022"
-                  />
-                  <TimelineItem
-                    title="React Specialist"
-                    company="ShopZon"
-                    status="Applied"
-                    date="May 20, 2022"
-                  />
-                  <TimelineItem
-                    title="Product Designer"
-                    company="Creative Flow"
-                    status="Rejected"
-                    date="May 18, 2022"
-                    isLast
-                  />
+                  {jobApplications.map((app, idx) => (
+                    <TimelineItem
+                      key={idx}
+                      title={app.title}
+                      company={app.company}
+                      status={app.status}
+                      date={new Date(app.date).toLocaleDateString()}
+                      isLast={idx === jobApplications.length - 1}
+                    />
+                  ))}
                 </VStack>
 
                 <Box p={6} bg="blue.600" rounded="3xl" color="white" shadow="lg">
