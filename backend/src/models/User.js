@@ -7,6 +7,11 @@ const UserSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     isActivated: { type: Boolean, default: false },
+    role: { type: String, enum: ['user', 'admin'], default: 'user' },
+    preferences: {
+        theme: { type: String, enum: ['light', 'dark', 'system'], default: 'system' },
+        emailNotifications: { type: Boolean, default: true }
+    },
     otp: { type: String },
     otpExpires: { type: Date },
     enrolledCourses: [{
@@ -20,6 +25,13 @@ const UserSchema = new mongoose.Schema({
         status: { type: String, enum: ['Applied', 'Technical', 'Interview', 'Offer', 'Accepted', 'Rejected'], default: 'Applied' },
         date: { type: Date, default: Date.now }
     }],
+    address: { type: String },
+    phone: { type: String },
+    paymentMethod: {
+        cardName: { type: String },
+        cardType: { type: String },
+        cardNumber: { type: String }
+    },
     createdAt: { type: Date, default: Date.now }
 });
 
