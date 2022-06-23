@@ -36,12 +36,15 @@ import { motion } from "framer-motion";
 import { Layout } from "components/components/pages";
 import { Button } from "components/shared/lib";
 import buildSEO from "utils/buildSEO";
+import { useState, useEffect } from "react";
+import http from "utils/http";
+import useAuth from "hooks/useAuth";
 
 const pageSEO = buildSEO("Preferences", "Customize your notification and privacy settings");
 
 const MotionBox = motion(Box);
 
-const PreferenceItem = ({ icon, title, description, defaultChecked, color = "blue" }) => {
+const PreferenceItem = ({ icon, title, description, isChecked, onChange, color = "blue" }) => {
   const borderColor = useColorModeValue("gray.100", "gray.700");
   
   return (
@@ -62,7 +65,7 @@ const PreferenceItem = ({ icon, title, description, defaultChecked, color = "blu
           <Text fontSize="sm" color="gray.500">{description}</Text>
         </VStack>
       </HStack>
-      <Switch colorScheme={color} defaultChecked={defaultChecked} size="lg" />
+      <Switch colorScheme={color} isChecked={isChecked} onChange={onChange} size="lg" />
     </Flex>
   );
 };
@@ -70,6 +73,45 @@ const PreferenceItem = ({ icon, title, description, defaultChecked, color = "blu
 const PreferencePage = () => {
   const bgColor = useColorModeValue("gray.50", "gray.900");
   const cardBg = useColorModeValue("white", "gray.800");
+  const auth = useAuth();
+  
+  const [emailNotifications, setEmailNotifications] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        if (!auth.me) return;
+        const res = await http.get("http://localhost:5000/api/users/profile", {
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+        });
+        if (res.data.preferences) {
+          setEmailNotifications(res.data.preferences.emailNotifications ?? true);
+        }
+      } catch (err) {
+        console.error("Failed to fetch preferences", err);
+      }
+    };
+    fetchProfile();
+  }, [auth.me]);
+
+  const handleSave = async () => {
+    setIsSaving(true);
+    try {
+      await http.put("http://localhost:5000/api/users/preferences", {
+        emailNotifications,
+        theme: "system"
+      }, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+      });
+      alert("Preferences saved successfully!");
+    } catch (err) {
+      console.error("Failed to update preferences", err);
+      alert("Failed to save preferences.");
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
   return (
     <Layout SEO={pageSEO}>
@@ -115,25 +157,12 @@ const PreferencePage = () => {
                         icon={HiMail} 
                         title="Email Notifications" 
                         description="Receive weekly summaries and course updates via email."
-                        defaultChecked={true}
-                      />
-                      <PreferenceItem 
-                        icon={HiBell} 
-                        title="Push Notifications" 
-                        description="Get real-time alerts for course mentions and messages."
-                        defaultChecked={true}
-                        color="purple"
-                      />
-                      <PreferenceItem 
-                        icon={HiGlobe} 
-                        title="Browser Alerts" 
-                        description="Show desktop notifications when you're active on the platform."
-                        defaultChecked={false}
-                        color="orange"
+                        isChecked={emailNotifications}
+                        onChange={(e) => setEmailNotifications(e.target.checked)}
                       />
                     </VStack>
                     <Box p={6} bg="gray.50">
-                       <Button variant="primary" rounded="full" px={10}>Save Notification Settings</Button>
+                       <Button variant="primary" rounded="full" px={10} isLoading={isSaving} onClick={handleSave}>Save Notification Settings</Button>
                     </Box>
                   </MotionBox>
                 </TabPanel>
