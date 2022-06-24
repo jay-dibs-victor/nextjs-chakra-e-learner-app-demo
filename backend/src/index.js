@@ -18,10 +18,12 @@ mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:2717/lms_db', {
 
 // Routes
 app.use('/api/auth', require('./routes/authRoutes'));
+app.use('/api/users', require('./routes/userRoutes'));
 app.use('/api/products', require('./routes/productRoutes'));
 app.use('/api/courses', require('./routes/courseRoutes'));
 app.use('/api/lms', require('./routes/lmsRoutes'));
 app.use('/api/jobs', require('./routes/jobRoutes'));
+app.use('/api/admin', require('./routes/adminRoutes'));
 app.get('/', (req, res) => res.send('LMS API Running...'));
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
