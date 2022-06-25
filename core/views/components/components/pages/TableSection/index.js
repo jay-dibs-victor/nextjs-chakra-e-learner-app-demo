@@ -105,29 +105,21 @@ const fetchRows_users =
     setRows({ loading: true });
 
     try {
-      const {
-        data: { data: resData },
-      } = await http.get(
+      const { data } = await http.get(
         url ||
-          `${path}?limit=10&page=${options.page}&role=${role}${
-            options.query.key
-              ? `&${options.query.key}=${options.query.value}`
-              : ""
-          }`
+          `http://localhost:5000/api/admin/users`,
+        { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
       );
 
-      const data = {
-        totalPages: resData.pages,
-        totalDocs: resData.total,
-
-        // Map to `columns.key`
-        docs: resData.docs.map((user) => ({
-          ...user,
-          // Map fields that don't map to `columns[<index>].key`
-        })),
+      const mappedData = {
+        totalPages: 1,
+        totalDocs: data.length,
+        docs: data.filter(user => role === 'customer' ? user.role === 'user' : user.role === role)
       };
 
-      setRows({ data });
+      setRows({ data: mappedData });
+
+
     } catch (err) {
       setRows({ error: err.message });
     }
@@ -150,22 +142,35 @@ const handleMenuClick_users =
           href: `/users/${user.id}`,
         },
         {
-          text: !user.deactivatedAt
-            ? "Deactivate This User"
-            : "Reactivate This User",
+          text: !user.isActivated
+            ? "Activate This User"
+            : "Deactivate This User",
           onClick: async () => {
             const payload = {
-              deactivatedAt: !user.deactivatedAt ? new Date() : false,
+              isActivated: !user.isActivated,
             };
 
             // Server update
-            await http.patch(
-              `/users/${user.id}/${
-                !user.deactivatedAt ? "deactivate" : "reactivate"
-              }`
+            await http.put(
+              `http://localhost:5000/api/admin/users/${user._id}`,
+              payload,
+              { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
             );
             // UI update
-            tableRow.updateRow({ rowId: user.id, payload });
+            tableRow.updateRow({ rowId: user._id, payload });
+          },
+        },
+        {
+          text: "Delete This User",
+          props: {
+            color: "brand.error",
+          },
+          onClick: async () => {
+            await http.delete(
+              `http://localhost:5000/api/admin/users/${user._id}`,
+              { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
+            );
+            tableRow.deleteRow({ rowId: user._id });
           },
         },
       ],
