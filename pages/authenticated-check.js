@@ -1,30 +1,41 @@
 import { Loader } from "components/components/pages";
-import useAuth from "hooks/useAuth";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-// Persist the user on fresh signin
+// Redirect user after successful sign-in
 
 const AuthCheckPage = () => {
-  const { me, token, loading } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    if (loading) return; // wait for localStorage to hydrate
+    // Read directly from localStorage — AuthContext won't have re-hydrated yet
+    const token = localStorage.getItem('token') || 
+                  (typeof document !== 'undefined' && 
+                   document.cookie.split(';').find(c => c.trim().startsWith('token='))
+                    ?.split('=')[1]?.trim());
 
-    const redirectUrl = router.query.redirect || "/store";
-    if (me || token) {
+    const userStr = localStorage.getItem('user');
+    let user = null;
+    try {
+      if (userStr) user = JSON.parse(userStr);
+    } catch (e) {}
+
+    let redirectUrl = router.query.redirect 
+      ? decodeURIComponent(router.query.redirect) 
+      : "/store";
+
+    if (user?.role === 'admin' && !router.query.redirect) {
+      redirectUrl = "/admin";
+    }
+
+    if (token) {
       location.replace(redirectUrl);
     } else {
-      // Not authenticated after loading — go to sign in
       router.replace("/signin");
     }
-  }, [me, token, loading, router.query.redirect]);
+  }, [router.query.redirect]);
 
-  return (<Loader
-    h="100vh"
-    message="Authenticating please wait..."
-  />);
+  return <Loader h="100vh" message="Authenticating please wait..." />;
 };
 
 export default AuthCheckPage;
