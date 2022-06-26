@@ -10,10 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 // MongoDB Connection
-mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:2717/lms_db', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-}).then(() => console.log('Connected to MongoDB'))
+mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/lms_db').then(() => console.log('Connected to MongoDB'))
   .catch(err => console.error('MongoDB Connection Error:', err));
 
 // Routes
@@ -23,6 +20,7 @@ app.use('/api/products', require('./routes/productRoutes'));
 app.use('/api/courses', require('./routes/courseRoutes'));
 app.use('/api/lms', require('./routes/lmsRoutes'));
 app.use('/api/jobs', require('./routes/jobRoutes'));
+app.use('/api/categories', require('./routes/categoryRoutes'));
 app.use('/api/admin', require('./routes/adminRoutes'));
 app.get('/', (req, res) => res.send('LMS API Running...'));
 
