@@ -76,10 +76,10 @@ const SignupPage = () => {
 
       toast.displayToast({
         title: "Account created!",
-        description: "Welcome to the community. Please verify your email to get started.",
+        description: "Welcome to the community. You can now log in.",
         status: "success",
       });
-      router.push(`/signup/verify?email=${fieldsObj.email}`);
+      router.push("/signin");
     } catch (err) {
       toast.displayToast({
         title: "Sign up failed",
