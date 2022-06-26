@@ -58,7 +58,7 @@ const Header = () => {
           <Link href="/courses" fontWeight="black" fontSize="sm" color="gray.600" _hover={{ color: "blue.600" }}>COURSES</Link>
           <Link href="/products" fontWeight="black" fontSize="sm" color="gray.600" _hover={{ color: "blue.600" }}>STORE</Link>
           <Link href="/about" fontWeight="black" fontSize="sm" color="gray.600" _hover={{ color: "blue.600" }}>ABOUT</Link>
-          {me && <Link href="/users" fontWeight="black" fontSize="sm" color="gray.600" _hover={{ color: "blue.600" }}>DASHBOARD</Link>}
+          {me && <Link href={me.role === 'admin' ? '/admin' : '/users'} fontWeight="black" fontSize="sm" color="gray.600" _hover={{ color: "blue.600" }}>DASHBOARD</Link>}
         </HStack>
 
         {/* Actions */}
@@ -71,7 +71,7 @@ const Header = () => {
                   <Text fontWeight="black" fontSize="sm" ml={2}>{me.firstName}</Text>
                 </MenuButton>
                 <MenuList rounded="2xl" shadow="2xl" border="none" p={2}>
-                  <MenuItem as={Link} href="/users" rounded="xl" fontWeight="bold">My Dashboard</MenuItem>
+                  <MenuItem as={Link} href={me.role === 'admin' ? '/admin' : '/users'} rounded="xl" fontWeight="bold">My Dashboard</MenuItem>
                   <MenuItem rounded="xl" fontWeight="bold">Settings</MenuItem>
                   <MenuItem onClick={logout} rounded="xl" fontWeight="bold" color="red.500">Logout</MenuItem>
                 </MenuList>
