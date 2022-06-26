@@ -17,9 +17,17 @@ import { useRouter } from "next/router";
  * page Wrapper
  */
 
+const NotAuthorized = ({ router, message }) => {
+  useEffect(() => {
+    alert(message || "You are not authorized to view this page.");
+    router.replace("/");
+  }, []);
+
+  return null;
+};
+
 const NotAuthenticated = ({ router }) => {
   useEffect(() => {
-    console.log("redirecting");
     router.replace("/signin");
   }, []);
 
@@ -40,7 +48,8 @@ export const LayoutAdmin = ({
   const network = useNetwork();
   const ready = usePageReady();
   const router = useRouter();
-  auth.isAuthenticated =true
+  const isAuthenticated = !!auth.me;
+  const isAdmin = auth.me?.role === 'admin';
 
   // Display the online-status in a Toast, every time the `network.isOnline`(online-status) changes
   useEffect(() => {
@@ -59,7 +68,11 @@ export const LayoutAdmin = ({
 
         {/* When the page full control has been handed over to the Client? that when the Content should be loaded */}
         {ready &&
-          (auth.isAuthenticated ? (
+          (!isAuthenticated ? (
+            <NotAuthenticated router={router} />
+          ) : !isAdmin ? (
+            <NotAuthorized router={router} />
+          ) : (
             <Flex
               w="100vw"
               h="100vh"
@@ -81,8 +94,6 @@ export const LayoutAdmin = ({
                 </MainArea>  
               </Flex>
             </Flex>
-          ) : (
-            <NotAuthenticated router={router} auth={auth} />
           ))}
       </Flex>
     </>
