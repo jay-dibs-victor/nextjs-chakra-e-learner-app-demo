@@ -107,7 +107,7 @@ const fetchRows_users =
     try {
       const { data } = await http.get(
         url ||
-          `http://localhost:5000/api/admin/users`,
+          `/admin/users`,
         { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
       );
 
@@ -152,7 +152,7 @@ const handleMenuClick_users =
 
             // Server update
             await http.put(
-              `http://localhost:5000/api/admin/users/${user._id}`,
+              `/admin/users/${user._id}`,
               payload,
               { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
             );
@@ -167,7 +167,7 @@ const handleMenuClick_users =
           },
           onClick: async () => {
             await http.delete(
-              `http://localhost:5000/api/admin/users/${user._id}`,
+              `/admin/users/${user._id}`,
               { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
             );
             tableRow.deleteRow({ rowId: user._id });

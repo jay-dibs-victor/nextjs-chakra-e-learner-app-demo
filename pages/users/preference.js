@@ -82,7 +82,7 @@ const PreferencePage = () => {
     const fetchProfile = async () => {
       try {
         if (!auth.me) return;
-        const res = await http.get("http://localhost:5000/api/users/profile", {
+        const res = await http.get("/users/profile", {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         });
         if (res.data.preferences) {
@@ -98,7 +98,7 @@ const PreferencePage = () => {
   const handleSave = async () => {
     setIsSaving(true);
     try {
-      await http.put("http://localhost:5000/api/users/preferences", {
+      await http.put("/users/preferences", {
         emailNotifications,
         theme: "system"
       }, {

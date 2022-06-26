@@ -134,7 +134,7 @@ const AdminDashboard = () => {
    useEffect(() => {
       const fetchStats = async () => {
          try {
-            const res = await http.get("http://localhost:5000/api/admin/users", {
+            const res = await http.get("/admin/users", {
                headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
             });
             setStats({
