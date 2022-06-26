@@ -72,7 +72,7 @@ const Header = () => {
                 </MenuButton>
                 <MenuList rounded="2xl" shadow="2xl" border="none" p={2}>
                   <MenuItem as={Link} href={me.role === 'admin' ? '/admin' : '/users'} rounded="xl" fontWeight="bold">My Dashboard</MenuItem>
-                  <MenuItem rounded="xl" fontWeight="bold">Settings</MenuItem>
+                  <MenuItem as={Link} href="/users/profile" rounded="xl" fontWeight="bold">Settings</MenuItem>
                   <MenuItem onClick={logout} rounded="xl" fontWeight="bold" color="red.500">Logout</MenuItem>
                 </MenuList>
               </Menu>
