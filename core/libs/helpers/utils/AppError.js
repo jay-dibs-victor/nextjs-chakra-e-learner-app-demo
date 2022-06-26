@@ -33,7 +33,7 @@ class AppError extends Error {
     // This `error` is caused by the `client` and they should fix it :)
     if (isClientErr) {
       if (err.response.status === 401) {
-        location.replace("/auth/login");
+        location.replace("/signin");
       }
 
       // This Client Error is coming from an `identified server`(a backend server that is meant for this Application)

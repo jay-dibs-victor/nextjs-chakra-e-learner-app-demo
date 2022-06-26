@@ -55,11 +55,17 @@ const SignInPage = () => {
 
   const doSubmit = async (fieldsObj) => {
     try {
-      const {
-        data: { token },
-      } = await http.post("/auth/signin", fieldsObj);
+      const res = await http.post("/auth/signin", fieldsObj);
+      const token = res?.data?.token;
+      const user = res?.data?.user;
 
+      if (!token) throw new Error("No token received");
+
+      // Persist to cookie (for SSR/middleware) and localStorage (for AuthContext)
       cookie.setToken(token);
+      localStorage.setItem('token', token);
+      if (user) localStorage.setItem('user', JSON.stringify(user));
+
       toast.displayToast({
         title: "Welcome back!",
         description: "You've successfully signed in to your account.",

@@ -6,28 +6,25 @@ import { useEffect } from "react";
 // Persist the user on fresh signin
 
 const AuthCheckPage = () => {
-  const auth = useAuth();
+  const { me, token, loading } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    setTimeout(() => {
-      auth.persistUserToClient();
-    }, 3000);
-  }, [auth]);
+    if (loading) return; // wait for localStorage to hydrate
 
-  useEffect(() => {
-    console.log("sdsdsds", router.query.redirect);
-    if (auth.isAuthenticated && router.query.redirect) {
-      console.log(router.query.redirect);
-
-      location.replace(router.query.redirect);
+    const redirectUrl = router.query.redirect || "/store";
+    if (me || token) {
+      location.replace(redirectUrl);
+    } else {
+      // Not authenticated after loading — go to sign in
+      router.replace("/signin");
     }
-  }, [auth.isAuthenticated, router.query.redirect]);
+  }, [me, token, loading, router.query.redirect]);
 
   return (<Loader
-      h="100vh"
-      // message="Authenticating please wait..."
-    />);
+    h="100vh"
+    message="Authenticating please wait..."
+  />);
 };
 
 export default AuthCheckPage;
