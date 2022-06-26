@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Container,
@@ -32,12 +32,12 @@ import {
   ModalCloseButton,
   Center,
 } from "@chakra-ui/react";
-import { 
-  HiPlay, 
-  HiLockClosed, 
-  HiCheckCircle, 
-  HiClock, 
-  HiUserGroup, 
+import {
+  HiPlay,
+  HiLockClosed,
+  HiCheckCircle,
+  HiClock,
+  HiUserGroup,
   HiStar,
   HiChevronRight,
   HiOutlineBookOpen,
@@ -50,18 +50,37 @@ const pageSEO = buildSEO("Course Details", "Master high-demand skills with our e
 
 import { useRouter } from "next/router";
 import { courseAPI } from "utils/api";
+import useCart from "hooks/useCart";
 
 const CourseDetailPage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isEnrolled, setIsEnrolled] = useState(false);
   const [course, setCourse] = useState(null);
   const router = useRouter();
+  const cart = useCart();
   const { id } = router.query;
 
   const cardBg = useColorModeValue("white", "gray.800");
   const borderColor = useColorModeValue("gray.100", "gray.700");
   const pageBg = useColorModeValue("gray.50", "gray.900");
   const accordionHoverBg = useColorModeValue("blue.50", "gray.700");
+
+  const onAddToCart = () => {
+    if (!course) return;
+    cart.addItem({
+      id: course._id || id,
+      title: course.title,
+      price: course.price,
+      imageUrl: course.thumbnail || course.image,
+      description: course.description
+    });
+  };
+
+  const onEnroll = () => {
+    onAddToCart();
+    router.push("/checkout");
+  };
+
 
   useEffect(() => {
     if (id) {
@@ -124,11 +143,11 @@ const CourseDetailPage = () => {
       <Box bg={pageBg} minH="100vh" py={20}>
         <Container maxW="full" px={{ base: 6, lg: 24 }}>
           <Flex direction={{ base: "column", lg: "row" }} gap={12}>
-            
+
             {/* Main Content (Left) */}
             <Box flex="2">
               <VStack align="stretch" spacing={16}>
-                
+
                 {/* Hero / Intro */}
                 <VStack align="start" spacing={6}>
                   <HStack spacing={4}>
@@ -173,10 +192,10 @@ const CourseDetailPage = () => {
                     {curriculum.map((section, idx) => (
                       <AccordionItem key={idx} border="none" mb={4}>
                         <h2>
-                          <AccordionButton 
-                            bg={cardBg} 
-                            p={6} 
-                            rounded="2xl" 
+                          <AccordionButton
+                            bg={cardBg}
+                            p={6}
+                            rounded="2xl"
                             shadow="sm"
                             _hover={{ bg: accordionHoverBg }}
                           >
@@ -238,32 +257,32 @@ const CourseDetailPage = () => {
 
                 {/* Related Courses Section */}
                 <VStack align="stretch" spacing={10}>
-                   <VStack align="start" spacing={2}>
+                  <VStack align="start" spacing={2}>
                     <Heading size="xl" fontWeight="black">Students also bought</Heading>
                     <Text color="gray.500">Boost your skills with these highly recommended additions.</Text>
                   </VStack>
                   <SimpleGrid columns={{ base: 1, md: 2 }} spacing={8}>
-                     {[...Array(4)].map((_, i) => (
-                       <Box key={i} bg={cardBg} p={6} rounded="3xl" shadow="lg" border="1px solid" borderColor={borderColor}>
-                          <Box h="180px" bg="blue.600" rounded="2xl" mb={6} position="relative" overflow="hidden">
-                             <Box position="absolute" inset={0} bgGradient="linear(to-br, blue.400, blue.800)" opacity={0.6} />
-                             <Center h="full">
-                                <Icon as={HiOutlineBookOpen} color="white" w={12} h={12} />
-                             </Center>
-                          </Box>
-                          <VStack align="start" spacing={3}>
-                             <Badge colorScheme="purple">Intermediate</Badge>
-                             <Heading size="md" fontWeight="black">Mastering Microservices with Go</Heading>
-                             <HStack justify="space-between" w="full">
-                                <Text fontWeight="black" fontSize="xl">₦45,000</Text>
-                                <Button size="sm" variant="outline" colorScheme="blue" rounded="full">Preview</Button>
-                             </HStack>
-                          </VStack>
-                       </Box>
-                     ))}
+                    {[...Array(4)].map((_, i) => (
+                      <Box key={i} bg={cardBg} p={6} rounded="3xl" shadow="lg" border="1px solid" borderColor={borderColor}>
+                        <Box h="180px" bg="blue.600" rounded="2xl" mb={6} position="relative" overflow="hidden">
+                          <Box position="absolute" inset={0} bgGradient="linear(to-br, blue.400, blue.800)" opacity={0.6} />
+                          <Center h="full">
+                            <Icon as={HiOutlineBookOpen} color="white" w={12} h={12} />
+                          </Center>
+                        </Box>
+                        <VStack align="start" spacing={3}>
+                          <Badge colorScheme="purple">Intermediate</Badge>
+                          <Heading size="md" fontWeight="black">Mastering Microservices with Go</Heading>
+                          <HStack justify="space-between" w="full">
+                            <Text fontWeight="black" fontSize="xl">₦45,000</Text>
+                            <Button size="sm" variant="outline" colorScheme="blue" rounded="full">Preview</Button>
+                          </HStack>
+                        </VStack>
+                      </Box>
+                    ))}
                   </SimpleGrid>
                   <Center py={8}>
-                     <Button variant="ghost" colorScheme="blue" size="lg" fontWeight="black">Load More Courses</Button>
+                    <Button variant="ghost" colorScheme="blue" size="lg" fontWeight="black">Load More Courses</Button>
                   </Center>
                 </VStack>
 
@@ -272,66 +291,66 @@ const CourseDetailPage = () => {
 
             {/* Sidebar (Right) */}
             <Box flex="1">
-               <Box 
-                 bg={cardBg} 
-                 p={8} 
-                 rounded="4xl" 
-                 shadow="2xl" 
-                 border="1px solid" 
-                 borderColor={borderColor} 
-                 position="sticky" 
-                 top="120px"
-                 zIndex={10}
-               >
-                  <VStack align="stretch" spacing={8}>
-                    {/* Video Preview Trigger */}
-                    <Box 
-                      h="220px" 
-                      bgImage="url('https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-1.2.1&auto=format&fit=crop&w=1352&q=80')" 
-                      bgSize="cover" 
-                      bgPosition="center" 
-                      rounded="3xl" 
-                      position="relative"
-                      cursor="pointer"
-                      onClick={onOpen}
-                      _hover={{ transform: "scale(1.02)" }}
-                      transition="all 0.3s"
-                    >
-                      <Box position="absolute" inset={0} bg="blackAlpha.600" rounded="3xl" />
-                      <Center h="full" position="relative">
-                        <VStack spacing={4}>
-                           <Circle size={16} bg="white" color="blue.600" shadow="2xl">
-                             <Icon as={HiPlay} w={8} h={8} />
-                           </Circle>
-                           <Text color="white" fontWeight="black">Preview this course</Text>
-                        </VStack>
-                      </Center>
-                    </Box>
+              <Box
+                bg={cardBg}
+                p={8}
+                rounded="4xl"
+                shadow="2xl"
+                border="1px solid"
+                borderColor={borderColor}
+                position="sticky"
+                top="120px"
+                zIndex={10}
+              >
+                <VStack align="stretch" spacing={8}>
+                  {/* Video Preview Trigger */}
+                  <Box
+                    h="220px"
+                    bgImage="url('https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-1.2.1&auto=format&fit=crop&w=1352&q=80')"
+                    bgSize="cover"
+                    bgPosition="center"
+                    rounded="3xl"
+                    position="relative"
+                    cursor="pointer"
+                    onClick={onOpen}
+                    _hover={{ transform: "scale(1.02)" }}
+                    transition="all 0.3s"
+                  >
+                    <Box position="absolute" inset={0} bg="blackAlpha.600" rounded="3xl" />
+                    <Center h="full" position="relative">
+                      <VStack spacing={4}>
+                        <Circle size={16} bg="white" color="blue.600" shadow="2xl">
+                          <Icon as={HiPlay} w={8} h={8} />
+                        </Circle>
+                        <Text color="white" fontWeight="black">Preview this course</Text>
+                      </VStack>
+                    </Center>
+                  </Box>
 
-                    <VStack align="stretch" spacing={6}>
-                       <HStack align="end" spacing={2}>
-                          <Text fontSize="4xl" fontWeight="black">₦{course.price?.toLocaleString()}</Text>
-                          <Text fontSize="lg" color="gray.400" textDecoration="line-through" mb={2}>₦{(course.price * 1.5).toLocaleString()}</Text>
-                       </HStack>
-                       <Text color="red.500" fontWeight="bold" fontSize="sm">🔥 45% Off ends in 12 hours!</Text>
+                  <VStack align="stretch" spacing={6}>
+                    <HStack align="end" spacing={2}>
+                      <Text fontSize="4xl" fontWeight="black">₦{course.price?.toLocaleString()}</Text>
+                      <Text fontSize="lg" color="gray.400" textDecoration="line-through" mb={2}>₦{(course.price * 1.5).toLocaleString()}</Text>
+                    </HStack>
+                    <Text color="red.500" fontWeight="bold" fontSize="sm">🔥 45% Off ends in 12 hours!</Text>
 
-                       <VStack spacing={4} pt={4}>
-                          <Button w="full" size="lg" h={16} colorScheme="blue" rounded="2xl" fontSize="lg" fontWeight="black" shadow="xl">Enroll Now</Button>
-                          <Button w="full" size="lg" h={16} variant="outline" borderColor="blue.500" color="blue.500" rounded="2xl" fontSize="lg" fontWeight="black">Add to Cart</Button>
-                       </VStack>
-                    </VStack>
-
-                    <VStack align="start" spacing={4} pt={4}>
-                       <Text fontWeight="black">This course includes:</Text>
-                       <VStack align="start" spacing={2} color="gray.500" fontSize="sm">
-                          <HStack><Icon as={HiCheckCircle} color="green.500" /><Text>18.5 hours on-demand video</Text></HStack>
-                          <HStack><Icon as={HiCheckCircle} color="green.500" /><Text>12 downloadable resources</Text></HStack>
-                          <HStack><Icon as={HiCheckCircle} color="green.500" /><Text>Full lifetime access</Text></HStack>
-                          <HStack><Icon as={HiCheckCircle} color="green.500" /><Text>Certificate of completion</Text></HStack>
-                       </VStack>
+                    <VStack spacing={4} pt={4}>
+                      <Button w="full" size="lg" h={16} colorScheme="blue" rounded="2xl" fontSize="lg" fontWeight="black" shadow="xl" onClick={onEnroll}>Enroll Now</Button>
+                      <Button w="full" size="lg" h={16} variant="outline" borderColor="blue.500" color="blue.500" rounded="2xl" fontSize="lg" fontWeight="black" onClick={onAddToCart}>Add to Cart</Button>
                     </VStack>
                   </VStack>
-               </Box>
+
+                  <VStack align="start" spacing={4} pt={4}>
+                    <Text fontWeight="black">This course includes:</Text>
+                    <VStack align="start" spacing={2} color="gray.500" fontSize="sm">
+                      <HStack><Icon as={HiCheckCircle} color="green.500" /><Text>18.5 hours on-demand video</Text></HStack>
+                      <HStack><Icon as={HiCheckCircle} color="green.500" /><Text>12 downloadable resources</Text></HStack>
+                      <HStack><Icon as={HiCheckCircle} color="green.500" /><Text>Full lifetime access</Text></HStack>
+                      <HStack><Icon as={HiCheckCircle} color="green.500" /><Text>Certificate of completion</Text></HStack>
+                    </VStack>
+                  </VStack>
+                </VStack>
+              </Box>
             </Box>
 
             {/* Video Preview Modal */}

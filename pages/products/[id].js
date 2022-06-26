@@ -45,16 +45,31 @@ const pageSEO = buildSEO("Product Details", "Explore the features and specificat
 
 import { useRouter } from "next/router";
 import { productAPI } from "utils/api";
+import useCart from "hooks/useCart";
 
 const ProductDetailPage = () => {
   const [quantity, setQuantity] = useState(1);
   const [product, setProduct] = useState(null);
   const router = useRouter();
+  const cart = useCart();
   const { id } = router.query;
 
   const cardBg = useColorModeValue("white", "gray.800");
   const borderColor = useColorModeValue("gray.100", "gray.700");
   const pageBg = useColorModeValue("gray.50", "gray.900");
+
+  const onAddToCart = () => {
+    if (!product) return;
+    for (let i = 0; i < quantity; i++) {
+      cart.addItem({
+        id: product._id || id,
+        title: product.name || product.title,
+        price: product.price,
+        imageUrl: product.image || product.thumbnail,
+        description: product.description
+      });
+    }
+  };
 
   useEffect(() => {
     if (id) {
@@ -172,6 +187,7 @@ const ProductDetailPage = () => {
                     fontSize="lg" 
                     fontWeight="black"
                     shadow="xl"
+                    onClick={onAddToCart}
                   >
                     Add to Cart
                   </Button>
