@@ -76,20 +76,22 @@ const SignupPage = () => {
       const { data } = await http.post("/auth/signup", body);
 
       if (data.autoVerified && data.token) {
-        cookie.setToken(data.token);
         toast.displayToast({
           title: "Account created!",
-          description: "Welcome to the community. You are now logged in.",
+          description: "Welcome to the community. You can now log in.",
           status: "success",
         });
-        router.push("/authenticated-check");
+        router.push("/signin");
       } else {
         toast.displayToast({
           title: "Account created!",
           description: "Welcome to the community. Please check your email to verify your account.",
           status: "success",
         });
-        router.push("/signin");
+        router.push({
+          pathname: "/verify-account",
+          query: { email: fieldsObj.email }
+        });
       }
     } catch (err) {
       toast.displayToast({

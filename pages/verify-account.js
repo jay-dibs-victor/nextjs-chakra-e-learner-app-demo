@@ -110,12 +110,14 @@ const VerifyAccountPage = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if (auth.currentUser) {
+    if (router.query.email) {
+      setEmailAddress(router.query.email);
+    } else if (auth.currentUser) {
       setEmailAddress(auth.currentUser?.email);
-    } else {
+    } else if (router.isReady) {
       router.replace("/store");
     }
-  }, [auth.currentUser, router]);
+  }, [auth.currentUser, router, router.query.email, router.isReady]);
 
   return (
     <Layout SEO={pageSEO}>
