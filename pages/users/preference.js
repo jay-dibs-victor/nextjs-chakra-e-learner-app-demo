@@ -37,6 +37,7 @@ import { Layout } from "components/components/pages";
 import { Button } from "components/shared/lib";
 import buildSEO from "utils/buildSEO";
 import { useState, useEffect } from "react";
+import withAuth from "core/libs/hocs/withAuth";
 import http from "utils/http";
 import useAuth from "hooks/useAuth";
 
@@ -242,5 +243,5 @@ const PreferencePage = () => {
   );
 };
 
-export default PreferencePage;
+export default withAuth(PreferencePage);
 

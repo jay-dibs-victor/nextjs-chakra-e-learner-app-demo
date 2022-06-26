@@ -32,6 +32,7 @@ import { HiArrowLeft, HiArrowRight, HiTrash, HiShoppingCart } from "react-icons/
 import { motion, AnimatePresence } from "framer-motion";
 import buildSEO from "utils/buildSEO";
 import formatPrice from "utils/formatPrice";
+import withAuth from "core/libs/hocs/withAuth";
 
 const pageSEO = buildSEO("Your Cart", "Review and manage your shopping cart items");
 
@@ -280,6 +281,6 @@ const Cart = () => {
   );
 };
 
-export default Cart;
+export default withAuth(Cart);
 
 

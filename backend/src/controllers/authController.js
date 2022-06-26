@@ -87,18 +87,30 @@ exports.verifyOtp = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
+    console.log(`[LOGIN] Attempt for: ${req.body.email}`);
     try {
         const { email, password } = req.body;
         const user = await User.findOne({ email });
+        
+        if (!user) {
+            console.log(`[LOGIN] User not found: ${email}`);
+            return res.status(401).json({ message: 'Invalid email or password' });
+        }
 
-        if (!user || !(await user.comparePassword(password))) {
+        console.log(`[LOGIN] User found, comparing password...`);
+        const isMatch = await user.comparePassword(password);
+        
+        if (!isMatch) {
+            console.log(`[LOGIN] Password mismatch: ${email}`);
             return res.status(401).json({ message: 'Invalid email or password' });
         }
 
         if (!user.isActivated) {
+            console.log(`[LOGIN] User not activated: ${email}`);
             return res.status(403).json({ message: 'Please verify your email first' });
         }
 
+        console.log(`[LOGIN] Success! Generating token...`);
         const token = generateToken(user._id);
 
         res.json({
@@ -108,10 +120,12 @@ exports.login = async (req, res) => {
                 firstName: user.firstName,
                 lastName: user.lastName,
                 email: user.email,
-                isActivated: user.isActivated
+                isActivated: user.isActivated,
+                role: user.role
             }
         });
     } catch (err) {
+        console.error(`[LOGIN] Error:`, err);
         res.status(500).json({ message: err.message });
     }
 };

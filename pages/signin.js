@@ -56,9 +56,7 @@ const SignInPage = () => {
   const doSubmit = async (fieldsObj) => {
     try {
       const {
-        data: {
-          data: { token },
-        },
+        data: { token },
       } = await http.post("/auth/signin", fieldsObj);
 
       cookie.setToken(token);

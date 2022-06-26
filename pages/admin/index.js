@@ -52,6 +52,7 @@ ChartJS.register(LineElement, PointElement, LinearScale, CategoryScale, Filler, 
 
 import { useState, useEffect } from "react";
 import http from "utils/http";
+import withAdmin from "core/libs/hocs/withAdmin";
 
 const MotionBox = motion(Box);
 
@@ -350,4 +351,4 @@ export async function getServerSideProps() {
    return { props: {} };
 }
 
-export default AdminDashboard;
+export default withAdmin(AdminDashboard);

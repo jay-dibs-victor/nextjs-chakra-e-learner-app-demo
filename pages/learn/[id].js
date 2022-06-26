@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Flex,
@@ -34,6 +34,7 @@ import {
 } from "react-icons/hi";
 import { Layout } from "components/components/pages";
 import Link from "next/link";
+import withAuth from "core/libs/hocs/withAuth";
 
 import { useRouter } from "next/router";
 import { courseAPI, lmsAPI } from "utils/api";
@@ -281,4 +282,4 @@ export async function getServerSideProps() {
   return { props: {} };
 }
 
-export default LearnPage;
+export default withAuth(LearnPage);

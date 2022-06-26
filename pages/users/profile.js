@@ -36,6 +36,7 @@ import buildSEO from "utils/buildSEO";
 import http from "utils/http";
 import useAuth from "hooks/useAuth";
 import { useEffect, useState } from "react";
+import withAuth from "core/libs/hocs/withAuth";
 
 const pageSEO = buildSEO("User Profile", "Manage your account preferences and security settings");
 
@@ -326,5 +327,5 @@ const SettingsPage = () => {
   );
 };
 
-export default SettingsPage;
+export default withAuth(SettingsPage);
 
