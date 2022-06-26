@@ -13,7 +13,7 @@ const AuthCheckPage = () => {
     setTimeout(() => {
       auth.persistUserToClient();
     }, 3000);
-  }, []);
+  }, [auth]);
 
   useEffect(() => {
     console.log("sdsdsds", router.query.redirect);

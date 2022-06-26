@@ -29,7 +29,11 @@ const CourseSchema = new mongoose.Schema({
         bio: String
     },
     thumbnail: { type: String },
-    category: { type: String, required: true },
+    category: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Category',
+        required: true
+    },
     level: { type: String, enum: ['Beginner', 'Intermediate', 'Advanced'], default: 'Beginner' },
     sections: [SectionSchema],
     ratings: { type: Number, default: 0 },

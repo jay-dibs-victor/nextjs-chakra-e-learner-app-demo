@@ -99,7 +99,7 @@ const Form = ({
     if (cookie.getToken()) {
       auth.signout();
     }
-  }, []);
+  }, [auth]);
 
   useFormSubmitFeedback({
     formSubmitState: formData.formSubmitState,

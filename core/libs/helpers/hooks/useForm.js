@@ -23,12 +23,15 @@ const useForm = ({ doSubmit, initialFieldsProps }) => {
     initialFieldsProps.map((field) => ({ ...field, value: field.value || "" }))
   );
 
-  const handleType = ({ target: { id, value } }) => {
+  const handleType = ({ target: { id, name, value } }) => {
+    const fieldId = id || name;
     const newFieldsProps = [...fieldsProps];
-    const field = newFieldsProps.find((field) => field.id === id);
-    field.value = value;
-
-    setFieldsProps(newFieldsProps);
+    const field = newFieldsProps.find((field) => field.id === fieldId);
+    
+    if (field) {
+      field.value = value;
+      setFieldsProps(newFieldsProps);
+    }
   };
 
   const handleSubmit = async (e) => {

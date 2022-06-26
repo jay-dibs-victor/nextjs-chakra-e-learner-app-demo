@@ -8,10 +8,12 @@ axios.interceptors.response.use(null, (err) => {
   return Promise.reject(error);
 });
 
-export const baseURL =
-  process.env.NODE_ENV === "development"
-    ? process.env.NEXT_PUBLIC_NEWSPAPER_API_BASE_URI_LOCAL
-    : process.env.NEXT_PUBLIC_NEWSPAPER_API_BASE_URI;
+const isServer = typeof window === "undefined";
+export const baseURL = isServer
+  ? "http://backend:5000/api"
+  : (process.env.NEXT_PUBLIC_API_URL && process.env.NEXT_PUBLIC_API_URL !== "undefined"
+      ? process.env.NEXT_PUBLIC_API_URL
+      : "http://localhost:5001/api");
 
 const defaultOptions = (explicitToken) => ({
   // timeout's the request in a minute by default

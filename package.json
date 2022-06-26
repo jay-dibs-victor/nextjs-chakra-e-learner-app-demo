@@ -4,6 +4,7 @@
     "dev": "next dev -p 4000",
     "build": "next build",
     "start": "next start",
+    "seed": "node backend/src/seed.js",
     "prepare": "husky install"
   },
   "dependencies": {

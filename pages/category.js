@@ -74,6 +74,8 @@ const Aside = ({
 }) => {
   const bgColor = useColorModeValue("white", "gray.800");
   const borderColor = useColorModeValue("gray.100", "gray.700");
+  const hoverBg = useColorModeValue("gray.100", "gray.700");
+  const accordionHoverBg = useColorModeValue("gray.50", "gray.700");
 
   const CategoryContent = () => {
     const handleCategoryChange = (queryString) => {
@@ -89,7 +91,7 @@ const Aside = ({
     const controlProps = (condition, queryString) => ({
       ...getActiveControl(condition),
       onClick: handleCategoryChange.bind(null, queryString),
-      _hover: { bg: useColorModeValue("gray.100", "gray.700"), color: "blue.500" },
+      _hover: { bg: hoverBg, color: "blue.500" },
       as: "button",
       w: "full",
       textAlign: "left",
@@ -228,7 +230,7 @@ const Aside = ({
             letterSpacing: "2px",
             py: 5,
             px: 6,
-            _hover: { bg: useColorModeValue("gray.50", "gray.700") },
+            _hover: { bg: accordionHoverBg },
           }}
         />
       )}
@@ -298,6 +300,7 @@ const MainArea = ({
 }) => {
   const cart = useCart();
   const [currentLayoutStyle, setCurrentLayoutStyle] = useState("grid");
+  const dropdownBg = useColorModeValue("white", "gray.800");
 
   const handleSortBy = (text) => {
     setSortBy(text);
@@ -343,7 +346,7 @@ const MainArea = ({
                 onClick={onClick}
                 rounded="full"
                 borderWidth="1px"
-                bg={useColorModeValue("white", "gray.800")}
+                bg={dropdownBg}
               >
                 Sort By: <Text as="span" ml={1} color="blue.500" fontWeight="bold">{sortBy}</Text>
               </Button>
@@ -352,7 +355,7 @@ const MainArea = ({
             <DropdownContent list={sortByDropdownList} />
           </Dropdown>
 
-          <ButtonGroup isAttached size="md" variant="outline" rounded="full" bg={useColorModeValue("white", "gray.800")}>
+          <ButtonGroup isAttached size="md" variant="outline" rounded="full" bg={dropdownBg}>
             <IconButton
               aria-label="Grid View"
               icon={<BsGridFill />}
@@ -445,7 +448,7 @@ const CategoriesPage = () => {
       localStorage.setItem("category-page", JSON.stringify(ls_data));
       router.replace(path, undefined, { shallow: true });
     }
-  }, [priceFromValue, priceToValue, rating, sortBy, router.query.category, router.query.subCategory]);
+  }, [priceFromValue, priceToValue, rating, sortBy, router.query.category, router.query.subCategory, router]);
 
   const pagination = usePagination();
 
@@ -472,7 +475,7 @@ const CategoriesPage = () => {
       toast.displayToast({ description: err.message });
       setProducts(0);
     }
-  }, [router.query.category, router.query.subCategory, pagination.page, priceFromValue, priceToValue, rating, sortBy]);
+  }, [router.query.category, router.query.subCategory, pagination.page, priceFromValue, priceToValue, rating, sortBy, toast]);
 
   const categories = useCategories();
   const [category, setCategory] = useState(null);
@@ -498,7 +501,7 @@ const CategoriesPage = () => {
     if (router.query.subCategory || router.query.category) {
       fetchProducts();
     }
-  }, [fetchProducts]);
+  }, [fetchProducts, router.query.category, router.query.subCategory]);
 
   const [products, setProducts] = useState(null);
   const mainAreaTitle = subCategory ? subCategory.name : category?.name;

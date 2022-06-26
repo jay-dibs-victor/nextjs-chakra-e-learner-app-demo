@@ -91,7 +91,7 @@ const CartItem = ({ item }) => (
   <Flex align="center" justify="space-between" py={5} borderBottom="1px solid" borderColor="gray.50" _last={{ borderBottom: "none" }}>
     <HStack spacing={5}>
       <Box p={3} bg="gray.50" rounded="2xl" shadow="sm">
-        <Image w="70px" h="70px" src={item.imageUrl} isProduct objectFit="contain" />
+        <Image w="70px" h="70px" src={item.imageUrl} isProduct objectFit="contain" alt={item.title} />
       </Box>
       <VStack align="start" spacing={0}>
         <Text fontWeight="black" fontSize="lg" letterSpacing="tight">{item.title}</Text>

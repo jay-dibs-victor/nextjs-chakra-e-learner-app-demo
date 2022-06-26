@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import Header from "./Header";
-import MainHeadings from "./nav";
+import MainHeadings from "./Nav";
 import Footer from "./Footer";
 import { useInView } from "react-intersection-observer";
 import usePageReady from "hooks/usePageReady";

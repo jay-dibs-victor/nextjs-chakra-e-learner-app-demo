@@ -1,7 +1,12 @@
 import axios from 'axios';
 
+const isServer = typeof window === 'undefined';
 const api = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api',
+    baseURL: isServer
+        ? 'http://backend:5000/api'
+        : (process.env.NEXT_PUBLIC_API_URL && process.env.NEXT_PUBLIC_API_URL !== 'undefined'
+            ? process.env.NEXT_PUBLIC_API_URL
+            : 'http://localhost:5001/api'),
 });
 
 api.interceptors.request.use((config) => {

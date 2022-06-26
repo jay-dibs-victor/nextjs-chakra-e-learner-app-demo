@@ -13,7 +13,7 @@ import useForm from "hooks/useForm";
 import buildSEO from "utils/buildSEO";
 import http from "utils/http";
 import { Text, Link, Heading, Button, Icon } from "components/shared/lib";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/router";
 import { AiOutlineRight } from "react-icons/ai";
 import { IoIosCheckmarkCircleOutline } from "react-icons/io";
@@ -48,7 +48,7 @@ const ConfirmVerificationPage = () => {
 
   const [feedback, setFeedback] = useState({});
 
-  const handleVerify = async () => {
+  const handleVerify = useCallback(async () => {
     setFeedback({ loading: true });
 
     try {
@@ -60,7 +60,7 @@ const ConfirmVerificationPage = () => {
         error: err,
       });
     }
-  };
+  }, [router.query.token]);
 
   const handleErrorRetry = () => {
     if (feedback.error.network) {
@@ -82,11 +82,11 @@ const ConfirmVerificationPage = () => {
         clearTimeout(id);
       };
     }
-  }, [feedback.success]);
+  }, [feedback.success, auth, router]);
 
   useEffect(() => {
     handleVerify();
-  }, []);
+  }, [handleVerify]);
 
   return (
     <Layout SEO={pageSEO}>

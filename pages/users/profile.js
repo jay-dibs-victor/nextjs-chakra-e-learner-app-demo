@@ -168,7 +168,7 @@ const SettingsPage = () => {
     const fetchProfile = async () => {
       try {
         if (!auth.me) return;
-        const res = await http.get("http://localhost:5000/api/users/profile", {
+        const res = await http.get("/users/profile", {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         });
         setProfileData(res.data);
@@ -223,7 +223,7 @@ const SettingsPage = () => {
         }
       });
 
-      const res = await http.put("http://localhost:5000/api/users/profile", payload, {
+      const res = await http.put("/users/profile", payload, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       });
       setProfileData(res.data);
