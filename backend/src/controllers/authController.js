@@ -45,12 +45,23 @@ exports.signup = async (req, res) => {
             }
         }
 
+        const token = skipVerification ? generateToken(user._id) : undefined;
+
         res.status(201).json({
             message: skipVerification 
                 ? 'User registered and activated successfully.' 
                 : 'User registered. Please verify your email with the OTP sent.',
             email,
-            autoVerified: skipVerification
+            autoVerified: skipVerification,
+            token,
+            user: skipVerification ? {
+                id: user._id,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                email: user.email,
+                isActivated: user.isActivated,
+                role: user.role
+            } : undefined
         });
     } catch (err) {
         res.status(500).json({ message: err.message });

@@ -228,14 +228,14 @@ const seedData = async () => {
     const createdCourses = await Course.insertMany(courses);
 
     console.log('Seeding Users...');
-    const hashedPassword = await bcrypt.hash('password123', 10);
+    const plainPassword = 'password123';
 
     // Admin User
     await User.create({
       firstName: 'Admin',
       lastName: 'User',
       email: 'admin@lms.com',
-      password: hashedPassword,
+      password: plainPassword,
       role: 'admin',
       isActivated: true,
     });
@@ -245,7 +245,7 @@ const seedData = async () => {
       firstName: 'Alex',
       lastName: 'Hacker',
       email: 'alex@example.com',
-      password: hashedPassword,
+      password: plainPassword,
       isActivated: true,
       role: 'user',
       enrolledCourses: [

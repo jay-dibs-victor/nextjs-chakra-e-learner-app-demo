@@ -26,6 +26,7 @@ import Layout from "components/shared/blocks/Layout";
 import http from "utils/http";
 import useForm from "hooks/useForm";
 import useToast from "hooks/useToast";
+import cookie from "utils/cookie";
 
 const initialFieldsProps = [
   {
@@ -72,14 +73,24 @@ const SignupPage = () => {
   const doSubmit = async (fieldsObj) => {
     try {
       const body = { ...fieldsObj, refCode: router.query.ref };
-      await http.post("/auth/signup", body);
+      const { data } = await http.post("/auth/signup", body);
 
-      toast.displayToast({
-        title: "Account created!",
-        description: "Welcome to the community. You can now log in.",
-        status: "success",
-      });
-      router.push("/signin");
+      if (data.autoVerified && data.token) {
+        cookie.setToken(data.token);
+        toast.displayToast({
+          title: "Account created!",
+          description: "Welcome to the community. You are now logged in.",
+          status: "success",
+        });
+        router.push("/signin/auth-check");
+      } else {
+        toast.displayToast({
+          title: "Account created!",
+          description: "Welcome to the community. Please check your email to verify your account.",
+          status: "success",
+        });
+        router.push("/signin");
+      }
     } catch (err) {
       toast.displayToast({
         title: "Sign up failed",

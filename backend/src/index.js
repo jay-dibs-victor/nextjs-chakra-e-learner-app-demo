@@ -9,22 +9,15 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-const corsOptions = {
-  origin: (origin, callback) => {
-    // Allow requests with no origin (like mobile apps or curl)
-    if (!origin) return callback(null, true);
-    return callback(null, true); // For development, allow all origins matching the credentials requirement
-  },
+app.use(cors({
+  origin: true, // Reflect request origin
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
-  optionsSuccessStatus: 200,
-};
-
-app.use(cors(corsOptions));
+}));
 
 // Pre-flight requests
-app.options('*', cors(corsOptions));
+app.options('*', cors());
 app.use(express.json());
 
 // MongoDB Connection
