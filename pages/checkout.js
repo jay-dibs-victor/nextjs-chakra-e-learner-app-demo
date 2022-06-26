@@ -27,6 +27,7 @@ import {
   HiChevronRight,
   HiChevronLeft,
   HiLockClosed,
+  HiShieldCheck,
 } from "react-icons/hi";
 import { Layout, Section, Loader, Empty } from "components/components/pages";
 import { Image, TextField } from "components/shared/lib";
