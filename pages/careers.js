@@ -70,7 +70,7 @@ const CareersPage = () => {
           <VStack spacing={6}>
             <Heading size="2xl">Build the Future of <Text as="span" color="blue.400">AI Education</Text></Heading>
             <Text fontSize="xl" color="gray.300">
-              We're looking for passionate individuals to join our global team and help us build 
+              We&apos;re looking for passionate individuals to join our global team and help us build 
               technologies that empower the next generation of workers.
             </Text>
             <Button size="lg" colorScheme="blue" px={10} rounded="full">
@@ -123,7 +123,7 @@ const CareersPage = () => {
             </Stack>
 
             <Box textAlign="center" mt={8}>
-              <Text color="gray.500">Don't see a role for you? <Text as="span" color="blue.500" fontWeight="bold" cursor="pointer">Send us your CV anyway!</Text></Text>
+              <Text color="gray.500">Don&apos;t see a role for you? <Text as="span" color="blue.500" fontWeight="bold" cursor="pointer">Send us your CV anyway!</Text></Text>
             </Box>
           </VStack>
         </Container>

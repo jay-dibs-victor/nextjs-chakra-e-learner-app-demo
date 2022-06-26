@@ -67,7 +67,7 @@ export const Section = ({ children, bg, ...rest }) => (
 
 const HeroSlide = ({ image, title, subtitle, badge }) => (
   <Box position="relative" h={{ base: "70vh", md: "90vh" }} w="100%" overflow="hidden">
-    <Image src={image} w="100%" h="100%" objectFit="cover" />
+    <Image src={image} w="100%" h="100%" objectFit="cover" alt="Hero Slide Image" />
     <Box
       position="absolute" top="0" left="0" w="100%" h="100%"
       bgGradient="linear(to-r, blackAlpha.800, blackAlpha.400)"
@@ -152,7 +152,7 @@ const CustomerReview = ({ contentText, name, role, color }) => {
       <Icon as={HiChatAlt2} w={12} h={12} color={`${color}.100`} position="absolute" top={6} right={8} zIndex={0} />
       <VStack align="start" spacing={6} position="relative" zIndex={1}>
         <Text color="gray.600" fontSize="lg" lineHeight="tall" fontStyle="italic">
-          "{contentText}"
+          &quot;{contentText}&quot;
         </Text>
         <HStack spacing={4}>
           <Circle size={12} bg={`${color}.500`} color="white">
@@ -234,7 +234,7 @@ const HomePage = () => {
             One Click Away From Your <Text as="span" color="blue.500">Dream Career</Text>
           </Heading>
           <Text fontSize="xl" color="gray.600" mb={12} lineHeight="tall">
-            ImpactXplorer is the intelligent gateway to global opportunities. Whether you're an entrepreneur scaling a startup or a professional seeking your next big break, our AI-driven ecosystem provides the assessment, training, and support you need to succeed.
+            ImpactXplorer is the intelligent gateway to global opportunities. Whether you&apos;re an entrepreneur scaling a startup or a professional seeking your next big break, our AI-driven ecosystem provides the assessment, training, and support you need to succeed.
           </Text>
           <HStack spacing={6}>
             <Link mute href="/signup">
@@ -321,7 +321,7 @@ const HomePage = () => {
                initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}
             >
                <Box rounded="4xl" overflow="hidden" shadow="dark-lg" transform="rotate(2deg)" border="8px solid rgba(255,255,255,0.1)">
-                  <Image src="/img/skillacquisition.jpg" w="100%" h="600px" objectFit="cover" />
+                  <Image src="/img/skillacquisition.jpg" w="100%" h="600px" objectFit="cover" alt="Skill Acquisition Feature" />
                </Box>
             </MotionBox>
          </SimpleGrid>
@@ -366,7 +366,7 @@ const HomePage = () => {
           </Circle>
           <Heading size="3xl" color="blue.900" mb={8} fontWeight="black">Ready To Scale Your Future?</Heading>
           <Text fontSize="xl" color="gray.600" mb={12}>
-            Join thousands of professionals and organizations leveraging technology to solve the world's biggest challenges. Speak with a representative today.
+            Join thousands of professionals and organizations leveraging technology to solve the world&apos;s biggest challenges. Speak with a representative today.
           </Text>
           <HStack spacing={6}>
             <Link mute href="/signup">

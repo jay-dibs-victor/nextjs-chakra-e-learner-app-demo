@@ -32,28 +32,34 @@ import {
 
 const MotionBox = motion(Box);
 
-const Feature = ({ title, description, icon }) => (
-  <VStack
-    align="start"
-    spacing={4}
-    p={8}
-    bg={useColorModeValue("white", "gray.800")}
-    rounded="3xl"
-    shadow="xl"
-    borderWidth="1px"
-    borderColor={useColorModeValue("gray.50", "gray.700")}
-    _hover={{ transform: "translateY(-8px)", shadow: "2xl" }}
-    transition="all 0.3s cubic-bezier(.175,.885,.32,1.275)"
-  >
-    <Circle size={14} bg="blue.50" color="blue.500" shadow="inner">
-      <Icon as={icon} w={7} h={7} />
-    </Circle>
-    <VStack align="start" spacing={1}>
-      <Heading size="md" fontWeight="black" letterSpacing="tight">{title}</Heading>
-      <Text color="gray.500" fontSize="sm" lineHeight="tall">{description}</Text>
+const Feature = ({ title, description, icon }) => {
+  const bg = useColorModeValue("white", "gray.800");
+  const borderColor = useColorModeValue("gray.50", "gray.700");
+
+  return (
+    <VStack
+      align="start"
+      spacing={4}
+      p={8}
+      bg={bg}
+      rounded="3xl"
+      shadow="xl"
+      borderWidth="1px"
+      borderColor={borderColor}
+      _hover={{ transform: "translateY(-8px)", shadow: "2xl" }}
+      transition="all 0.3s cubic-bezier(.175,.885,.32,1.275)"
+    >
+      <Circle size={14} bg="blue.50" color="blue.500" shadow="inner">
+        <Icon as={icon} w={7} h={7} />
+      </Circle>
+      <VStack align="start" spacing={1}>
+        <Heading size="md" fontWeight="black" letterSpacing="tight">{title}</Heading>
+        <Text color="gray.500" fontSize="sm" lineHeight="tall">{description}</Text>
+      </VStack>
     </VStack>
-  </VStack>
-);
+  );
+};
+
 
 const ElearningAcceleratorPage = () => {
   const bgColor = useColorModeValue("gray.50", "gray.900");
@@ -115,7 +121,7 @@ const ElearningAcceleratorPage = () => {
               transition={{ duration: 1 }}
             >
               <Box rounded="4xl" overflow="hidden" shadow="dark-lg" border="12px solid" borderColor="whiteAlpha.100">
-                <Image src="/img/herolanding.jpg" w="100%" h="500px" objectFit="cover" />
+                <Image src="/img/herolanding.jpg" w="100%" h="500px" objectFit="cover" alt="E-learning Accelerator Hero" />
               </Box>
             </MotionBox>
           </SimpleGrid>

@@ -33,22 +33,26 @@ const MotionBox = motion(Box);
 const MotionHeading = motion(Heading);
 
 const Feature = ({ title, text, icon }) => {
+  const bg = useColorModeValue("white", "gray.800");
+  const borderColor = useColorModeValue("gray.50", "gray.700");
+  const iconBg = useColorModeValue("blue.50", "blue.900");
+
   return (
     <Stack
       align={"center"}
       textAlign={"center"}
       p={10}
-      bg={useColorModeValue("white", "gray.800")}
+      bg={bg}
       rounded={"3xl"}
       shadow={"xl"}
       borderWidth="1px"
-      borderColor={useColorModeValue("gray.50", "gray.700")}
+      borderColor={borderColor}
       _hover={{ shadow: "2xl", transform: "translateY(-8px)" }}
       transition={"all 0.4s cubic-bezier(.175,.885,.32,1.275)"}
     >
       <Circle
         size={16}
-        bg={useColorModeValue("blue.50", "blue.900")}
+        bg={iconBg}
         color={"blue.500"}
         mb={4}
       >
@@ -183,7 +187,7 @@ const StorePage = () => {
       <Box px={{ base: 6, lg: 12 }}>
         <Section mb={24} maxW="full">
           <VStack spacing={3} mb={16} textAlign="center">
-            <Badge colorScheme="blue" variant="subtle" px={4} py={1} rounded="full">Editor's Choice</Badge>
+            <Badge colorScheme="blue" variant="subtle" px={4} py={1} rounded="full">Editor&apos;s Choice</Badge>
             <Heading size="2xl" fontWeight="black">Latest Collections</Heading>
             <Text color="gray.500" fontSize="lg">Discover our newest arrivals curated for the modern minimalist</Text>
           </VStack>

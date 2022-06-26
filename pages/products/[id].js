@@ -124,7 +124,10 @@ const ProductDetailPage = () => {
                       cursor="pointer"
                       overflow="hidden"
                     >
-                       <Image src={`https://images.unsplash.com/photo-1592078615290-033ee584e267?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80`} />
+                       <Image 
+                         src={`https://images.unsplash.com/photo-1592078615290-033ee584e267?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80`} 
+                         alt={`Product Thumbnail ${i}`}
+                       />
                     </Box>
                   ))}
                </HStack>
@@ -206,12 +209,12 @@ const ProductDetailPage = () => {
                       <VStack align="start" spacing={6}>
                          <Heading size="lg">Product Overview</Heading>
                          <Text fontSize="lg" color="gray.500" lineHeight="tall">
-                            The Ergonomic Executive Chair Pro is the culmination of years of biomechanical research. We've combined premium materials with cutting-edge adjustable components to create a seating experience that adapts to your body in real-time.
+                            The Ergonomic Executive Chair Pro is the culmination of years of biomechanical research. We&apos;ve combined premium materials with cutting-edge adjustable components to create a seating experience that adapts to your body in real-time.
                          </Text>
                          <SimpleGrid columns={{ base: 1, md: 2 }} spacing={8} w="full">
                             <Box p={6} bg="gray.50" rounded="2xl">
                                <Heading size="sm" mb={4}>Adaptive Lumbar Support</Heading>
-                               <Text fontSize="sm" color="gray.500">Self-adjusting lumbar system that tracks your spine's curvature as you move.</Text>
+                               <Text fontSize="sm" color="gray.500">Self-adjusting lumbar system that tracks your spine&apos;s curvature as you move.</Text>
                             </Box>
                             <Box p={6} bg="gray.50" rounded="2xl">
                                <Heading size="sm" mb={4}>4D Adjustable Armrests</Heading>

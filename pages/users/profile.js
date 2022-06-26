@@ -34,6 +34,8 @@ import { Layout, Section } from "components/components/pages";
 import useForm from "hooks/useForm";
 import buildSEO from "utils/buildSEO";
 import http from "utils/http";
+import useAuth from "hooks/useAuth";
+import { useEffect, useState } from "react";
 
 const pageSEO = buildSEO("User Profile", "Manage your account preferences and security settings");
 
@@ -159,42 +161,75 @@ const Card = ({ heading, data, subHeading, onEdit, icon, color }) => {
 
 const SettingsPage = () => {
   const cardBg = useColorModeValue("white", "gray.800");
+  const [profileData, setProfileData] = useState(null);
+  const auth = useAuth();
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        if (!auth.me) return;
+        const res = await http.get("http://localhost:5000/api/users/profile", {
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+        });
+        setProfileData(res.data);
+      } catch (err) {
+        console.error("Failed to fetch profile", err);
+      }
+    };
+    fetchProfile();
+  }, [auth.me]);
 
   const accountInfoCardData = [
     {
       id: "address",
       label: "Default Shipping Address",
-      value: "15 Admiralty Way, Lekki Phase 1, Lagos State, Nigeria",
+      value: profileData?.address || "Not set",
     },
     {
-      id: "phone-number",
+      id: "phone",
       label: "Phone Contact",
-      value: "+234 812 345 6789",
+      value: profileData?.phone || "Not set",
     },
   ];
 
   const cardDetailsCardData = [
     {
-      id: "card-name",
+      id: "paymentMethod.cardName",
       label: "Name on Card",
-      value: "JOHN DOE",
+      value: profileData?.paymentMethod?.cardName || "Not set",
     },
     {
-      id: "card-type",
+      id: "paymentMethod.cardType",
       label: "Payment Network",
-      value: "VISA PREMIUM",
+      value: profileData?.paymentMethod?.cardType || "Not set",
     },
     {
-      id: "card-number",
+      id: "paymentMethod.cardNumber",
       label: "Masked Number",
-      value: "**** **** **** 5399",
+      value: profileData?.paymentMethod?.cardNumber || "Not set",
     },
   ];
 
   const handleUpdate = async (fieldsObj) => {
-    console.log("Updating:", fieldsObj);
-    await http.get("/me");
-    location.reload();
+    try {
+      // Reconstruct nested object if needed
+      const payload = {};
+      Object.keys(fieldsObj).forEach(key => {
+        if (key.startsWith("paymentMethod.")) {
+          if (!payload.paymentMethod) payload.paymentMethod = {};
+          payload.paymentMethod[key.split(".")[1]] = fieldsObj[key];
+        } else {
+          payload[key] = fieldsObj[key];
+        }
+      });
+
+      const res = await http.put("http://localhost:5000/api/users/profile", payload, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+      });
+      setProfileData(res.data);
+    } catch (err) {
+      console.error("Failed to update profile", err);
+    }
   };
 
   return (

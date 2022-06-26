@@ -64,6 +64,7 @@ const ForgotPasswordPage = () => {
   };
 
   const form = useForm({ doSubmit, initialFieldsProps });
+  const inputBg = useColorModeValue("gray.50", "gray.800");
 
   return (
     <Layout SEO={pageSEO}>
@@ -98,7 +99,7 @@ const ForgotPasswordPage = () => {
               <Stack align={"center"} mb={4}>
                 <Heading fontSize={"2xl"}>Forgot your password?</Heading>
                 <Text fontSize={"md"} color={"gray.600"} textAlign="center">
-                  You'll get an email with a reset link shortly.
+                  You&apos;ll get an email with a reset link shortly.
                 </Text>
               </Stack>
 
@@ -136,7 +137,7 @@ const ForgotPasswordPage = () => {
                             type={field.type}
                             placeholder={field.placeholder}
                             rounded="lg"
-                            bg={useColorModeValue("gray.50", "gray.800")}
+                            bg={inputBg}
                             border={0}
                             _focus={{
                               bg: "white",

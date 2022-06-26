@@ -81,6 +81,9 @@ const SignInPage = () => {
 
   const bgColor = useColorModeValue("gray.50", "gray.900");
   const cardBg = useColorModeValue("white", "gray.800");
+  const inputBg = useColorModeValue("gray.50", "gray.900");
+  const inputFocusBg = useColorModeValue("white", "gray.800");
+  const borderColor = useColorModeValue("gray.100", "gray.700");
 
   return (
     <Layout>
@@ -96,7 +99,7 @@ const SignInPage = () => {
           shadow="2xl"
           bg={cardBg}
           border="1px solid"
-          borderColor={useColorModeValue("gray.100", "gray.700")}
+          borderColor={borderColor}
         >
           {/* Left: Branding & Content */}
           <Box
@@ -176,12 +179,12 @@ const SignInPage = () => {
                             type={field.type}
                             placeholder={field.placeholder}
                             rounded="2xl"
-                            bg={useColorModeValue("gray.50", "gray.900")}
+                            bg={inputBg}
                             borderWidth="2px"
                             borderColor="transparent"
                             fontSize="md"
                             _focus={{
-                              bg: useColorModeValue("white", "gray.800"),
+                              bg: inputFocusBg,
                               borderColor: "blue.400",
                               shadow: "lg",
                             }}

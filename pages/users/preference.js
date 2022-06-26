@@ -150,7 +150,7 @@ const PreferencePage = () => {
                   >
                     <Box p={8} bg="blue.900" color="white">
                        <Heading size="md" fontWeight="black">Alert Preferences</Heading>
-                       <Text opacity={0.7} fontSize="sm">Stay updated with what's happening in your academy.</Text>
+                       <Text opacity={0.7} fontSize="sm">Stay updated with what&apos;s happening in your academy.</Text>
                     </Box>
                     <VStack align="stretch" spacing={0}>
                       <PreferenceItem 

@@ -57,7 +57,7 @@ const PasswordResetPage = () => {
           <Flex alignItems="flex-end" justifyContent="space-between">
             <Flex>
               <Text color="brand.gray3" m={0} mr={2}>
-                I can't reset my password?
+                I can&apos;t reset my password?
               </Text>
 
               <Link href="/forgot-password" color="brand.primary">

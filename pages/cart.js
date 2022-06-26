@@ -76,6 +76,7 @@ const CartItem = ({
                 src={item.imageUrl}
                 isProduct
                 objectFit="contain"
+                alt={item.title}
               />
             </Box>
             <VStack align="start" ml={5} spacing={1}>
@@ -147,6 +148,7 @@ const Cart = () => {
   const cart = useCart();
   const bgColor = useColorModeValue("gray.50", "gray.900");
   const summaryBg = useColorModeValue("white", "gray.800");
+  const summaryBorderColor = useColorModeValue("gray.100", "gray.700");
 
   const handleQtyIncrease = (item) => cart.increaseQty(item);
   const handleQtyDecrease = (item) => cart.decreaseQty(item);
@@ -214,7 +216,7 @@ const Cart = () => {
                   rounded="3xl"
                   shadow="2xl"
                   borderWidth="1px"
-                  borderColor={useColorModeValue("gray.100", "gray.700")}
+                  borderColor={summaryBorderColor}
                 >
                   <Heading size="md">Order Summary</Heading>
                   
