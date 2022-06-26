@@ -10,6 +10,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { productAPI, courseAPI } from "utils/api";
+import Link from "next/link";
 
 const CardSkeleton = () => (
   <Box bg="white" p={4} rounded="2xl" shadow="sm" border="1px solid" borderColor="gray.100">
@@ -19,7 +20,7 @@ const CardSkeleton = () => (
   </Box>
 );
 
-const Cards = ({ data }) => {
+const Cards = ({ data, type }) => {
   const cardBg = useColorModeValue("white", "gray.800");
   const borderColor = useColorModeValue("gray.100", "gray.700");
 
@@ -33,35 +34,49 @@ const Cards = ({ data }) => {
 
   return (
     <SimpleGrid columns={{ base: 2, md: 4, lg: 6 }} spacing={6}>
-      {data.map((item, idx) => (
-        <Box
-          key={idx}
-          bg={cardBg}
-          p={4}
-          rounded="3xl"
-          shadow="md"
-          border="1px solid"
-          borderColor={borderColor}
-          _hover={{ transform: "translateY(-5px)", shadow: "xl" }}
-          transition="all 0.3s"
-          cursor="pointer"
-        >
-          <Box h="200px" bg="gray.50" rounded="2xl" mb={4} overflow="hidden">
-            <Image
-              src={item.image || item.thumbnail}
-              alt={item.title || item.name}
-              objectFit="cover"
-              w="full"
-              h="full"
-            />
-          </Box>
-          <VStack align="start" spacing={1}>
-            <Badge colorScheme="blue" variant="subtle" rounded="full">{item.category}</Badge>
-            <Text fontWeight="black" noOfLines={2}>{item.title || item.name}</Text>
-            <Text fontWeight="black" color="blue.600">&#8358;{item.price?.toLocaleString()}</Text>
-          </VStack>
-        </Box>
-      ))}
+      {data.map((item, idx) => {
+        const href = type === "courses"
+          ? `/courses/${item._id}`
+          : `/products/${item._id}`;
+        const categoryLabel = typeof item.category === "object"
+          ? item.category?.name
+          : item.category;
+
+        return (
+          <Link key={item._id || idx} href={href} passHref legacyBehavior>
+            <Box
+              as="a"
+              bg={cardBg}
+              p={4}
+              rounded="3xl"
+              shadow="md"
+              border="1px solid"
+              borderColor={borderColor}
+              _hover={{ transform: "translateY(-5px)", shadow: "xl" }}
+              transition="all 0.3s"
+              cursor="pointer"
+              display="block"
+              textDecoration="none"
+            >
+              <Box h="200px" bg="gray.50" rounded="2xl" mb={4} overflow="hidden">
+                <Image
+                  src={item.image || item.thumbnail || "/img/herolanding.jpg"}
+                  alt={item.title || item.name}
+                  objectFit="cover"
+                  w="full"
+                  h="full"
+                  fallbackSrc="/img/herolanding.jpg"
+                />
+              </Box>
+              <VStack align="start" spacing={1}>
+                <Badge colorScheme="blue" variant="subtle" rounded="full">{categoryLabel || "Course"}</Badge>
+                <Text fontWeight="black" noOfLines={2}>{item.title || item.name}</Text>
+                <Text fontWeight="black" color="blue.600">&#8358;{item.price?.toLocaleString()}</Text>
+              </VStack>
+            </Box>
+          </Link>
+        );
+      })}
     </SimpleGrid>
   );
 };
@@ -96,5 +111,5 @@ export const ProductCards = ({ type = "products" }) => {
     fetchData();
   }, [type]);
 
-  return <Cards data={data} />;
+  return <Cards data={data} type={type} />;
 };

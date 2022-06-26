@@ -14,7 +14,7 @@ const TopBar = () => (
           <Link>email: juwavictor@gmail.com</Link>
           <Link>+2348130870416</Link>
         </HStack>
-        <Link>Sign in / Join</Link>
+        <Link href="/signin">Sign in / Join</Link>
       </Container>
     </Box>
   );

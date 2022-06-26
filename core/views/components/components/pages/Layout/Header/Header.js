@@ -92,15 +92,17 @@ const Header = () => {
               Sign In
             </Button>
           )}
-          <Button 
-            variant="ghost" 
-            rounded="2xl" 
-            h="54px"
-            leftIcon={<HiShoppingCart fontSize="20px" />}
-            fontWeight="black"
-          >
-            Cart
-          </Button>
+          <Link href="/cart" _hover={{ textDecoration: "none" }}>
+            <Button 
+              variant="ghost" 
+              rounded="2xl" 
+              h="54px"
+              leftIcon={<HiShoppingCart fontSize="20px" />}
+              fontWeight="black"
+            >
+              Cart
+            </Button>
+          </Link>
         </HStack>
       </Flex>
 
