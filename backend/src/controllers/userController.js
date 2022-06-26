@@ -2,7 +2,7 @@ const User = require('../models/User');
 
 exports.getProfile = async (req, res) => {
     try {
-        const user = await User.findById(req.user.id).select('-password');
+        const user = await User.findById(req.user._id).select('-password');
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
@@ -16,7 +16,7 @@ exports.updateProfile = async (req, res) => {
     try {
         const { firstName, lastName, address, phone, paymentMethod } = req.body;
         
-        const user = await User.findById(req.user.id);
+        const user = await User.findById(req.user._id);
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
@@ -29,7 +29,7 @@ exports.updateProfile = async (req, res) => {
 
         await user.save();
 
-        const updatedUser = await User.findById(req.user.id).select('-password');
+        const updatedUser = await User.findById(req.user._id).select('-password');
         res.json(updatedUser);
     } catch (err) {
         res.status(500).json({ message: err.message });
@@ -40,7 +40,7 @@ exports.updatePreferences = async (req, res) => {
     try {
         const { theme, emailNotifications } = req.body;
 
-        const user = await User.findById(req.user.id);
+        const user = await User.findById(req.user._id);
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
