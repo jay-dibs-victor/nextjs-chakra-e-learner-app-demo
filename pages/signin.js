@@ -65,7 +65,7 @@ const SignInPage = () => {
         description: "You've successfully signed in to your account.",
         status: "success",
       });
-      router.push("/signin/auth-check");
+      router.push("/authenticated-check");
     } catch (err) {
       toast.displayToast({
         title: "Sign in failed",

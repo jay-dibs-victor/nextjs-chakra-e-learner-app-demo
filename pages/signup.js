@@ -82,7 +82,7 @@ const SignupPage = () => {
           description: "Welcome to the community. You are now logged in.",
           status: "success",
         });
-        router.push("/signin/auth-check");
+        router.push("/authenticated-check");
       } else {
         toast.displayToast({
           title: "Account created!",
