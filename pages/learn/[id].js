@@ -161,28 +161,71 @@ const LearnPage = () => {
                 </Box>
               )}
               {currentUnit.type === "quiz" && (
-                <Box p={12} bg={sidebarBg} minH="400px">
-                  <VStack align="start" spacing={8}>
-                    <Badge colorScheme="blue" variant="solid" px={4} py={1} rounded="full">KNOWLEDGE CHECK</Badge>
+                <Box p={12} bg={sidebarBg} minH="500px">
+                  <VStack align="start" spacing={8} w="full">
+                    <HStack w="full" justify="space-between">
+                      <Badge colorScheme="blue" variant="solid" px={4} py={1} rounded="full">KNOWLEDGE WIZARD</Badge>
+                      {currentUnit.content.wizard && (
+                        <Text fontSize="xs" fontWeight="black" color="gray.400">STEP {quizAnswer ? "2" : "1"} OF 2</Text>
+                      )}
+                    </HStack>
+                    
                     <Heading size="lg">{currentUnit.content.question}</Heading>
+                    
                     <RadioGroup onChange={setQuizAnswer} value={quizAnswer} w="full">
                       <ChakraStack spacing={4}>
                         {currentUnit.content.options.map(opt => (
                           <Box
                             key={opt}
-                            p={4}
+                            p={5}
                             border="2px solid"
                             borderColor={quizAnswer === opt ? "blue.500" : borderColor}
                             rounded="2xl"
                             cursor="pointer"
                             bg={quizAnswer === opt ? "blue.50" : "transparent"}
+                            transition="all 0.2s"
+                            _hover={{ borderColor: "blue.300" }}
+                            onClick={() => setQuizAnswer(opt)}
                           >
-                            <Radio value={opt} colorScheme="blue" fontWeight="bold">{opt}</Radio>
+                            <Radio value={opt} colorScheme="blue">
+                              <Text fontWeight="bold" ml={2}>{opt}</Text>
+                            </Radio>
                           </Box>
                         ))}
                       </ChakraStack>
                     </RadioGroup>
-                    <Button size="lg" colorScheme="blue" rounded="2xl" px={12} onClick={handleQuizSubmit}>Submit Answer</Button>
+
+                    {currentUnit.content.wizard && quizAnswer === currentUnit.content.correct && (
+                      <Box w="full" p={8} bg="blue.600" rounded="3xl" color="white" shadow="xl">
+                        <VStack align="start" spacing={6}>
+                          <Heading size="md" fontWeight="black">Section Mastered! 🚀</Heading>
+                          <VStack align="start" spacing={4} w="full">
+                            {currentUnit.content.wizard.map((step, sIdx) => (
+                              <HStack key={sIdx} align="start" spacing={4}>
+                                <Circle size="6" bg="whiteAlpha.300" fontSize="xs" fontWeight="black">{sIdx + 1}</Circle>
+                                <VStack align="start" spacing={0}>
+                                  <Text fontWeight="black" fontSize="sm">{step.q}</Text>
+                                  <Text fontSize="xs" opacity={0.8}>{step.a}</Text>
+                                </VStack>
+                              </HStack>
+                            ))}
+                          </VStack>
+                        </VStack>
+                      </Box>
+                    )}
+
+                    <Button 
+                      size="lg" 
+                      colorScheme="blue" 
+                      rounded="2xl" 
+                      px={12} 
+                      h={16}
+                      w="full"
+                      onClick={handleQuizSubmit}
+                      isDisabled={!quizAnswer}
+                    >
+                      Verify Assessment
+                    </Button>
                   </VStack>
                 </Box>
               )}
@@ -222,32 +265,52 @@ const LearnPage = () => {
             <Heading size="sm" fontWeight="black">Course Curriculum</Heading>
           </Box>
           <Box flex={1} overflowY="auto" p={4}>
-            <VStack align="stretch" spacing={2}>
+            <VStack align="stretch" spacing={6}>
               {curriculum.map((section, sIdx) => (
-                <VStack key={sIdx} align="stretch" spacing={2}>
-                  <Box p={4} bg="gray.50" rounded="xl">
-                    <Text fontWeight="black" fontSize="sm">{section.title}</Text>
-                  </Box>
-                  <VStack align="stretch" spacing={4} pl={2}>
+                <VStack key={sIdx} align="stretch" spacing={4}>
+                  {/* Section Level */}
+                  <HStack px={4} py={3} bg="blue.50" color="blue.700" rounded="2xl" shadow="sm">
+                    <Circle size="6" bg="blue.600" color="white" fontSize="xs" fontWeight="black">{sIdx + 1}</Circle>
+                    <Text fontWeight="black" fontSize="sm" letterSpacing="tight">{section.title.toUpperCase()}</Text>
+                  </HStack>
+
+                  <VStack align="stretch" spacing={5} pl={4}>
                     {section.subSections?.map((sub, subIdx) => (
-                      <VStack key={subIdx} align="stretch" spacing={1}>
-                        <Text fontWeight="bold" fontSize="xs" color="gray.400" pl={4}>{sub.title.toUpperCase()}</Text>
-                        {sub.units.map((unit, uIdx) => (
-                          <HStack
-                            key={uIdx}
-                            p={4}
-                            rounded="xl"
-                            cursor="pointer"
-                            bg={activeUnit.section === sIdx && activeUnit.subSection === subIdx && activeUnit.unit === uIdx ? "blue.500" : "transparent"}
-                            color={activeUnit.section === sIdx && activeUnit.subSection === subIdx && activeUnit.unit === uIdx ? "white" : "inherit"}
-                            onClick={() => handleProgressUpdate(sIdx, subIdx, uIdx)}
-                            _hover={activeUnit.section === sIdx && activeUnit.subSection === subIdx && activeUnit.unit === uIdx ? {} : { bg: "gray.50" }}
-                          >
-                            <Icon as={unit.type === "video" ? HiPlay : unit.type === "quiz" ? HiQuestionMarkCircle : HiDocumentText} />
-                            <Text fontWeight="bold" fontSize="sm" isTruncated>{unit.title}</Text>
-                            {activeUnit.section === sIdx && activeUnit.subSection === subIdx && activeUnit.unit === uIdx && <HiCheckCircle />}
-                          </HStack>
-                        ))}
+                      <VStack key={subIdx} align="stretch" spacing={2}>
+                        {/* SubSection Level */}
+                        <HStack spacing={3} mb={1}>
+                          <Box w="2px" h="10px" bg="gray.300" />
+                          <Text fontWeight="black" fontSize="xs" color="gray.500" letterSpacing="widest">{sub.title}</Text>
+                        </HStack>
+
+                        {/* Units Level */}
+                        <VStack align="stretch" spacing={1} pl={2}>
+                          {sub.units.map((unit, uIdx) => {
+                            const isActive = activeUnit.section === sIdx && activeUnit.subSection === subIdx && activeUnit.unit === uIdx;
+                            return (
+                              <HStack
+                                key={uIdx}
+                                p={4}
+                                rounded="2xl"
+                                cursor="pointer"
+                                bg={isActive ? "blue.600" : "transparent"}
+                                color={isActive ? "white" : "gray.600"}
+                                onClick={() => handleProgressUpdate(sIdx, subIdx, uIdx)}
+                                transition="all 0.2s"
+                                _hover={isActive ? {} : { bg: "gray.50", color: "blue.600" }}
+                                shadow={isActive ? "lg" : "none"}
+                              >
+                                <Icon 
+                                  as={unit.type === "video" ? HiPlay : unit.type === "quiz" ? HiQuestionMarkCircle : HiDocumentText} 
+                                  w={4} h={4}
+                                  opacity={isActive ? 1 : 0.6}
+                                />
+                                <Text fontWeight="bold" fontSize="sm" isTruncated flex={1}>{unit.title}</Text>
+                                {isActive && <Icon as={HiCheckCircle} w={4} h={4} />}
+                              </HStack>
+                            );
+                          })}
+                        </VStack>
                       </VStack>
                     ))}
                   </VStack>

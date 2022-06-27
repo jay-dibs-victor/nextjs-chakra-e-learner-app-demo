@@ -179,14 +179,16 @@ const DashboardOverview = () => {
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
+        console.log("Fetching dashboard data...");
         const [courseRes, jobRes] = await Promise.all([
           lmsAPI.getMyCourses(),
           jobAPI.getApplications()
         ]);
-        setMyCourses(courseRes.data);
-        setApplications(jobRes.data);
+        console.log("My Courses:", courseRes.data);
+        if (courseRes.data) setMyCourses(courseRes.data);
+        if (jobRes.data) setApplications(jobRes.data);
       } catch (err) {
-        console.warn("Dashboard fetch failed, using fallbacks.");
+        console.warn("Dashboard fetch failed, using fallbacks.", err.message);
       } finally {
         setLoading(false);
       }
@@ -195,8 +197,8 @@ const DashboardOverview = () => {
   }, []);
 
   const enrolledCourses = myCourses.length > 0 ? myCourses : [
-    { course: { title: "Advanced Full-Stack Engineering" }, progress: 75, instructor: { name: "Elena Rodriguez" } },
-    { course: { title: "UI/UX Design Masterclass" }, progress: 30, instructor: { name: "Marcus Thorne" } }
+    { _id: "1", course: { _id: "1", title: "Advanced Full-Stack Engineering", thumbnail: "/img/herolanding.jpg", instructor: { name: "Elena Rodriguez" } }, progress: 75 },
+    { _id: "2", course: { _id: "2", title: "UI/UX Design Masterclass", thumbnail: "/img/herolanding.jpg", instructor: { name: "Marcus Thorne" } }, progress: 30 }
   ];
 
   const jobApplications = applications.length > 0 ? applications : [

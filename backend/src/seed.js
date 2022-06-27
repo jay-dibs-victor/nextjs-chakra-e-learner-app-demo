@@ -67,13 +67,60 @@ const seedData = async () => {
         thumbnail: `/img/courses/course-${(i % 5) + 1}.jpg`,
         sections: [
           {
-            title: 'Introduction',
+            title: 'Core Fundamentals',
             subSections: [
               {
-                title: 'Basics',
+                title: 'Phase 1: Getting Started',
                 units: [
-                  { title: 'Welcome', type: 'video', content: 'dQw4w9WgXcQ', duration: '05:00', isFree: true },
-                  { title: 'Setup', type: 'video', content: 'y6120QOlsfU', duration: '10:00', isFree: false }
+                  { 
+                    title: 'Strategic Welcome & Overview', 
+                    type: 'video', 
+                    content: 'dQw4w9WgXcQ', 
+                    duration: '05:00', 
+                    isFree: true 
+                  },
+                  { 
+                    title: 'Environment Architecture Setup', 
+                    type: 'text', 
+                    content: 'In this module, we will explore the structural requirements for a high-performance development environment. You will learn how to configure your workspace for maximum efficiency and scalability.', 
+                    duration: '15:00', 
+                    isFree: false 
+                  }
+                ]
+              },
+              {
+                title: 'Phase 2: Masterclass Implementation',
+                units: [
+                  { 
+                    title: 'Advanced Pattern Deep Dive', 
+                    type: 'video', 
+                    content: 'y6120QOlsfU', 
+                    duration: '25:00', 
+                    isFree: false 
+                  },
+                  { 
+                    title: 'Knowledge Assessment Wizard', 
+                    type: 'quiz', 
+                    content: {
+                      question: 'Which architecture pattern best ensures scalability in distributed systems?',
+                      options: [
+                        'Monolithic Architecture',
+                        'Microservices Architecture',
+                        'Serverless Computing',
+                        'Event-Driven Architecture'
+                      ],
+                      correct: 'Microservices Architecture',
+                      wizard: [
+                        { q: 'What is the primary benefit of decoupling services?', a: 'Fault isolation and independent scaling' },
+                        { q: 'Which protocol is standard for service-to-service communication?', a: 'gRPC or REST' },
+                        { q: 'Define the CAP theorem in the context of databases.', a: 'Consistency, Availability, and Partition Tolerance' },
+                        { q: 'What is a message broker?', a: 'An intermediary for asynchronous communication' },
+                        { q: 'What is horizontal scaling?', a: 'Adding more instances of a resource' }
+                      ]
+                    },
+                    duration: '20:00', 
+                    isFree: false 
+                  }
                 ]
               }
             ]
