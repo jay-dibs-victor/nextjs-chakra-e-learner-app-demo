@@ -23,6 +23,7 @@ import {
   Button,
   Badge,
   IconButton,
+  Image,
 } from "@chakra-ui/react";
 import { Layout, Section } from "components/components/pages";
 import { motion } from "framer-motion";
@@ -73,30 +74,70 @@ const StatCard = ({ title, value, icon, color }) => {
   );
 };
 
-const CourseProgressCard = ({ title, progress, instructor, image }) => (
-  <Box bg={useColorModeValue("white", "gray.700")} p={6} rounded="2xl" shadow="sm" borderWidth="1px" borderColor={useColorModeValue("gray.100", "gray.600")}>
-    <VStack align="stretch" spacing={4}>
-      <Box h="140px" bg="blue.600" rounded="xl" position="relative" overflow="hidden">
-        <Box position="absolute" inset={0} bgGradient="linear(to-br, blue.400, blue.800)" opacity={0.6} />
-        <Center h="full"><Icon as={HiAcademicCap} color="white" w={10} h={10} /></Center>
-      </Box>
-      <VStack align="start" spacing={1}>
-        <Text fontWeight="black" fontSize="md" noOfLines={1}>{title}</Text>
-        <Text fontSize="xs" color="gray.500">Instructor: {instructor}</Text>
+const CourseProgressCard = ({ id, title, progress, instructor, thumbnail }) => {
+  const cardBg = useColorModeValue("white", "gray.700");
+  const borderColor = useColorModeValue("gray.100", "gray.600");
+
+  return (
+    <Box 
+      bg={cardBg} 
+      p={6} 
+      rounded="3xl" 
+      shadow="xl" 
+      borderWidth="1px" 
+      borderColor={borderColor}
+      transition="all 0.3s"
+      _hover={{ transform: "translateY(-5px)", shadow: "2xl" }}
+    >
+      <VStack align="stretch" spacing={5}>
+        <Box h="160px" rounded="2xl" position="relative" overflow="hidden">
+          <Image 
+            src={thumbnail || "/img/herolanding.jpg"} 
+            alt={title} 
+            objectFit="cover" 
+            w="full" 
+            h="full" 
+            fallbackSrc="/img/herolanding.jpg"
+          />
+          <Box position="absolute" inset={0} bg="blackAlpha.400" />
+          <Center position="absolute" inset={0}>
+             <Circle size="12" bg="whiteAlpha.900" color="blue.600" shadow="lg">
+               <Icon as={HiAcademicCap} w={6} h={6} />
+             </Circle>
+          </Center>
+        </Box>
+
+        <VStack align="start" spacing={1}>
+          <Text fontWeight="black" fontSize="lg" noOfLines={1}>{title}</Text>
+          <Text fontSize="sm" color="gray.500" fontWeight="bold">Instructor: {instructor}</Text>
+        </VStack>
+
+        <VStack spacing={3} align="stretch">
+          <Flex justify="space-between" fontSize="xs" fontWeight="black">
+            <Text color="blue.600">{progress}% COMPLETE</Text>
+            <Text color="gray.400">{progress === 100 ? "Finished" : "In Progress"}</Text>
+          </Flex>
+          <Progress value={progress} size="xs" colorScheme="blue" rounded="full" bg="blue.50" />
+        </VStack>
+
+        <Link href={`/learn/${id}`}>
+          <Button 
+            size="lg" 
+            w="full" 
+            variant="solid" 
+            colorScheme="blue" 
+            rounded="2xl"
+            fontWeight="black"
+            rightIcon={<HiChevronRight />}
+            _hover={{ transform: "scale(1.02)" }}
+          >
+            {progress === 100 ? "Review Course" : "Continue Learning"}
+          </Button>
+        </Link>
       </VStack>
-      <VStack spacing={2} align="stretch">
-        <Flex justify="space-between" fontSize="xs" fontWeight="bold">
-          <Text>{progress}% Complete</Text>
-          <Text color="blue.500">Continue</Text>
-        </Flex>
-        <Progress value={progress} size="xs" colorScheme="blue" rounded="full" />
-      </VStack>
-      <Link href="/learn/1">
-        <Button size="sm" w="full" variant="ghost" colorScheme="blue">Resume Learning</Button>
-      </Link>
-    </VStack>
-  </Box>
-);
+    </Box>
+  );
+};
 
 const TimelineItem = ({ title, company, status, date, isLast }) => {
   const statusColors = {
@@ -206,9 +247,11 @@ const DashboardOverview = () => {
                 {enrolledCourses.map((c, idx) => (
                   <CourseProgressCard 
                     key={idx}
+                    id={c.course?._id || c._id || (idx + 1)}
                     title={c.course?.title || c.title} 
                     progress={c.progress} 
                     instructor={c.course?.instructor?.name || c.instructor?.name || "Expert Instructor"} 
+                    thumbnail={c.course?.thumbnail || c.thumbnail}
                   />
                 ))}
               </SimpleGrid>
@@ -222,7 +265,7 @@ const DashboardOverview = () => {
                       <HStack spacing={4}>
                         <Circle size={10} bg="blue.50" color="blue.500"><Icon as={HiBell} /></Circle>
                         <VStack align="start" spacing={0}>
-                          <Text fontWeight="bold">New lesson added to &quot;React Native Foundations&quot;</Text>
+                          <Text fontWeight="bold">New lesson added to "React Native Foundations"</Text>
                           <Text fontSize="xs" color="gray.500">2 hours ago</Text>
                         </VStack>
                       </HStack>

@@ -8,9 +8,14 @@ import {
   Badge,
   Image,
   useColorModeValue,
+  Flex,
+  Circle,
+  Icon,
+  Button,
 } from "@chakra-ui/react";
 import { productAPI, courseAPI } from "utils/api";
 import Link from "next/link";
+import { HiAcademicCap, HiChevronRight } from "react-icons/hi";
 
 const CardSkeleton = () => (
   <Box bg="white" p={4} rounded="2xl" shadow="sm" border="1px solid" borderColor="gray.100">
@@ -23,42 +28,47 @@ const CardSkeleton = () => (
 const Cards = ({ data, type }) => {
   const cardBg = useColorModeValue("white", "gray.800");
   const borderColor = useColorModeValue("gray.100", "gray.700");
+  const textColor = useColorModeValue("gray.700", "white");
 
   if (data === "loading") {
     return (
-      <SimpleGrid columns={{ base: 2, md: 4, lg: 6 }} spacing={6}>
-        {[...Array(6)].map((_, i) => <CardSkeleton key={i} />)}
+      <SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 4 }} spacing={8}>
+        {[...Array(8)].map((_, i) => <CardSkeleton key={i} />)}
       </SimpleGrid>
     );
   }
 
   return (
-    <SimpleGrid columns={{ base: 2, md: 4, lg: 6 }} spacing={6}>
+    <SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 4 }} spacing={8}>
       {data.map((item, idx) => {
+        const id = item._id || item.id || idx;
         const href = type === "courses"
-          ? `/courses/${item._id}`
-          : `/products/${item._id}`;
+          ? `/courses/${id}`
+          : `/products/${id}`;
+        
         const categoryLabel = typeof item.category === "object"
           ? item.category?.name
-          : item.category;
+          : (item.category || (type === "courses" ? "Course" : "Product"));
 
         return (
-          <Link key={item._id || idx} href={href} passHref legacyBehavior>
+          <Link key={id} href={href} passHref legacyBehavior>
             <Box
               as="a"
               bg={cardBg}
-              p={4}
-              rounded="3xl"
-              shadow="md"
-              border="1px solid"
+              rounded="4xl"
+              overflow="hidden"
+              shadow="xl"
+              borderWidth="1px"
               borderColor={borderColor}
-              _hover={{ transform: "translateY(-5px)", shadow: "xl" }}
-              transition="all 0.3s"
+              transition="all 0.4s cubic-bezier(.175,.885,.32,1.275)"
+              _hover={{ transform: "translateY(-10px) scale(1.02)", shadow: "2xl" }}
               cursor="pointer"
               display="block"
               textDecoration="none"
+              position="relative"
             >
-              <Box h="200px" bg="gray.50" rounded="2xl" mb={4} overflow="hidden">
+              {/* Image Section */}
+              <Box h="220px" position="relative" overflow="hidden">
                 <Image
                   src={item.image || item.thumbnail || "/img/herolanding.jpg"}
                   alt={item.title || item.name}
@@ -67,11 +77,62 @@ const Cards = ({ data, type }) => {
                   h="full"
                   fallbackSrc="/img/herolanding.jpg"
                 />
+                <Box 
+                  position="absolute" 
+                  top={4} 
+                  left={4} 
+                  zIndex={1}
+                >
+                  <Badge 
+                    px={3} 
+                    py={1} 
+                    rounded="full" 
+                    bg="whiteAlpha.900" 
+                    color="blue.600" 
+                    shadow="md" 
+                    fontSize="xs" 
+                    fontWeight="black"
+                    textTransform="uppercase"
+                  >
+                    {categoryLabel}
+                  </Badge>
+                </Box>
+                {type === "courses" && (
+                   <Box position="absolute" bottom={4} right={4} zIndex={1}>
+                     <Circle size={8} bg="blue.500" color="white" shadow="lg">
+                       <Icon as={HiAcademicCap} />
+                     </Circle>
+                   </Box>
+                )}
               </Box>
-              <VStack align="start" spacing={1}>
-                <Badge colorScheme="blue" variant="subtle" rounded="full">{categoryLabel || "Course"}</Badge>
-                <Text fontWeight="black" noOfLines={2}>{item.title || item.name}</Text>
-                <Text fontWeight="black" color="blue.600">&#8358;{item.price?.toLocaleString()}</Text>
+
+              {/* Content Section */}
+              <VStack p={6} align="start" spacing={3}>
+                <Text 
+                  fontWeight="black" 
+                  fontSize="lg" 
+                  color={textColor} 
+                  noOfLines={2} 
+                  lineHeight="shorter"
+                >
+                  {item.title || item.name}
+                </Text>
+                
+                <Flex justify="space-between" align="center" w="full">
+                  <Text fontWeight="black" fontSize="xl" color="blue.500">
+                    ₦{item.price?.toLocaleString() || "0"}
+                  </Text>
+                  <Button 
+                    size="sm" 
+                    variant="ghost" 
+                    colorScheme="blue" 
+                    rounded="xl" 
+                    rightIcon={<HiChevronRight />}
+                    px={0}
+                  >
+                    {type === "courses" ? "Enroll" : "Details"}
+                  </Button>
+                </Flex>
               </VStack>
             </Box>
           </Link>
