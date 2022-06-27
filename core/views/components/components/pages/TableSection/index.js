@@ -11,15 +11,18 @@ import {
   Link,
 } from "components/shared/lib";
 import useTable, { useTableFilterForm, useTableRow } from "hooks/useTable";
-import { Badge, Box, Flex, Stack } from "@chakra-ui/layout";
+import { Badge, Box, Flex, Stack, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, VStack, HStack, Icon } from "@chakra-ui/react";
 import http from "utils/http";
 import { Radio, RadioGroup } from "@chakra-ui/radio";
 import dateFormat from "dateformat";
 import { formatPriceToNaira } from "utils/formatPrice";
 import { AiOutlineRight } from "react-icons/ai";
 import { Chip } from "@material-ui/core";
+import { HiArrowUp, HiDotsHorizontal } from "react-icons/hi";
 import { IoFastFoodOutline } from "react-icons/io5";
 import { FcElectronics } from "react-icons/fc";
+
+import { useState } from "react";
 
 const TableSection = ({
   mute,
@@ -30,58 +33,125 @@ const TableSection = ({
   onRowClick,
   onMenuClick,
   tableOptions,
-}) => (
-  <Section {...(mute ? { p: 0, shadow: "none", m: 0 } : {})}>
-    <Table
-      columns={columns}
-      table={table}
-      renderFilterButton={
-        renderFilterContent
-          ? () => (
+}) => {
+  const [modal, setModal] = useState(null);
+
+  return (
+    <Section {...(mute ? { p: 0, shadow: "none", m: 0 } : {})}>
+      <Table
+        columns={columns}
+        table={table}
+        renderFilterButton={
+          renderFilterContent
+            ? () => (
               <FilterButton table={table}>{renderFilterContent}</FilterButton>
             )
-          : null
-      }
-      renderAddButton={() =>
-        addButton && <AddButton text={addButton.text} href={addButton.href} />
-      }
-      onRowClick={onRowClick}
-      onMenuClick={onMenuClick}
-      {...tableOptions}
-    />
-  </Section>
-);
+            : null
+        }
+        renderAddButton={() =>
+          addButton && <AddButton text={addButton.text} href={addButton.href} />
+        }
+        onRowClick={onRowClick ? ({ row }) => onRowClick({ row, setModal }) : null}
+        onMenuClick={onMenuClick ? ({ row }) => onMenuClick({ row, setModal }) : null}
+        {...tableOptions}
+      />
+
+      {modal && (
+        <Modal 
+          isOpen={!!modal} 
+          onClose={() => setModal(null)}
+          isCentered
+          size="sm"
+        >
+          <ModalOverlay backdropFilter="blur(10px) saturate(180%)" bg="blackAlpha.300" />
+          <ModalContent borderRadius="3xl" overflow="hidden" boxShadow="2xl">
+            <Box bgGradient="linear(to-br, blue.600, purple.600)" p={6} color="white">
+              <VStack align="start" spacing={1}>
+                <Text fontSize="xs" fontWeight="black" letterSpacing="widest" opacity={0.8}>ACTION CENTER</Text>
+                <ModalHeader p={0} fontSize="xl" fontWeight="black">{modal.heading}</ModalHeader>
+              </VStack>
+              <ModalCloseButton color="white" top={4} />
+            </Box>
+            <ModalBody p={6}>
+              <VStack spacing={3} align="stretch">
+                {modal.list?.map((item, i) => {
+                  const isDelete = item.props?.color === "brand.error" || item.text.toLowerCase().includes("delete");
+                  return (
+                    <Button 
+                      key={i} 
+                      onClick={() => {
+                        if (item.onClick) item.onClick();
+                        if (item.href) window.location.href = item.href;
+                        setModal(null);
+                      }}
+                      variant="outline"
+                      h="56px"
+                      rounded="2xl"
+                      justifyContent="start"
+                      px={6}
+                      fontSize="sm"
+                      fontWeight="bold"
+                      borderWidth="2px"
+                      borderColor={isDelete ? "red.50" : "gray.50"}
+                      color={isDelete ? "red.500" : "gray.700"}
+                      _hover={{
+                        bg: isDelete ? "red.50" : "blue.50",
+                        borderColor: isDelete ? "red.200" : "blue.200",
+                        color: isDelete ? "red.600" : "blue.600",
+                        transform: "translateY(-2px)"
+                      }}
+                      transition="all 0.2s"
+                    >
+                      <HStack spacing={4}>
+                        <Icon 
+                          as={isDelete ? HiArrowUp : HiDotsHorizontal} // Temporary icons, will refine if I find better ones
+                          w={5} h={5} 
+                          color={isDelete ? "red.400" : "blue.400"} 
+                        />
+                        <Text>{item.text}</Text>
+                      </HStack>
+                    </Button>
+                  );
+                })}
+              </VStack>
+            </ModalBody>
+          </ModalContent>
+        </Modal>
+      )}
+    </Section>
+  );
+};
 
 // Users
 const columns_users = [
   {
     label: "First name",
-    key: "firstName",
+    key: "name",
     minFr: "150px",
   },
   {
-    label: "Last name",
-    key: "lastName",
+    label: "Phone Number",
+    key: "phoneNumber",
     minFr: "150px",
   },
   {
-    label: "Email address",
-    key: "email",
+    label: "address",
+    key: "address",
     minFr: "250px",
   },
+  // {
+  //   label: "Referer code",
+  //   key: "refCode",
+  //   value: (refCode) => (
+  //     <Text mute type="nm-bold">
+  //       {refCode}
+  //     </Text>
+  //   ),
+  //   minFr: "120px",
+  // },
   {
-    label: "Referer code",
-    key: "refCode",
-    value: (refCode) => (
-      <Text mute type="nm-bold">
-        {refCode}
-      </Text>
-    ),
-    minFr: "120px",
-  },
-  {
-    label: "Date",
-    key: "createdAt",
+    label: "Date of Opening",
+    key: "dateOfOpening",
     value: (date) => dateFormat(date, "fullDate"),
     minFr: "225px",
   },
@@ -101,29 +171,35 @@ const columns_users = [
 
 const fetchRows_users =
   (role, path = "/users") =>
-  async ({ setRows, options, url }) => {
-    setRows({ loading: true });
+    async ({ setRows, options, url }) => {
+      setRows({ loading: true });
 
-    try {
-      const { data } = await http.get(
-        url ||
+      try {
+        const { data } = await http.get(
+          url ||
           `/admin/users`,
-        { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
-      );
+          { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
+        );
 
-      const mappedData = {
-        totalPages: 1,
-        totalDocs: data.length,
-        docs: data.filter(user => role === 'customer' ? user.role === 'user' : user.role === role)
-      };
+        const mappedData = {
+          totalPages: 1,
+          totalDocs: data.length,
+          docs: data.filter(user => role === 'customer' ? user.role === 'user' : user.role === role).map(user => ({
+            ...user,
+            name: `${user.firstName} ${user.lastName}`,
+            phoneNumber: user.phone || "N/A",
+            dateOfOpening: user.createdAt,
+            id: user._id
+          }))
+        };
 
-      setRows({ data: mappedData });
+        setRows({ data: mappedData });
 
 
-    } catch (err) {
-      setRows({ error: err.message });
-    }
-  };
+      } catch (err) {
+        setRows({ error: err.message });
+      }
+    };
 
 const handleRowClick_users = ({ row: user }) => {
   return {
@@ -133,49 +209,49 @@ const handleRowClick_users = ({ row: user }) => {
 
 const handleMenuClick_users =
   (tableRow) =>
-  ({ row: user, setModal }) => {
-    setModal({
-      heading: `${user.firstName} ${user.lastName}`,
-      list: [
-        {
-          text: "Preview This User",
-          href: `/users/${user.id}`,
-        },
-        {
-          text: !user.isActivated
-            ? "Activate This User"
-            : "Deactivate This User",
-          onClick: async () => {
-            const payload = {
-              isActivated: !user.isActivated,
-            };
+    ({ row: user, setModal }) => {
+      setModal({
+        heading: `${user.firstName} ${user.lastName}`,
+        list: [
+          {
+            text: "Preview This User",
+            href: `/users/${user.id}`,
+          },
+          {
+            text: !user.isActivated
+              ? "Activate This User"
+              : "Deactivate This User",
+            onClick: async () => {
+              const payload = {
+                isActivated: !user.isActivated,
+              };
 
-            // Server update
-            await http.put(
-              `/admin/users/${user._id}`,
-              payload,
-              { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
-            );
-            // UI update
-            tableRow.updateRow({ rowId: user._id, payload });
+              // Server update
+              await http.put(
+                `/admin/users/${user._id}`,
+                payload,
+                { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
+              );
+              // UI update
+              tableRow.updateRow({ rowId: user._id, payload });
+            },
           },
-        },
-        {
-          text: "Delete This User",
-          props: {
-            color: "brand.error",
+          {
+            text: "Delete This User",
+            props: {
+              color: "brand.error",
+            },
+            onClick: async () => {
+              await http.delete(
+                `/admin/users/${user._id}`,
+                { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
+              );
+              tableRow.deleteRow({ rowId: user._id });
+            },
           },
-          onClick: async () => {
-            await http.delete(
-              `/admin/users/${user._id}`,
-              { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
-            );
-            tableRow.deleteRow({ rowId: user._id });
-          },
-        },
-      ],
-    });
-  };
+        ],
+      });
+    };
 
 const AdministratorsTableSection = ({ mute }) => {
   const renderFilterContent = ({ table, onClose }) => {
@@ -294,12 +370,13 @@ const CustomersTableSection = ({
   path,
 }) => {
   const renderFilterContent = ({ table, onClose }) => {
+    const role = localStorage.getItem('user')?.role || "user"
     const { queries, setQueries, handleSubmit } = useTableFilterForm({
       table,
       onClose,
       initialQueries: {
         isActivated: "",
-        role: "customer",
+        role: role == "customer" ? "customer" : "user",
       },
       path,
       propQueryString,
@@ -330,9 +407,15 @@ const CustomersTableSection = ({
     );
   };
 
+
+
   const fetchRows = fetchRows_users("customer", path);
 
+
+
   const table = useTable({ fetchRows });
+
+
   const tableRow = useTableRow({
     rowsData: table.rows,
     setRowsData: table.setRows,
@@ -443,23 +526,19 @@ const OrdersTableSection = ({
     setRows({ loading: true });
 
     try {
-      const {
-        data: { data: resData },
-      } = await http.get(
-        url ||
-          `${path}?${propQueryString}limit=10&page=${options.page}${
-            options.query.key
-              ? `&${options.query.key}=${options.query.value}`
-              : ""
-          }`
-      );
+      // Mocking orders data since no backend route exists for orders
+      const mockOrders = [
+        { id: "ORD-12345", trackingId: "TRK-987654321", amount: 15000, creatorId: "John Doe", createdAt: new Date().toISOString(), delivered: true },
+        { id: "ORD-12346", trackingId: "TRK-987654322", amount: 24000, creatorId: "Jane Smith", createdAt: new Date().toISOString(), delivered: false },
+        { id: "ORD-12347", trackingId: "TRK-987654323", amount: 8500, creatorId: "Alice Johnson", createdAt: new Date().toISOString(), delivered: true },
+      ];
 
       const data = {
-        totalPages: resData.pages,
-        totalDocs: resData.total,
+        totalPages: 1,
+        totalDocs: mockOrders.length,
 
         // Map to `columns.key`
-        docs: resData.docs.map((order) => ({
+        docs: mockOrders.map((order) => ({
           ...order,
           // Map fields that don't map to `columns[<index>].key`
           creator: order.creatorId,
@@ -550,8 +629,8 @@ const CategoriesTableSection = ({ mute, path }) => {
       minFr: "200px",
     },
     {
-      label: "Created by",
-      key: "creatorId",
+      label: "Created At",
+      key: "createdAt",
       // value: (creator) => (
       //   <Box>
       //     <Text mute>{creator.name}</Text>
@@ -563,8 +642,8 @@ const CategoriesTableSection = ({ mute, path }) => {
       minFr: "200px",
     },
     {
-      label: "Product class",
-      key: "productClass",
+      label: "Slug",
+      key: "slug",
       value: (productClass) => (
         <Chip
           label={productClass}
@@ -580,12 +659,12 @@ const CategoriesTableSection = ({ mute, path }) => {
       minFr: "150px",
       maxFr: ".8fr",
     },
-    {
-      label: "Date",
-      key: "createdAt",
-      value: (date) => dateFormat(date, "fullDate"),
-      minFr: "225px",
-    },
+    // {
+    //   label: "Date",
+    //   key: "createdAt",
+    //   value: (date) => dateFormat(date, "fullDate"),
+    //   minFr: "225px",
+    // },
     {
       label: "Status",
       key: "active",
@@ -656,24 +735,27 @@ const CategoriesTableSection = ({ mute, path }) => {
 
     try {
       const {
-        data: { data: resData },
+        data: resData,
       } = await http.get(
         url ||
-          `/product-categories?limit=10&page=${options.page}${
-            options.query.key
-              ? `&${options.query.key}=${options.query.value}`
-              : ""
-          }`
+        `/product-categories?limit=10&page=${options.page}${options.query.key
+          ? `&${options.query.key}=${options.query.value}`
+          : ""
+        }`
       );
 
+      const payload = resData?.data || resData;
+      const docs = payload?.docs || payload;
+
       const data = {
-        totalPages: resData.pages,
-        totalDocs: resData.total,
+        totalPages: payload?.pages || 1,
+        totalDocs: payload?.total || docs?.length,
 
         // Map to `columns.key`
-        docs: resData.docs.map((category) => ({
+        docs: docs?.map((category) => ({
           ...category,
           // Map fields that don't map to `columns[<index>].key`
+          id: category._id
         })),
       };
 
@@ -744,28 +826,16 @@ const ProductsTableSection = ({ mute }) => {
   const columns = [
     {
       label: "Product name",
-      key: "product",
-      value: (product) => (
+      key: "name",
+      value: (name, row) => (
         <Flex alignItems="center">
-          <Image src={product.imageUrl} w="50px" h="50px" isProduct mr={1} />
-          <Text mute>{product.name}</Text>
+          <Image src={row?.image || "/img/placeholder.png"} w="50px" h="50px" objectFit="cover" borderRadius="md" mr={3} />
+          <Text mute>{name}</Text>
         </Flex>
       ),
       minFr: "350px",
     },
-    {
-      label: "Created by",
-      key: "creator",
-      value: (creator) => (
-        <Box>
-          <Text mute>{creator.name}</Text>
-          <Text mute type="sm-bold" opacity={0.8}>
-            {creator.role}
-          </Text>
-        </Box>
-      ),
-      minFr: "200px",
-    },
+
     {
       label: "Product price",
       key: "price",
@@ -780,14 +850,15 @@ const ProductsTableSection = ({ mute }) => {
     },
     {
       label: "Status",
-      key: "isPublished",
-      value: (isPublished) =>
-        isPublished ? (
-          <Badge colorScheme="green">Published</Badge>
+      key: "stock",
+      value: (stock) =>
+        stock > 0 ? (
+          <Badge colorScheme="green">In Stock ({stock})</Badge>
         ) : (
-          <Badge colorScheme="red">Not Published</Badge>
+          <Badge colorScheme="red">Out of Stock</Badge>
         ),
-      minFr: "120px",
+      minFr: "100px",
+      maxFr: ".5fr",
     },
   ];
 
@@ -831,30 +902,32 @@ const ProductsTableSection = ({ mute }) => {
 
     try {
       const {
-        data: { data: resData },
+        data: resData,
       } = await http.get(
         url ||
-          `/products?limit=10&page=${options.page}${
-            options.query.key
-              ? `&${options.query.key}=${options.query.value}`
-              : ""
-          }`
+        `/products?limit=10&page=${options.page}${options.query.key
+          ? `&${options.query.key}=${options.query.value}`
+          : ""
+        }`
       );
 
+      console.log(resData, ">>> here 4")
+
+      const docs = resData.docs || resData;
       const data = {
-        totalPages: resData.pages,
-        totalDocs: resData.total,
+        totalPages: resData.pages || resData?.length,
+        totalDocs: resData.total || resData?.length,
 
         // Map to `columns.key`
-        docs: resData.docs.map((product) => ({
+        docs: docs?.map((product) => ({
           ...product,
           // Map fields that don't map to `columns[<index>].key`
-          product: product.name,
+          name: product.name,
           creator: product.creatorId,
           // Columns with extra informations
           extraInfo: {
             product: {
-              name: product.name,
+              name: product?.name,
               imageUrl:
                 product.primaryImage?.imageUrl ||
                 "/images/products/default.png",
@@ -873,11 +946,15 @@ const ProductsTableSection = ({ mute }) => {
     }
   };
 
+
+
   const table = useTable({ fetchRows });
   const tableRow = useTableRow({
     rowsData: table.rows,
     setRowsData: table.setRows,
   });
+
+  console.log(table, ">>> here 5")
 
   const handleRowClick = ({ row: product }) => {
     return {
@@ -938,6 +1015,106 @@ const ProductsTableSection = ({ mute }) => {
   );
 };
 
+// Courses
+const columns_courses = [
+  {
+    label: "Course Title",
+    key: "title",
+    value: (title, row) => (
+      <Flex alignItems="center">
+        <Image src={row?.thumbnail || "/img/placeholder.png"} w="50px" h="30px" objectFit="cover" borderRadius="sm" mr={3} />
+        <Text mute>{title}</Text>
+      </Flex>
+    ),
+    minFr: "300px",
+  },
+  {
+    label: "Instructor",
+    key: "instructor",
+    value: (instructor) => instructor?.name || "N/A",
+    minFr: "150px",
+  },
+  {
+    label: "Price",
+    key: "price",
+    value: (price) => formatPriceToNaira(price),
+    minFr: "120px",
+  },
+  {
+    label: "Level",
+    key: "level",
+    value: (level) => (
+      <Badge colorScheme={level === "Beginner" ? "green" : level === "Intermediate" ? "orange" : "red"}>
+        {level}
+      </Badge>
+    ),
+    minFr: "100px",
+  },
+  {
+    label: "Enrolled",
+    key: "enrolledCount",
+    minFr: "100px",
+  },
+];
+
+const CoursesTableSection = ({ mute }) => {
+  const fetchRows = async ({ setRows, options, url }) => {
+    setRows({ loading: true });
+    try {
+      const { data: resData } = await http.get(url || "/courses");
+      const docs = resData?.docs || resData;
+      const data = {
+        totalPages: resData?.pages || 1,
+        totalDocs: resData?.total || docs?.length,
+        docs: docs?.map((course) => ({
+          ...course,
+          id: course._id,
+        })),
+      };
+      setRows({ data });
+    } catch (err) {
+      setRows({ error: err.message });
+    }
+  };
+
+  const table = useTable({ fetchRows });
+  const tableRow = useTableRow({
+    rowsData: table.rows,
+    setRowsData: table.setRows,
+  });
+
+  const handleRowClick = ({ row: course, setModal }) => {
+    setModal({
+      heading: course.title,
+      list: [
+        {
+          text: "Edit Course",
+          href: `/courses/${course.id}`,
+        },
+        {
+          text: "Delete Course",
+          props: { color: "brand.error" },
+          onClick: async () => {
+            await http.delete(`/courses/${course.id}`);
+            tableRow.deleteRow({ rowId: course.id });
+          },
+        },
+      ],
+    });
+  };
+
+  return (
+    <TableSection
+      mute={mute}
+      columns={columns_courses}
+      table={table}
+      addButton={{ text: "Add new course", href: "/courses/add" }}
+      onRowClick={handleRowClick}
+      onMenuClick={handleRowClick}
+    />
+  );
+};
+
 export {
   AdministratorsTableSection,
   CustomersTableSection,
@@ -945,4 +1122,5 @@ export {
   MarketersTableSection,
   OrdersTableSection,
   ProductsTableSection,
+  CoursesTableSection,
 };

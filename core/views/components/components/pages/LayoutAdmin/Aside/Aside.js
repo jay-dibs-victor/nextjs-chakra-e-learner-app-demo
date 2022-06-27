@@ -15,6 +15,7 @@ import { FiBox } from "react-icons/fi";
 import { GoCommentDiscussion } from "react-icons/go";
 import { FaUsers } from "react-icons/fa";
 import { AiOutlineClose, AiOutlinePoweroff } from "react-icons/ai";
+import { HiAcademicCap } from "react-icons/hi";
 import { CgMenuGridO } from "react-icons/cg";
 import CategoryRoundedIcon from "@material-ui/icons/CategoryRounded";
 import TvRoundedIcon from "@material-ui/icons/TvRounded";
@@ -57,6 +58,7 @@ const Aside = ({ activePage = "dashboard", activePageHeader, ...rest }) => {
   const items = [
     { text: "dashboard", icon: <DashboardRoundedIcon />, href: "/admin/" },
     { text: "products", icon: <TvRoundedIcon />, href: "/admin/products" },
+    { text: "courses", icon: <HiAcademicCap />, href: "/admin/courses" },
     { text: "categories", icon: <CategoryRoundedIcon />, href: "/admin/categories" },
     { text: "orders", icon: <CardGiftcardRoundedIcon />, href: "/admin/orders" },
     { text: "users", icon: <PeopleRoundedIcon />, href: "/admin/users" },
@@ -69,7 +71,7 @@ const Aside = ({ activePage = "dashboard", activePageHeader, ...rest }) => {
       text: "sign out",
       icon: <PowerSettingsNewRoundedIcon color="secondary" />,
       onClick: () => {
-        auth.signout();
+        auth.logout();
       },
     },
   ];

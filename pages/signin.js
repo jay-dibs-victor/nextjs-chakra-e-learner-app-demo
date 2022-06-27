@@ -59,6 +59,7 @@ const SignInPage = () => {
       const token = res?.data?.token;
       const user = res?.data?.user;
 
+
       if (!token) throw new Error("No token received");
 
       // Persist to cookie (for SSR/middleware) and localStorage (for AuthContext)
